@@ -1,18 +1,16 @@
 import React, { useCallback } from 'react';
 import { Upload } from 'lucide-react';
 import { toast } from 'sonner';
-import sampleImage from '../images/sample/pistache.png';
+import { regenerateCustomGif } from '../utils/gif/regenerator';
 
 interface GifFilterUploaderProps {
   onGifSelect: (gifData: string) => void;
-  onImageSelect: (imageData: string) => void;
 }
 
 export const GifFilterUploader: React.FC<GifFilterUploaderProps> = ({ 
-  onGifSelect,
-  onImageSelect 
+  onGifSelect
 }) => {
-  const handleGifUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGifUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -25,19 +23,20 @@ export const GifFilterUploader: React.FC<GifFilterUploaderProps> = ({
     }
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const result = e.target?.result;
       if (typeof result === 'string') {
+        // Regenerate custom GIF with new filter
+        await regenerateCustomGif(result);
         onGifSelect(result);
-        // Automatically set sample image if no image is selected
-        onImageSelect(sampleImage);
+        
         toast.success('GIF filter uploaded successfully!', {
           description: `${file.name} is ready to be used as a filter.`
         });
       }
     };
     reader.readAsDataURL(file);
-  }, [onGifSelect, onImageSelect]);
+  }, [onGifSelect]);
 
   return (
     <div className="w-full max-w-sm mx-auto mb-8">

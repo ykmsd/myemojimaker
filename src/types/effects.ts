@@ -43,7 +43,7 @@ export enum AnimatedEffectType {
   RAIN = 'rain',
   RAINBOW_RAIN = 'rainbow-rain',
   THIS_IS_FINE = 'this-is-fine',
-  CUSTOM_GIF = 'customGif'
+  CUSTOM_GIF = 'custom-gif'
 }
 
 // Static effects for PNG generation

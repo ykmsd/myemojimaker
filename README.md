@@ -1,5 +1,8 @@
 # MyEmojiMaker 🎨
 
+> **Built with [bolt.new](https://bolt.new) - The Revolutionary Web Development Environment** ⚡️
+
+
 A modern web application for creating custom emoji animations, built with React and Vite. Transform your images and text into unique emoji creations with fun filters, animations, and effects.
 
 ## ✨ Key Features
@@ -136,4 +139,10 @@ MIT License - feel free to use this project for your own purposes!
 
 ---
 
-Made with ❤️ using [bolt.new](https://bolt.new)
+<div align="center">
+
+### Made with ❤️ using [bolt.new](https://bolt.new)
+
+The revolutionary web development environment that makes coding fun again!
+
+</div>

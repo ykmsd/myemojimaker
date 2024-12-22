@@ -4,12 +4,13 @@ import { getGifFrames } from '../gif/backgrounds';
 import { getCustomGifFrames } from '../gif/customFilter';
 import { calculateAspectRatioFit } from './utils';
 import { contrastFilter } from '../filters';
+import { createSpaceObjects } from './spaceObjects';
 
 async function applyBackgroundEffect(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   i: number,
-  type: 'fire' | 'sparkles' | 'rainbow' | 'rainbowRain' | 'matrix',
+  type: 'fire' | 'space-travel',
   scale: number = 0.8,
   position: 'center' | 'bottom' = 'center'
 ) {
@@ -50,6 +51,43 @@ export const backgroundTransforms = {
     await applyBackgroundEffect(ctx, img, i, 'fire', 0.85, 'bottom');
   },
 
+  [AnimatedEffectType.SPACE_TRAVEL]: async (
+    ctx: CanvasRenderingContext2D,
+    img: HTMLImageElement,
+    i: number
+  ) => {
+    const frames = await getGifFrames('space-travel');
+    if (!frames.length) return;
+
+    const frameIndex = i % frames.length;
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.putImageData(frames[frameIndex], 0, 0);
+
+    // Create floating objects
+    const objects = createSpaceObjects(i);
+    objects.forEach(({ x, y, scale, opacity }) => {
+      ctx.save();
+      ctx.translate(x, y);
+      
+      const dims = calculateAspectRatioFit(
+        img.width,
+        img.height,
+        WIDTH * scale,
+        HEIGHT * scale
+      );
+
+      ctx.globalAlpha = opacity;
+      ctx.drawImage(
+        img,
+        -dims.width / 2,
+        -dims.height / 2,
+        dims.width,
+        dims.height
+      );
+      ctx.restore();
+    });
+  },
+
   [AnimatedEffectType.CUSTOM_GIF]: (
     ctx: CanvasRenderingContext2D,
     img: HTMLImageElement,
@@ -62,12 +100,14 @@ export const backgroundTransforms = {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.putImageData(frames[frameIndex], 0, 0);
 
+    // Reduced size to 80% of the canvas dimensions
     const dims = calculateAspectRatioFit(
       img.width,
       img.height,
       WIDTH * 0.8,
       HEIGHT * 0.8
     );
+    
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(
       img,

@@ -7,7 +7,7 @@ import { useFont } from '../hooks/useFont';
 import { useDebounce } from '../hooks/useDebounce';
 import { SectionContainer } from './SectionContainer';
 import { GifFilterUploader } from './GifFilterUploader';
-import { setCustomGifFilter } from '../utils/gif/customFilter';
+import { regenerateCustomGif } from '../utils/gif/regenerator';
 
 interface TextEmojiSectionProps {
   interval: number;
@@ -26,7 +26,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [outlineColor, setOutlineColor] = useState('#FFFFFF');
   const [outlineWidth, setOutlineWidth] = useState(2);
   const [selectedFont, setSelectedFont] = useState(DEFAULT_FONT);
-  const [hasCustomGif, setHasCustomGif] = useState(false);
   const fontLoaded = useFont(selectedFont);
   const [previewUrl, setPreviewUrl] = useState('');
   const debouncedText = useDebounce(text, 500);
@@ -42,6 +41,8 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
         outlineWidth
       );
       setPreviewUrl(imageUrl);
+      // Regenerate custom GIF with new text image
+      regenerateCustomGif(undefined, imageUrl);
     }
   }, [
     debouncedText,
@@ -55,8 +56,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   ]);
 
   const handleGifSelect = (gifData: string) => {
-    setCustomGifFilter(gifData);
-    setHasCustomGif(true);
+    regenerateCustomGif(gifData, previewUrl);
   };
 
   return (

@@ -1,21 +1,25 @@
 import React, { useCallback } from 'react';
 import { ImagePlus } from 'lucide-react';
 import { toast } from 'sonner';
+import { regenerateCustomGif } from '../utils/gif/regenerator';
 
 interface ImageUploaderProps {
   onImageSelect: (imageData: string) => void;
 }
 
 export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) => {
-  const handleImageUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const result = e.target?.result;
       if (typeof result === 'string') {
+        // Regenerate custom GIF with new image
+        await regenerateCustomGif(undefined, result);
         onImageSelect(result);
+        
         toast.success('Image uploaded successfully!', {
           description: `${file.name} is ready to be transformed.`
         });

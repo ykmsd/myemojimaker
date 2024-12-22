@@ -1,60 +1,41 @@
-import { parseGIF, decompressFrames } from 'gifuct-js';
-import { WIDTH, HEIGHT } from '../../constants';
-import { createCanvas } from '../canvas';
+import { processGifData } from './processor';
+import { composeFramesWithImage } from './composer';
+import { setCustomGifFrames, setCurrentImage, getCustomGifFrames } from './state';
 
-let customGifFrames: ImageData[] | null = null;
-
-export async function setCustomGifFilter(gifData: string): Promise<void> {
+export async function setCustomGifFilter(
+  gifData: string,
+  imageData?: string
+): Promise<void> {
   try {
-    // Clear previous frames
-    customGifFrames = null;
+    // Clear existing frames first to trigger state updates
+    setCustomGifFrames(null);
     
-    // Convert base64 to array buffer
-    const base64Data = gifData.split(',')[1];
-    const binaryString = window.atob(base64Data);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
+    // Process GIF frames
+    const frames = await processGifData(gifData);
+    
+    // Update current image if provided
+    if (imageData) {
+      const img = new Image();
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = imageData;
+      });
+      setCurrentImage(img);
     }
     
-    const buffer = bytes.buffer;
-    const gif = parseGIF(buffer);
-    const frames = decompressFrames(gif, true);
+    // Small delay to ensure state updates are processed
+    await new Promise(resolve => setTimeout(resolve, 50));
     
-    const { canvas, ctx } = createCanvas(WIDTH, HEIGHT);
+    // Compose frames with current image
+    const composedFrames = composeFramesWithImage(frames);
+    setCustomGifFrames(composedFrames);
     
-    // Convert each frame to ImageData
-    customGifFrames = frames.map(frame => {
-      const { dims, patch } = frame;
-      
-      // Clear canvas
-      ctx.clearRect(0, 0, WIDTH, HEIGHT);
-      
-      // Create ImageData from patch
-      const imageData = ctx.createImageData(dims.width, dims.height);
-      imageData.data.set(patch);
-      
-      // Create temporary canvas for scaling
-      const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = dims.width;
-      tempCanvas.height = dims.height;
-      const tempCtx = tempCanvas.getContext('2d')!;
-      tempCtx.putImageData(imageData, 0, 0);
-      
-      // Scale to fit our dimensions
-      ctx.drawImage(tempCanvas, 0, 0, WIDTH, HEIGHT);
-      
-      // Clean up temp canvas
-      tempCanvas.remove();
-      
-      return ctx.getImageData(0, 0, WIDTH, HEIGHT);
-    });
   } catch (error) {
     console.error('Error processing custom GIF:', error);
-    customGifFrames = null;
+    setCustomGifFrames(null);
   }
 }
 
-export function getCustomGifFrames(): ImageData[] | null {
-  return customGifFrames;
-}
+export { getCustomGifFrames };
+export { clearState as clearCustomGifFilter } from './state';

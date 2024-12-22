@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { EmojiPanel } from './EmojiPanel';
 import { StaticEmojiPanel } from './StaticEmojiPanel';
 import { AnimatedEffectType, StaticEffectType } from '../types/effects';
@@ -25,7 +25,18 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
   showStatic = true 
 }) => {
   const { isFilterVisible, toggleFilter, showAllFilters, hiddenCount } = useFilterVisibility();
-  const hasCustomGif = Boolean(getCustomGifFrames());
+  const [hasCustomGif, setHasCustomGif] = useState(false);
+
+  useEffect(() => {
+    const checkCustomGif = () => {
+      const frames = getCustomGifFrames();
+      setHasCustomGif(Boolean(frames));
+    };
+
+    checkCustomGif();
+    const checkInterval = setInterval(checkCustomGif, 500);
+    return () => clearInterval(checkInterval);
+  }, []);
 
   const animatedEffects = Object.values(AnimatedEffectType).filter(effect => 
     effect !== AnimatedEffectType.CUSTOM_GIF || hasCustomGif

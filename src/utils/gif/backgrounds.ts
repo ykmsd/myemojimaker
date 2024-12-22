@@ -4,6 +4,7 @@ import { createCanvas } from '../canvas';
 
 const GIF_PATHS = {
   fire: new URL('../../images/effects/flames-fire.gif', import.meta.url).href,
+  'space-travel': new URL('../../images/effects/space-travel.gif', import.meta.url).href,
 } as const;
 
 type GifType = keyof typeof GIF_PATHS;
