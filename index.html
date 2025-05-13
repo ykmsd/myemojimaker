@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyEmojiMaker - Create Custom Emoji Online</title>
+    <meta
+      name="description"
+      content="Create custom emoji online with MyEmojiMaker. Transform images and text into unique animated emoji with filters, effects, and manga-style overlays. Free, private, and works in your browser."
+    />
+    <meta name="keywords" content="emoji maker, custom emoji, animated emoji, emoji creator, gif maker, emoji generator" />
+    <meta name="author" content="MyEmojiMaker" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/assets/vendor.js" as="script" />
+    <link rel="preload" href="/assets/main.js" as="script" />
+    <link rel="preload" href="/gif.worker.js" as="script" />
+    <link rel="modulepreload" href="/src/main.tsx" />
+    <link rel="modulepreload" href="/src/App.tsx" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://myemojimaker.com" />
+    <meta property="og:title" content="MyEmojiMaker - Create Custom Emoji" />
+    <meta 
+      property="og:description" 
+      content="Create custom emoji online with MyEmojiMaker. Transform images and text into unique animated emoji with filters, effects, and manga-style overlays. Free, private, and works in your browser."
+    />
+    <meta property="og:image" content="https://myemojimaker.com/social-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="MyEmojiMaker" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://myemojimaker.com" />
+    <meta property="twitter:title" content="MyEmojiMaker - Create Custom Emoji" />
+    <meta 
+      property="twitter:description" 
+      content="Create custom emoji online with MyEmojiMaker. Transform images and text into unique animated emoji with filters, effects, and manga-style overlays. Free, private, and works in your browser."
+    />
+    <meta property="twitter:image" content="https://myemojimaker.com/social-preview.png" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "MyEmojiMaker",
+        "url": "https://myemojimaker.com",
+        "description": "Create custom emoji online with MyEmojiMaker. Transform images and text into unique animated emoji with filters, effects, and manga-style overlays.",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Image to emoji conversion",
+          "Text to emoji conversion",
+          "Animated effects",
+          "Manga-style overlays",
+          "Background removal",
+          "Privacy-focused processing"
+        ]
+      }
+    </script>
+
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=VT323&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=VT323&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    <title>MyEmojiMaker</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

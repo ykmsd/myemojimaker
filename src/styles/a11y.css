@@ -1,0 +1,13 @@
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid #9333EA;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* High contrast mode improvements */
+@media (forced-colors: active) {
+  * {
+    border-color: ButtonText;
+  }
+}
