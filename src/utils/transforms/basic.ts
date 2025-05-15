@@ -54,8 +54,6 @@ export const basicTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!Array.isArray(animations.jelloScales) || !animations.jelloScales[i]) return;
-    
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     const [scaleX, scaleY] = animations.jelloScales[i];
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -70,8 +68,6 @@ export const basicTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.skewSteps[i]) return;
-    
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     const { skewX } = animations.skewSteps[i];
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -105,8 +101,6 @@ export const basicTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.pulseSteps?.[i]) return;
-    
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     const [scaleX, scaleY] = animations.pulseSteps[i];
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -121,8 +115,6 @@ export const basicTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.zoomSteps?.[i]) return;
-    
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     const [scale] = animations.zoomSteps[i];
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -137,8 +129,6 @@ export const basicTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.heartbeatSteps[i]) return;
-    
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     const [scaleX, scaleY] = animations.heartbeatSteps[i];
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
