@@ -54,6 +54,8 @@ export const basicTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
+    if (!Array.isArray(animations.jelloScales) || !animations.jelloScales[i]) return;
+    
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     const [scaleX, scaleY] = animations.jelloScales[i];
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
