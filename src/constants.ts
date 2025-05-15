@@ -1,6 +1,6 @@
 export const WIDTH = 128;
 export const HEIGHT = 128;
-export const FRAME_COUNT = 8;
+export const FRAME_COUNT = 12;
 export const CONTRAST = 125;
 export const SATURATE = 160;
 export const SPIRAL_SPEED_MULTIPLIER = {
@@ -10,9 +10,9 @@ export const SPIRAL_SPEED_MULTIPLIER = {
 };
 
 export const ANIMATION_SPEEDS = {
-  slow: 0.15,    // 3x slower
-  normal: 0.1,   // 2x slower
-  fast: 0.075    // 1.5x slower
+  slow: 0.2,     // 4x slower
+  normal: 0.15,  // 3x slower
+  fast: 0.1      // 2x slower
 };
 
 export const DEFAULT_SPEED = 'normal';
