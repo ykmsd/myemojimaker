@@ -43,6 +43,13 @@
       property="twitter:description" 
       content="Create custom emoji online with MyEmojiMaker. Transform images and text into unique animated emoji with filters, effects, and manga-style overlays. Free, private, and works in your browser."
     />
+    <!-- Prevent theme flicker -->
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+      })();
+    </script>
     <meta property="twitter:image" content="https://myemojimaker.com/social-preview.png" />
 
     <!-- JSON-LD Structured Data -->
