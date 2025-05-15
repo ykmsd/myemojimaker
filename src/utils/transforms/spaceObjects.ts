@@ -10,13 +10,13 @@ interface SpaceObject {
 export function createSpaceObjects(frameIndex: number): SpaceObject[] {
   const centerX = WIDTH / 2;
   const centerY = HEIGHT / 2;
-  const objectCount = 20;
-  const maxRadius = 300;
-  const baseScale = 0.3;
-  const maxScale = 2.0;
+  const objectCount = 30;
+  const maxRadius = 400;
+  const baseScale = 0.1;
+  const maxScale = 1.5;
 
   return Array.from({ length: objectCount }, (_, idx) => {
-    const progress = (frameIndex / 75 + idx / objectCount) % 1;
+    const progress = (frameIndex / 50 + idx / objectCount) % 1;
     const angle = Math.PI * 2 * Math.random();
     const distance = progress * maxRadius;
     const scale = baseScale + progress * (maxScale - baseScale);

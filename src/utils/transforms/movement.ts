@@ -11,9 +11,6 @@ export const movementTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.partyTranslations?.[i]) {
-      return;
-    }
     const [x, y] = animations.partyTranslations[i];
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -34,9 +31,6 @@ export const movementTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.shakingTranslations?.[i]) {
-      return;
-    }
     const [x, y] = animations.shakingTranslations[i];
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -57,9 +51,6 @@ export const movementTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.bounceTranslations?.[i]) {
-      return;
-    }
     const [x, y] = animations.bounceTranslations[i];
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -74,15 +65,11 @@ export const movementTransforms = {
     );
     contrastFilter(ctx, CONTRAST);
   },
-
   [AnimatedEffectType.OSCILLATE]: (
     ctx: CanvasRenderingContext2D,
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.oscillateSteps?.[i]) {
-      return;
-    }
     const [x] = animations.oscillateSteps[i];
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -103,9 +90,6 @@ export const movementTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.floatSteps?.[i]) {
-      return;
-    }
     const [x, y] = animations.floatSteps[i];
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -126,9 +110,6 @@ export const movementTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.zigzagSteps?.[i]) {
-      return;
-    }
     const [x, y] = animations.zigzagSteps[i];
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -149,9 +130,6 @@ export const movementTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.swingSteps?.[i]?.angle) {
-      return;
-    }
     const { angle } = animations.swingSteps[i];
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -172,9 +150,6 @@ export const movementTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.scrollSteps?.[i]) {
-      return;
-    }
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     const offset = animations.scrollSteps[i] * HEIGHT;
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -201,9 +176,6 @@ export const movementTransforms = {
     img: HTMLImageElement,
     i: number
   ) => {
-    if (!animations.scrollSteps?.[i]) {
-      return;
-    }
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
     const offset = animations.scrollSteps[i] * WIDTH;
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
