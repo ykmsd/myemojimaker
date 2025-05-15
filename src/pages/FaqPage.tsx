@@ -2,11 +2,17 @@ import React from 'react';
 import { Shield, Globe, Zap, Server, Heart } from 'lucide-react';
 import { EmojiTips } from '../components/EmojiTips';
 
+interface FaqItem {
+  question: string;
+  answer: string;
+  icon: typeof Shield;
+}
+
 export const FaqPage: React.FC = () => {
-  const faqs = [
+  const faqs: FaqItem[] = [
     {
       question: "How is my data handled?",
-      answer: "All image processing happens directly in your browser. We never upload, store, or transmit your images to any server. Your images remain completely private and are processed using your browser's built-in capabilities.",
+      answer: "All image processing happens directly in your browser. We never upload, store, or transmit your images to any server. Your images remain completely private and are processed using your browser's built-in capabilities. We use privacy-focused Cloudflare Analytics to understand site usage patterns - this collects minimal data and respects your privacy.",
       icon: Shield
     },
     {
@@ -24,7 +30,7 @@ export const FaqPage: React.FC = () => {
       answer: "Once the page is loaded, all core functionality works offline! Since processing happens in your browser, you don't need an internet connection to create emojis.",
       icon: Globe
     }
-  ];
+  ] as const;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -97,7 +103,7 @@ export const FaqPage: React.FC = () => {
               Privacy First Approach
             </h2>
             <p className="text-gray-600 dark:text-gray-300">
-              We take your privacy seriously. Our emoji maker is designed to work entirely in your browser, ensuring your images and data stay on your device. We don't use cookies, tracking, or analytics, and we don't store any user data. It's just you and your creativity!
+              We take your privacy seriously. Our emoji maker is designed to work entirely in your browser, ensuring your images and data stay on your device. We use Cloudflare Analytics, a privacy-focused analytics solution that collects minimal, anonymous data to help us improve the service. No personal information is collected or stored.
             </p>
           </div>
         </div>
