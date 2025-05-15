@@ -1,6 +1,6 @@
 export const WIDTH = 128;
 export const HEIGHT = 128;
-export const FRAME_COUNT = 10;
+export const FRAME_COUNT = 8;
 export const CONTRAST = 125;
 export const SATURATE = 160;
 export const SPIRAL_SPEED_MULTIPLIER = {

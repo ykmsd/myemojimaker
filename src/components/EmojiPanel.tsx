@@ -54,7 +54,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
         );
 
         const gif = new GIF({
-          workers: 2,
+          workers: 4,
           quality: 5,
           repeat: 0,
           width: WIDTH,
@@ -62,7 +62,8 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           transparent: 0x000000,
           background: null,
           workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
-          dither: false
+          dither: false,
+          debug: false
         });
 
         loadedImages.forEach(img => {
@@ -72,20 +73,20 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           const ctx = canvas.getContext('2d', { 
             willReadFrequently: true,
             alpha: true,
-            desynchronized: true
+            desynchronized: true,
+            powerPreference: 'high-performance'
           });
           if (ctx) {
             ctx.globalCompositeOperation = 'copy';
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
             ctx.save();
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
+            ctx.imageSmoothingEnabled = false;
             ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
             ctx.restore();
             gif.addFrame(canvas, { 
               delay: interval * 1000, 
               transparent: true,
-              disposal: 1
+              disposal: 2
             });
           }
         });
