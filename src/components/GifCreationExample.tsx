@@ -50,7 +50,11 @@ export const GifCreationExample: React.FC<GifCreationExampleProps> = ({
     },
   };
 
-  const example = examples[activeSection];
+  const example = examples[activeSection as keyof typeof examples];
+
+  if (!example) {
+    return null;
+  }
 
   return (
     <div className="flex items-center justify-center gap-4 mb-8 max-w-xl mx-auto">
