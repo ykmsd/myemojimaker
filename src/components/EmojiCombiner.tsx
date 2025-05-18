@@ -9,6 +9,7 @@ interface EmojiPosition {
   y: number;
   scale: number;
   isDragging: boolean;
+  zIndex: number;
 }
 
 export const EmojiCombiner: React.FC = () => {
@@ -18,7 +19,8 @@ export const EmojiCombiner: React.FC = () => {
     x: WIDTH/3, 
     y: HEIGHT/2, 
     scale: 1,
-    isDragging: false 
+    isDragging: false,
+    zIndex: 1
   });
   const [showFirstPicker, setShowFirstPicker] = useState(false);
   const [showSecondPicker, setShowSecondPicker] = useState(false);
@@ -26,10 +28,21 @@ export const EmojiCombiner: React.FC = () => {
     x: 2*WIDTH/3, 
     y: HEIGHT/2, 
     scale: 1,
-    isDragging: false 
+    isDragging: false,
+    zIndex: 0
   });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const dragStartPos = useRef({ x: 0, y: 0 });
+
+  const bringToFront = (isFirst: boolean) => {
+    if (isFirst) {
+      setFirstPosition(prev => ({ ...prev, zIndex: 1 }));
+      setSecondPosition(prev => ({ ...prev, zIndex: 0 }));
+    } else {
+      setFirstPosition(prev => ({ ...prev, zIndex: 0 }));
+      setSecondPosition(prev => ({ ...prev, zIndex: 1 }));
+    }
+  };
 
   const updateCanvas = () => {
     const canvas = canvasRef.current;
@@ -40,25 +53,22 @@ export const EmojiCombiner: React.FC = () => {
 
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     
-    // Draw first emoji
-    ctx.save();
-    ctx.translate(firstPosition.x, firstPosition.y);
-    ctx.scale(firstPosition.scale, firstPosition.scale);
-    ctx.font = '48px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(firstEmoji, 0, 0);
-    ctx.restore();
+    // Draw emojis in order based on z-index
+    const positions = [
+      { emoji: firstEmoji, position: firstPosition, isFirst: true },
+      { emoji: secondEmoji, position: secondPosition, isFirst: false }
+    ].sort((a, b) => a.position.zIndex - b.position.zIndex);
 
-    // Draw second emoji
-    ctx.save();
-    ctx.translate(secondPosition.x, secondPosition.y);
-    ctx.scale(secondPosition.scale, secondPosition.scale);
-    ctx.font = '48px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(secondEmoji, 0, 0);
-    ctx.restore();
+    positions.forEach(({ emoji, position }) => {
+      ctx.save();
+      ctx.translate(position.x, position.y);
+      ctx.scale(position.scale, position.scale);
+      ctx.font = '48px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, 0, 0);
+      ctx.restore();
+    });
   };
 
   const handleMouseDown = (e: React.MouseEvent, isFirst: boolean) => {
@@ -165,6 +175,18 @@ export const EmojiCombiner: React.FC = () => {
                 className="w-full"
               />
             </div>
+            <div className="mt-4">
+              <button
+                onClick={() => bringToFront(true)}
+                className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                  firstPosition.zIndex === 1
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
+              >
+                Bring to Front
+              </button>
+            </div>
           </div>
           
           <div>
@@ -205,6 +227,18 @@ export const EmojiCombiner: React.FC = () => {
                 onChange={(e) => setSecondPosition({...secondPosition, scale: parseFloat(e.target.value)})}
                 className="w-full"
               />
+            </div>
+            <div className="mt-4">
+              <button
+                onClick={() => bringToFront(false)}
+                className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                  secondPosition.zIndex === 1
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
+              >
+                Bring to Front
+              </button>
             </div>
           </div>
         </div>
