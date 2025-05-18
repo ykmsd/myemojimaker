@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { generateStaticPng } from '../utils/staticEffects';
 import { downloadUri } from '../utils/download';
 import { BLANK_GIF } from '../constants';
@@ -12,28 +12,6 @@ interface StaticEmojiPanelProps {
   updateKey: number;
 }
 
-// Queue for limiting concurrent PNG generation
-const processingQueue: Array<() => Promise<void>> = [];
-let isProcessing = false;
-
-async function processQueue() {
-  if (isProcessing || processingQueue.length === 0) return;
-  
-  isProcessing = true;
-  const nextTask = processingQueue.shift();
-  
-  if (nextTask) {
-    try {
-      await nextTask();
-    } catch (error) {
-      console.error('Error in processing queue:', error);
-    }
-    
-    isProcessing = false;
-    processQueue(); // Process next item in queue
-  }
-}
-
 const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
   img,
   transformation,
@@ -44,60 +22,30 @@ const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
 }) => {
   const [pngUrl, setPngUrl] = useState(BLANK_GIF);
   const [loading, setLoading] = useState(false);
-  const processingRef = useRef(false);
-  
-  // Use caching to avoid regenerating the same image
-  const cacheKey = `${img}-${transformation}-${primaryColor}-${strokeColor}-${updateKey}`;
-  const cachedImageRef = useRef<Map<string, string>>(new Map());
 
   useEffect(() => {
-    if (!img || processingRef.current) return;
-    
-    // Check cache first
-    if (cachedImageRef.current.has(cacheKey)) {
-      setPngUrl(cachedImageRef.current.get(cacheKey)!);
-      return;
-    }
-    
+    if (!img) return;
+
     setLoading(true);
-    processingRef.current = true;
     setPngUrl(BLANK_GIF);
 
-    const generatePng = async () => {
-      try {
-        const blob = await generateStaticPng(img, transformation, primaryColor, strokeColor);
+    generateStaticPng(img, transformation, primaryColor, strokeColor)
+      .then((blob) => {
         const url = URL.createObjectURL(blob);
-        
-        // Cache the result
-        cachedImageRef.current.set(cacheKey, url);
-        
         setPngUrl(url);
         setLoading(false);
-        processingRef.current = false;
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error('Error generating PNG:', error);
         setLoading(false);
-        processingRef.current = false;
-      }
-    };
+      });
 
-    // Queue this processing task
-    processingQueue.push(generatePng);
-    processQueue();
-    
-    return () => {
-      processingRef.current = false;
-    };
-  }, [img, transformation, primaryColor, strokeColor, updateKey, cacheKey]);
-
-  // Cleanup URLs when component unmounts
-  useEffect(() => {
     return () => {
       if (pngUrl !== BLANK_GIF) {
         URL.revokeObjectURL(pngUrl);
       }
     };
-  }, []);
+  }, [img, transformation, primaryColor, strokeColor, updateKey]);
 
   const isClickable = pngUrl !== BLANK_GIF;
 
@@ -126,7 +74,6 @@ const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
           src={pngUrl}
           alt={`The generated ${name} static emoji`}
           className="w-full h-full object-contain rounded-lg hover:scale-150 transition-transform"
-          loading="lazy"
         />
       </div>
       <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400 break-words">

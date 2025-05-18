@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useA11y } from '../hooks/useA11y';
-import { usePerformance } from '../contexts/PerformanceContext';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
 import GIF from 'gif.js';
 import { AnimatedEffectType } from '../types/effects';
 import { transform } from '../utils/transform';
-import { BLANK_GIF, WIDTH, HEIGHT } from '../constants';
+import { BLANK_GIF, WIDTH, HEIGHT, FRAME_COUNT } from '../constants';
 import { downloadUri } from '../utils/download';
 
 interface EmojiPanelProps {
@@ -16,82 +15,36 @@ interface EmojiPanelProps {
   frameCount?: number;
 }
 
-// Queue for limiting concurrent GIF generation
-const processingQueue: Array<() => Promise<void>> = [];
-let isProcessing = false;
-
-async function processQueue() {
-  if (isProcessing || processingQueue.length === 0) return;
-  
-  isProcessing = true;
-  const nextTask = processingQueue.shift();
-  
-  if (nextTask) {
-    try {
-      await nextTask();
-    } catch (error) {
-      console.error('Error in processing queue:', error);
-    }
-    
-    isProcessing = false;
-    processQueue(); // Process next item in queue
-  }
-}
-
 const EmojiPanel: React.FC<EmojiPanelProps> = ({
   img,
   transformation,
   name,
   interval,
-  frameCount: propFrameCount
+  frameCount = FRAME_COUNT
 }) => {
   const [gif, setGif] = useState(BLANK_GIF);
   const [loading, setLoading] = useState(false);
   const { handleKeyPress } = useA11y();
-  const processingRef = useRef(false);
-  
-  // Get performance settings from context
-  const { frameCount: contextFrameCount, gifQuality, workerCount } = usePerformance();
-  
-  // Use prop frameCount if provided, otherwise use the one from performance context
-  const frameCount = propFrameCount || contextFrameCount;
 
   useEffect(() => {
-    if (!img || processingRef.current) return;
+    if (!img) return;
     
     setGif(BLANK_GIF);
     setLoading(true);
-    processingRef.current = true;
     
-    const generateGif = async () => {
+    (async () => {
+      const framesArray = [...Array(frameCount)].fill(null);
+      const imagePromises = framesArray.map(async (_, i) => {
+        return await transform(img, transformation, i);
+      });
+      
+      const images = await Promise.all(imagePromises);
+      
       try {
-        // Reduce frame count for better performance
-        const framesToRender = [...Array(frameCount)].fill(null);
-        
-        // Generate frames in smaller batches to avoid blocking UI
-        const batchSize = 3;
-        const imageBatches = [];
-        
-        for (let i = 0; i < framesToRender.length; i += batchSize) {
-          const batch = framesToRender.slice(i, i + batchSize);
-          const batchPromises = batch.map((_, batchIndex) => {
-            const frameIndex = i + batchIndex;
-            return transform(img, transformation, frameIndex);
-          });
-          
-          // Add a small delay between batches to allow UI updates
-          if (i > 0) {
-            await new Promise(resolve => setTimeout(resolve, 5));
-          }
-          
-          const batchResults = await Promise.all(batchPromises);
-          imageBatches.push(...batchResults);
-        }
-        
         const loadedImages = await Promise.all(
-          imageBatches.map(
+          images.map(
             (imageData) => 
-              new Promise<HTMLImageElement>((resolve, reject) => {
+              new Promise((resolve, reject) => {
                 const img = new Image();
                 img.onload = () => resolve(img);
                 img.onerror = reject;
@@ -101,8 +54,8 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
         );
 
         const gif = new GIF({
-          workers: workerCount,
-          quality: gifQuality,
+          workers: 4,
+          quality: 5,
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
@@ -138,40 +91,24 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           }
         });
         
-        await new Promise<void>((resolve, reject) => {
-          gif.on('finished', blob => {
-            const url = URL.createObjectURL(blob);
-            setGif(url);
-            setLoading(false);
-            processingRef.current = false;
-            resolve();
-          });
-          
-          gif.on('error', error => {
-            console.error('GIF generation error:', error);
-            setLoading(false);
-            processingRef.current = false;
-            reject(error);
-          });
-          
-          gif.render();
+        gif.on('finished', blob => {
+          const url = URL.createObjectURL(blob);
+          setGif(url);
+          setLoading(false);
         });
+        
+        gif.on('error', error => {
+          console.error('GIF generation error:', error);
+          setLoading(false);
+        });
+        
+        gif.render();
       } catch (error) {
         console.error('Error creating GIF:', error);
         setLoading(false);
-        processingRef.current = false;
       }
-    };
-
-    // Queue this processing task
-    processingQueue.push(generateGif);
-    processQueue();
-    
-    return () => {
-      // If the component unmounts while generating, mark it as not processing
-      processingRef.current = false;
-    };
-  }, [img, transformation, interval, frameCount, gifQuality, workerCount]);
+    })();
+  }, [img, transformation, interval, frameCount]);
 
   const isClickable = gif !== BLANK_GIF;
 
@@ -198,7 +135,6 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           src={gif}
           alt={`The generated ${name} animated emoji`}
           className="w-full h-full object-contain rounded-lg hover:scale-150 transition-transform"
-          loading="lazy"
         />
       </div>
       <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400 break-words">
