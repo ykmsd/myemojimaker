@@ -1,19 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { SectionContainer } from './SectionContainer';
 import { WIDTH, HEIGHT } from '../constants';
+import { Move } from 'lucide-react';
 
 interface EmojiPosition {
   x: number;
   y: number;
   scale: number;
+  isDragging: boolean;
 }
 
 export const EmojiCombiner: React.FC = () => {
   const [firstEmoji, setFirstEmoji] = useState('🙏');
   const [secondEmoji, setSecondEmoji] = useState('❤️');
-  const [firstPosition, setFirstPosition] = useState<EmojiPosition>({ x: WIDTH/3, y: HEIGHT/2, scale: 1 });
-  const [secondPosition, setSecondPosition] = useState<EmojiPosition>({ x: 2*WIDTH/3, y: HEIGHT/2, scale: 1 });
+  const [firstPosition, setFirstPosition] = useState<EmojiPosition>({ 
+    x: WIDTH/3, 
+    y: HEIGHT/2, 
+    scale: 1,
+    isDragging: false 
+  });
+  const [secondPosition, setSecondPosition] = useState<EmojiPosition>({ 
+    x: 2*WIDTH/3, 
+    y: HEIGHT/2, 
+    scale: 1,
+    isDragging: false 
+  });
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const dragStartPos = useRef({ x: 0, y: 0 });
 
   const updateCanvas = () => {
     const canvas = canvasRef.current;
@@ -45,6 +58,51 @@ export const EmojiCombiner: React.FC = () => {
     ctx.restore();
   };
 
+  const handleMouseDown = (e: React.MouseEvent, isFirst: boolean) => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    dragStartPos.current = { x, y };
+
+    if (isFirst) {
+      setFirstPosition(prev => ({ ...prev, isDragging: true }));
+    } else {
+      setSecondPosition(prev => ({ ...prev, isDragging: true }));
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const dx = x - dragStartPos.current.x;
+    const dy = y - dragStartPos.current.y;
+    dragStartPos.current = { x, y };
+
+    if (firstPosition.isDragging) {
+      setFirstPosition(prev => ({
+        ...prev,
+        x: Math.max(0, Math.min(WIDTH, prev.x + dx)),
+        y: Math.max(0, Math.min(HEIGHT, prev.y + dy))
+      }));
+    } else if (secondPosition.isDragging) {
+      setSecondPosition(prev => ({
+        ...prev,
+        x: Math.max(0, Math.min(WIDTH, prev.x + dx)),
+        y: Math.max(0, Math.min(HEIGHT, prev.y + dy))
+      }));
+    }
+  };
+
+  const handleMouseUp = () => {
+    setFirstPosition(prev => ({ ...prev, isDragging: false }));
+    setSecondPosition(prev => ({ ...prev, isDragging: false }));
+  };
+
   useEffect(() => {
     updateCanvas();
   }, [firstEmoji, secondEmoji, firstPosition, secondPosition]);
@@ -68,6 +126,9 @@ export const EmojiCombiner: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
               First Emoji
+              <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
+                <Move className="inline w-4 h-4" /> Drag to position
+              </span>
             </h3>
             <input
               type="text"
@@ -93,6 +154,9 @@ export const EmojiCombiner: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
               Second Emoji
+              <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
+                <Move className="inline w-4 h-4" /> Drag to position
+              </span>
             </h3>
             <input
               type="text"
@@ -121,22 +185,18 @@ export const EmojiCombiner: React.FC = () => {
             ref={canvasRef}
             width={WIDTH}
             height={HEIGHT}
-            className="mx-auto border border-gray-200 dark:border-gray-700 rounded-lg"
-            onClick={(e) => {
+            className="mx-auto border border-gray-200 dark:border-gray-700 rounded-lg cursor-move"
+            onMouseDown={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
               const x = e.clientX - rect.left;
               const y = e.clientY - rect.top;
-              
-              // Determine which emoji is closer to the click
               const d1 = Math.hypot(x - firstPosition.x, y - firstPosition.y);
               const d2 = Math.hypot(x - secondPosition.x, y - secondPosition.y);
-              
-              if (d1 < d2) {
-                setFirstPosition({...firstPosition, x, y});
-              } else {
-                setSecondPosition({...secondPosition, x, y});
-              }
+              handleMouseDown(e, d1 < d2);
             }}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
           />
         </div>
 
