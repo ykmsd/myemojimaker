@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { SectionContainer } from './SectionContainer';
 import { WIDTH, HEIGHT } from '../constants';
-import { Move } from 'lucide-react';
+import { Move, Smile } from 'lucide-react';
+import EmojiPicker from 'emoji-picker-react';
 
 interface EmojiPosition {
   x: number;
@@ -19,6 +20,8 @@ export const EmojiCombiner: React.FC = () => {
     scale: 1,
     isDragging: false 
   });
+  const [showFirstPicker, setShowFirstPicker] = useState(false);
+  const [showSecondPicker, setShowSecondPicker] = useState(false);
   const [secondPosition, setSecondPosition] = useState<EmojiPosition>({ 
     x: 2*WIDTH/3, 
     y: HEIGHT/2, 
@@ -130,13 +133,26 @@ export const EmojiCombiner: React.FC = () => {
                 <Move className="inline w-4 h-4" /> Drag to position
               </span>
             </h3>
-            <input
-              type="text"
-              value={firstEmoji}
-              onChange={(e) => setFirstEmoji(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
-              maxLength={2}
-            />
+            <div className="relative">
+              <button
+                onClick={() => setShowFirstPicker(!showFirstPicker)}
+                className="w-full flex items-center justify-between px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                <span className="text-2xl">{firstEmoji}</span>
+                <Smile className="w-5 h-5 text-gray-500" />
+              </button>
+              {showFirstPicker && (
+                <div className="absolute z-10 mt-1">
+                  <EmojiPicker
+                    onEmojiClick={(emojiData) => {
+                      setFirstEmoji(emojiData.emoji);
+                      setShowFirstPicker(false);
+                    }}
+                    width={300}
+                  />
+                </div>
+              )}
+            </div>
             <div className="mt-4 space-y-2">
               <label className="block text-sm text-gray-600 dark:text-gray-400">Scale</label>
               <input
@@ -158,13 +174,26 @@ export const EmojiCombiner: React.FC = () => {
                 <Move className="inline w-4 h-4" /> Drag to position
               </span>
             </h3>
-            <input
-              type="text"
-              value={secondEmoji}
-              onChange={(e) => setSecondEmoji(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
-              maxLength={2}
-            />
+            <div className="relative">
+              <button
+                onClick={() => setShowSecondPicker(!showSecondPicker)}
+                className="w-full flex items-center justify-between px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                <span className="text-2xl">{secondEmoji}</span>
+                <Smile className="w-5 h-5 text-gray-500" />
+              </button>
+              {showSecondPicker && (
+                <div className="absolute z-10 mt-1">
+                  <EmojiPicker
+                    onEmojiClick={(emojiData) => {
+                      setSecondEmoji(emojiData.emoji);
+                      setShowSecondPicker(false);
+                    }}
+                    width={300}
+                  />
+                </div>
+              )}
+            </div>
             <div className="mt-4 space-y-2">
               <label className="block text-sm text-gray-600 dark:text-gray-400">Scale</label>
               <input
