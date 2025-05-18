@@ -29,7 +29,10 @@ function App() {
               />
               <MobileWarning />
               <ThemeToggle />
-              <PerformanceToggle />
+              {/* Position it below theme toggle with more space */}
+              <div style={{ position: 'fixed', top: '60px', right: '16px', zIndex: 50 }}>
+                <PerformanceToggle />
+              </div>
               <MenuBar />
               <main className="flex-grow">
                 <Routes>
