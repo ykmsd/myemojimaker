@@ -18,7 +18,7 @@ export const EmojiCombiner: React.FC = () => {
   const [firstPosition, setFirstPosition] = useState<EmojiPosition>({ 
     x: WIDTH/2, 
     y: HEIGHT - 40, 
-    scale: 1,
+    scale: 1.5,
     isDragging: false,
     zIndex: 1
   });
@@ -27,7 +27,7 @@ export const EmojiCombiner: React.FC = () => {
   const [secondPosition, setSecondPosition] = useState<EmojiPosition>({ 
     x: WIDTH/2, 
     y: HEIGHT/2, 
-    scale: 2,
+    scale: 3,
     isDragging: false,
     zIndex: 0
   });
@@ -63,7 +63,7 @@ export const EmojiCombiner: React.FC = () => {
       ctx.save();
       ctx.translate(position.x, position.y);
       ctx.scale(position.scale, position.scale);
-      ctx.font = '48px Arial';
+      ctx.font = '64px Arial';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(emoji, 0, 0);
@@ -167,8 +167,8 @@ export const EmojiCombiner: React.FC = () => {
               <label className="block text-sm text-gray-600 dark:text-gray-400">Scale</label>
               <input
                 type="range"
-                min="0.5"
-                max="2"
+                min="1"
+                max="3"
                 step="0.1"
                 value={firstPosition.scale}
                 onChange={(e) => setFirstPosition({...firstPosition, scale: parseFloat(e.target.value)})}
@@ -220,8 +220,8 @@ export const EmojiCombiner: React.FC = () => {
               <label className="block text-sm text-gray-600 dark:text-gray-400">Scale</label>
               <input
                 type="range"
-                min="0.5"
-                max="2"
+                min="1"
+                max="3"
                 step="0.1"
                 value={secondPosition.scale}
                 onChange={(e) => setSecondPosition({...secondPosition, scale: parseFloat(e.target.value)})}
