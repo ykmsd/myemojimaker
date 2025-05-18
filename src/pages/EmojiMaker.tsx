@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Section } from '../types';
 import { useAnimationSpeed } from '../hooks/useAnimationSpeed';
 import { Navigation } from '../components/Navigation';
@@ -13,11 +14,36 @@ import sampleImage from '../images/sample/pistache.png';
 export const EmojiMaker: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string>(sampleImage);
   const { speed, setSpeed, interval } = useAnimationSpeed();
-  const [activeSection, setActiveSection] = useState<Section>('image');
-
+  
+  // Add router hooks for query params
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Parse section from query params or default to 'image'
+  const getSectionFromUrl = (): Section => {
+    const params = new URLSearchParams(location.search);
+    const section = params.get('section');
+    if (section === 'text' || section === 'combine' || section === 'image') {
+      return section;
+    }
+    return 'image';
+  };
+  
+  const [activeSection, setActiveSection] = useState<Section>(getSectionFromUrl());
+  
+  // Update URL when section changes
   const handleSectionChange = useCallback((section: Section) => {
     setActiveSection(section);
-  }, []);
+    navigate(`/?section=${section}`, { replace: true });
+  }, [navigate]);
+  
+  // Listen for URL changes
+  useEffect(() => {
+    const section = getSectionFromUrl();
+    if (section !== activeSection) {
+      setActiveSection(section);
+    }
+  }, [location.search]);
 
   return (
     <>
