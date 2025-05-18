@@ -9,6 +9,7 @@ export interface EmojiPanelProps {
 }
 
 export type Section = 'image' | 'text';
+export type Section = 'image' | 'text' | 'combine';
 
 export interface NavigationProps {
   activeSection: Section;

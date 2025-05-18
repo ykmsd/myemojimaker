@@ -4,6 +4,7 @@ import { useAnimationSpeed } from '../hooks/useAnimationSpeed';
 import { Navigation } from '../components/Navigation';
 import { ImageEmojiSection } from '../components/ImageEmojiSection';
 import { TextEmojiSection } from '../components/TextEmojiSection';
+import { EmojiCombiner } from '../components/EmojiCombiner';
 import { Header } from '../components/Header';
 import { GifCreationExample } from '../components/GifCreationExample';
 import { SkipLink } from '../components/a11y/SkipLink';
@@ -40,6 +41,8 @@ export const EmojiMaker: React.FC = () => {
             />
           ) : (
             <TextEmojiSection interval={interval} />
+          ) : (
+            <EmojiCombiner />
           )}
         </main>
       </div>

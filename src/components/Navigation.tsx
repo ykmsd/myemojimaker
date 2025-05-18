@@ -5,6 +5,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeSection, onSection
   const sections: { id: Section; label: string }[] = [
     { id: 'image', label: 'Image Emoji' },
     { id: 'text', label: 'Text Emoji' },
+    { id: 'combine', label: 'Combine Emoji' },
   ];
 
   return (
