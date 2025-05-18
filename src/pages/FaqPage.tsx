@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Globe, Zap, Server, Heart } from 'lucide-react';
+import { Shield, Globe, Zap, Server, Heart, Cpu } from 'lucide-react';
 import { EmojiTips } from '../components/EmojiTips';
 
 interface FaqItem {
@@ -29,6 +29,11 @@ export const FaqPage: React.FC = () => {
       question: "Can I use this offline?",
       answer: "Once the page is loaded, all core functionality works offline! Since processing happens in your browser, you don't need an internet connection to create emojis.",
       icon: Globe
+    },
+    {
+      question: "My device is running slowly with this app. What can I do?",
+      answer: "Click the performance toggle button in the bottom right corner to switch to 'Low' quality mode. This reduces the number of animation frames and processing quality to improve performance on lower-end devices.",
+      icon: Cpu
     }
   ] as const;
 
