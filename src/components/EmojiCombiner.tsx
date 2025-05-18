@@ -18,7 +18,7 @@ export const EmojiCombiner: React.FC = () => {
   const [firstPosition, setFirstPosition] = useState<EmojiPosition>({ 
     x: WIDTH/2, 
     y: HEIGHT - 40, 
-    scale: 1.5,
+    scale: 1,
     isDragging: false,
     zIndex: 1
   });
@@ -27,7 +27,7 @@ export const EmojiCombiner: React.FC = () => {
   const [secondPosition, setSecondPosition] = useState<EmojiPosition>({ 
     x: WIDTH/2, 
     y: HEIGHT/2, 
-    scale: 3,
+    scale: 1.4,
     isDragging: false,
     zIndex: 0
   });
