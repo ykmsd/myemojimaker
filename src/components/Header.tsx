@@ -16,7 +16,7 @@ export const Header: React.FC = () => {
           Create Custom Emoji for Slack & Discord – Free Online Emoji Maker
         </h2>
         <p className="text-base text-gray-300 max-w-2xl mx-auto">
-          Create perfect emoji for Slack, Discord, and Teams in seconds! Upload images, remove backgrounds, add effects, and download your custom emoji. No signup required.
+          Create perfect emoji for Slack and Discord in seconds! Upload images, remove backgrounds, add effects, and download your custom emoji. No signup required.
         </p>
       </div>
     </div>
