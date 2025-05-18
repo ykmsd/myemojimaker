@@ -9,6 +9,7 @@ import { SectionContainer } from './SectionContainer';
 import { GifFilterUploader } from './GifFilterUploader';
 import { regenerateCustomGif } from '../utils/gif/regenerator';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
+import { Sparkles } from 'lucide-react';
 
 interface TextEmojiSectionProps {
   interval: number;
@@ -88,6 +89,12 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
               />
               <span className="absolute right-2 top-2 text-xs text-gray-400 dark:text-gray-500">
                 {text.length}/6
+              </span>
+            </div>
+            <div className="mt-2 flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <Sparkles className="w-4 h-4 text-purple-500 mr-1" />
+              <span>
+                <span className="font-medium text-purple-600 dark:text-purple-400">Pro Tip:</span> You can also use emoji characters like 👍 😊 🔥 to animate them!
               </span>
             </div>
           </div>
