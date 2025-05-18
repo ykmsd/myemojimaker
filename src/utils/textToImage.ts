@@ -40,8 +40,8 @@ export const textToImage = (
   ctx.textBaseline = 'middle';
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
-  ctx.font = `bold 48px "${fontFamily}"`;
-
+  ctx.font = `bold 64px "${fontFamily}"`; // Increased font size from 48px to 64px
+  
   // Measure text and calculate scale
   const metrics = ctx.measureText(text);
   const textWidth = metrics.width;
