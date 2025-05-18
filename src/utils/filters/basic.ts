@@ -11,6 +11,6 @@ export const saturateFilter = (ctx: CanvasRenderingContext2D, amount: number) =>
   ctx.filter = `saturate(${amount}%)`;
 };
 
-export const sepiaFilter = (ctx: CanvasRenderingContext2D, amount: number) => {
+const sepiaFilter = (ctx: CanvasRenderingContext2D, amount: number) => {
   ctx.filter = `sepia(${amount}%)`;
 };

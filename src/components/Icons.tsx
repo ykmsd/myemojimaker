@@ -4,7 +4,7 @@ interface IconProps {
   className?: string;
 }
 
-export const FlaskIcon: React.FC<IconProps> = ({ className }) => (
+const FlaskIcon: React.FC<IconProps> = ({ className }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 24 24" 
@@ -19,7 +19,7 @@ export const FlaskIcon: React.FC<IconProps> = ({ className }) => (
   </svg>
 );
 
-export const BeakerIcon: React.FC<IconProps> = ({ className }) => (
+const BeakerIcon: React.FC<IconProps> = ({ className }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 24 24" 
@@ -34,7 +34,7 @@ export const BeakerIcon: React.FC<IconProps> = ({ className }) => (
   </svg>
 );
 
-export const TestTubeIcon: React.FC<IconProps> = ({ className }) => (
+const TestTubeIcon: React.FC<IconProps> = ({ className }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 24 24" 
@@ -49,7 +49,7 @@ export const TestTubeIcon: React.FC<IconProps> = ({ className }) => (
   </svg>
 );
 
-export const MicroscopeIcon: React.FC<IconProps> = ({ className }) => (
+const MicroscopeIcon: React.FC<IconProps> = ({ className }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 24 24" 
