@@ -26,7 +26,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
   const [outlineColor, setOutlineColor] = useState('#FFFFFF');
   const [outlineWidth, setOutlineWidth] = useState(2);
-  const [fontSize, setFontSize] = useState(48); // Added font size state
   const [selectedFont, setSelectedFont] = useState(DEFAULT_FONT);
   const fontLoaded = useFont(selectedFont);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -42,8 +41,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
         selectedFont.value,
         isTransparent ? null : backgroundColor,
         outlineColor,
-        outlineWidth,
-        fontSize // Pass the font size to the textToImage function
+        outlineWidth
       );
       setPreviewUrl(imageUrl);
       // Regenerate custom GIF with new text image
@@ -61,7 +59,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
     isTransparent,
     outlineColor,
     outlineWidth,
-    fontSize, // Added font size to dependencies
     selectedFont,
     fontLoaded,
   ]);
@@ -104,23 +101,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
               selectedFont={selectedFont}
               onFontSelect={setSelectedFont}
               sampleText={text}
-            />
-          </div>
-
-          {/* Font Size */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-              Font Size: {fontSize}px
-            </label>
-            <input
-              type="range"
-              min="24"
-              max="72"
-              step="2"
-              value={fontSize}
-              onChange={(e) => setFontSize(parseInt(e.target.value))}
-              className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
-              aria-label="Select font size"
             />
           </div>
 

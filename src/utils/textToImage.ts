@@ -9,7 +9,6 @@ export const textToImage = (
   backgroundColor: string | null = null,
   outlineColor: string | null = null,
   outlineWidth: number = 2,
-  fontSize: number = 48, // Added fontSize parameter with default of 48
   width: number = 128,
   height: number = 128,
   padding: number = 20
@@ -41,8 +40,8 @@ export const textToImage = (
   ctx.textBaseline = 'middle';
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
-  ctx.font = `bold ${fontSize}px "${fontFamily}"`; // Now using the fontSize parameter
-  
+  ctx.font = `bold 48px "${fontFamily}"`;
+
   // Measure text and calculate scale
   const metrics = ctx.measureText(text);
   const textWidth = metrics.width;
