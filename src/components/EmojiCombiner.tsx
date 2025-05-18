@@ -263,13 +263,16 @@ export const EmojiCombiner: React.FC = () => {
           />
         </div>
 
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex flex-col items-center">
           <button
             onClick={handleDownload}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Download Combined Emoji
           </button>
+          <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 max-w-md text-center">
+            <span className="font-medium text-purple-600 dark:text-purple-400">Pro Tip:</span> Upload your downloaded emoji to the Image Emoji section to add animated effects and transformations!
+          </p>
         </div>
       </div>
     </SectionContainer>
