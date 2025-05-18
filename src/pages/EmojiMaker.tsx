@@ -39,7 +39,7 @@ export const EmojiMaker: React.FC = () => {
               selectedSpeed={speed}
               onSpeedChange={setSpeed}
             />
-          ) : (
+          ) : activeSection === 'text' ? (
             <TextEmojiSection interval={interval} />
           ) : (
             <EmojiCombiner />
