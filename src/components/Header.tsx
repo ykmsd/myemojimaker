@@ -13,10 +13,10 @@ export const Header: React.FC = () => {
           />
         </div>
         <h2 className="text-xl font-medium text-gray-200 mb-2 font-mono">
-          Your Emoji, Your Style – Unleash Creativity One Pixel at a Time!
+          Create Custom Emoji for Slack & Discord – Free Online Emoji Maker
         </h2>
         <p className="text-base text-gray-300 max-w-2xl mx-auto">
-          Turn Your Ideas into Unique Emoji Creations! Upload your favorite images, and we'll transform them into custom emoji with fun filters.
+          Create perfect emoji for Slack, Discord, and Teams in seconds! Upload images, remove backgrounds, add effects, and download your custom emoji. No signup required.
         </p>
       </div>
     </div>
