@@ -14,10 +14,10 @@ interface EmojiPosition {
 
 export const EmojiCombiner: React.FC = () => {
   const [firstEmoji, setFirstEmoji] = useState('🙏');
-  const [secondEmoji, setSecondEmoji] = useState('❤️');
+  const [secondEmoji, setSecondEmoji] = useState('🥹');
   const [firstPosition, setFirstPosition] = useState<EmojiPosition>({ 
-    x: WIDTH/3, 
-    y: HEIGHT/2, 
+    x: WIDTH/2, 
+    y: HEIGHT - 40, 
     scale: 1,
     isDragging: false,
     zIndex: 1
@@ -25,9 +25,9 @@ export const EmojiCombiner: React.FC = () => {
   const [showFirstPicker, setShowFirstPicker] = useState(false);
   const [showSecondPicker, setShowSecondPicker] = useState(false);
   const [secondPosition, setSecondPosition] = useState<EmojiPosition>({ 
-    x: 2*WIDTH/3, 
+    x: WIDTH/2, 
     y: HEIGHT/2, 
-    scale: 1,
+    scale: 2,
     isDragging: false,
     zIndex: 0
   });
