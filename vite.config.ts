@@ -34,7 +34,7 @@ export default defineConfig({
       },
       input: {
         main: resolve(__dirname, 'index.html'),
-        'gif.worker': resolve(__dirname, 'public/gif.worker.js'),
+        'gif.worker': resolve(__dirname, 'public', 'gif.worker.js'),
       },
     },
     target: 'esnext',
