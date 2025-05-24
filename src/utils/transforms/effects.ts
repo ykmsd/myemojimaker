@@ -20,12 +20,15 @@ import { createCuteHeartsEffect } from '../effects/hearts';
 export const effectTransforms = {
   [AnimatedEffectType.RAINBOW]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    // Use a smoother continuous animation based on frame index
-    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
+    
+    // Make a full and continuous cycle across all frames
+    // Use a precise cycle fraction to ensure the last frame aligns with the first
+    const cycleOffset = (i / FRAME_COUNT) * HEIGHT;
+    
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-    rainbowFilter(ctx, offset);
+    rainbowFilter(ctx, cycleOffset);
     contrastFilter(ctx, CONTRAST);
   },
 
@@ -44,45 +47,57 @@ export const effectTransforms = {
 
   [AnimatedEffectType.NEON]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    // Use a smoother continuous animation based on frame index
-    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
+    
+    // Make a full and continuous cycle across all frames
+    // Use a precise cycle fraction to ensure the last frame aligns with the first
+    const cycleOffset = (i / FRAME_COUNT) * HEIGHT;
+    
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-    neonFilter(ctx, offset);
+    neonFilter(ctx, cycleOffset);
     contrastFilter(ctx, CONTRAST);
   },
 
   [AnimatedEffectType.SYNTHWAVE]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    // Use a smoother continuous animation based on frame index
-    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
+    
+    // Make a full and continuous cycle across all frames
+    // Use a precise cycle fraction to ensure the last frame aligns with the first
+    const cycleOffset = (i / FRAME_COUNT) * HEIGHT;
+    
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-    synthwaveFilter(ctx, offset);
+    synthwaveFilter(ctx, cycleOffset);
     contrastFilter(ctx, CONTRAST);
   },
 
   [AnimatedEffectType.FIRE]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    // Use a smoother continuous animation based on frame index
-    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
+    
+    // Make a full and continuous cycle across all frames
+    // Use a precise cycle fraction to ensure the last frame aligns with the first
+    const cycleOffset = (i / FRAME_COUNT) * HEIGHT;
+    
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-    fireFilter(ctx, offset);
+    fireFilter(ctx, cycleOffset);
     contrastFilter(ctx, CONTRAST);
   },
 
   [AnimatedEffectType.FROZEN]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    // Use a smoother continuous animation based on frame index
-    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
+    
+    // Make a full and continuous cycle across all frames
+    // Use a precise cycle fraction to ensure the last frame aligns with the first
+    const cycleOffset = (i / FRAME_COUNT) * HEIGHT;
+    
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-    frozenFilter(ctx, offset);
+    frozenFilter(ctx, cycleOffset);
     contrastFilter(ctx, CONTRAST);
   },
 
