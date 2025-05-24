@@ -31,11 +31,7 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[hash].[ext]',
         chunkFileNames: 'assets/[name].[hash].js',
         entryFileNames: 'assets/[name].[hash].js'
-      },
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        'gif.worker': resolve(__dirname, 'public/gif.worker.js'),
-      },
+      }
     },
     target: 'esnext',
     minify: 'esbuild',

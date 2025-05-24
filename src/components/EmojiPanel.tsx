@@ -53,6 +53,9 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           )
         );
 
+        // Fix worker script path
+        const workerScript = '/gif.worker.js';
+
         const gif = new GIF({
           workers: 4,
           quality: 5,
@@ -61,7 +64,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           height: HEIGHT,
           transparent: 0x000000,
           background: null,
-          workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
+          workerScript: workerScript,
           dither: false,
           debug: false
         });
