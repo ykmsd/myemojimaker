@@ -1,3 +1,5 @@
+import { HEIGHT } from '../../constants';
+
 // Gradient-based filters
 export const rainbowFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   // Use a larger gradient space to ensure smooth looping
