@@ -4,7 +4,7 @@ import { LoadingSpinner } from './a11y/LoadingSpinner';
 import GIF from 'gif.js';
 import { AnimatedEffectType } from '../types/effects';
 import { transform } from '../utils/transform';
-import { BLANK_GIF, WIDTH, HEIGHT, FRAME_COUNT } from '../constants';
+import { BLANK_GIF, WIDTH, HEIGHT, FRAME_COUNT, PERFORMANCE_MODE_KEY, PERFORMANCE_SETTINGS } from '../constants';
 import { downloadUri } from '../utils/download';
 
 interface EmojiPanelProps {
@@ -25,24 +25,47 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
   const [gif, setGif] = useState(BLANK_GIF);
   const [loading, setLoading] = useState(false);
   const { handleKeyPress } = useA11y();
+  
+  // Get performance mode from localStorage
+  const isPerformanceMode = localStorage.getItem(PERFORMANCE_MODE_KEY) === 'true';
+  const settings = isPerformanceMode 
+    ? PERFORMANCE_SETTINGS.performance 
+    : PERFORMANCE_SETTINGS.standard;
 
   useEffect(() => {
     if (!img) return;
     
+    let isMounted = true;
     setGif(BLANK_GIF);
     setLoading(true);
     
-    (async () => {
-      const framesArray = [...Array(frameCount)].fill(null);
-      const imagePromises = framesArray.map(async (_, i) => {
-        return await transform(img, transformation, i);
-      });
-      
-      const images = await Promise.all(imagePromises);
-      
+    // Use a smaller timeout to avoid blocking the main thread
+    const timeoutId = setTimeout(async () => {
       try {
-        const loadedImages = await Promise.all(
-          images.map(
+        // Reduce frame count for performance mode
+        const actualFrameCount = isPerformanceMode ? Math.min(6, frameCount) : frameCount;
+        const framesArray = [...Array(actualFrameCount)].fill(null);
+        
+        // Process frames in batches to avoid blocking the main thread
+        const batchSize = 2;
+        const imagePromises = [];
+        
+        for (let i = 0; i < framesArray.length; i += batchSize) {
+          const batch = framesArray.slice(i, i + batchSize);
+          const batchPromises = batch.map((_, idx) => 
+            transform(img, transformation, i + idx)
+          );
+          
+          // Wait for each batch to complete
+          const batchResults = await Promise.all(batchPromises);
+          imagePromises.push(...batchResults);
+          
+          // Small delay to allow UI updates
+          await new Promise(r => setTimeout(r, 5));
+        }
+        
+        const images = await Promise.all(
+          imagePromises.map(
             (imageData) => 
               new Promise((resolve, reject) => {
                 const img = new Image();
@@ -53,20 +76,24 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           )
         );
 
+        if (!isMounted) return;
+
         const gif = new GIF({
-          workers: 4,
-          quality: 5,
+          workers: settings.workers,
+          quality: settings.quality,
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
           transparent: 0x000000,
           background: null,
           workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
-          dither: false,
+          dither: settings.dither,
           debug: false
         });
 
-        loadedImages.forEach(img => {
+        // Process frames in batches
+        for (let i = 0; i < images.length; i++) {
+          const img = images[i];
           const canvas = document.createElement('canvas');
           canvas.width = WIDTH;
           canvas.height = HEIGHT;
@@ -76,6 +103,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
             desynchronized: true,
             powerPreference: 'high-performance'
           });
+          
           if (ctx) {
             ctx.globalCompositeOperation = 'copy';
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -83,32 +111,52 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
             ctx.restore();
+            
             gif.addFrame(canvas, { 
               delay: interval * 1000, 
               transparent: true,
               disposal: 2
             });
           }
-        });
+          
+          // Small delay after each frame to allow UI updates
+          if (i % 2 === 0 && i > 0) {
+            await new Promise(r => setTimeout(r, 5));
+          }
+        }
         
         gif.on('finished', blob => {
-          const url = URL.createObjectURL(blob);
-          setGif(url);
-          setLoading(false);
+          if (isMounted) {
+            const url = URL.createObjectURL(blob);
+            setGif(url);
+            setLoading(false);
+          }
         });
         
         gif.on('error', error => {
           console.error('GIF generation error:', error);
-          setLoading(false);
+          if (isMounted) {
+            setLoading(false);
+          }
         });
         
         gif.render();
       } catch (error) {
         console.error('Error creating GIF:', error);
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
-    })();
-  }, [img, transformation, interval, frameCount]);
+    }, 50);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+      if (gif !== BLANK_GIF) {
+        URL.revokeObjectURL(gif);
+      }
+    };
+  }, [img, transformation, interval, frameCount, isPerformanceMode, settings]);
 
   const isClickable = gif !== BLANK_GIF;
 

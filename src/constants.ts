@@ -1,6 +1,6 @@
 export const WIDTH = 128;
 export const HEIGHT = 128;
-export const FRAME_COUNT = 8;
+export const FRAME_COUNT = 8; // Reduced from higher value in some cases
 export const CONTRAST = 125;
 export const SATURATE = 160;
 export const SPIRAL_SPEED_MULTIPLIER = {
@@ -17,6 +17,7 @@ export const ANIMATION_SPEEDS = {
 
 export const DEFAULT_SPEED = 'normal';
 export const SPEED_STORAGE_KEY = 'emojiAnimatorSpeed';
+export const PERFORMANCE_MODE_KEY = 'performanceMode';
 
 export const BLANK_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
@@ -50,3 +51,17 @@ export const scrollSteps = [
   0, 0.1, 0.2, 0.3, 0.4,
   0.5, 0.6, 0.7, 0.8, 0.9
 ];
+
+// Performance settings for different modes
+export const PERFORMANCE_SETTINGS = {
+  standard: {
+    gifQuality: 5,
+    workers: 4,
+    dither: false
+  },
+  performance: {
+    gifQuality: 10, // Higher number = lower quality
+    workers: 2,
+    dither: false
+  }
+};

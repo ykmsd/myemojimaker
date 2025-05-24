@@ -10,6 +10,7 @@ import { EmojiMaker } from './pages/EmojiMaker';
 import { ThemeToggle } from './components/ThemeToggle';
 import { MobileWarning } from './components/MobileWarning';
 import { Footer } from './components/Footer';
+import { PerformanceModeToggle } from './components/PerformanceModeToggle';
 import './styles/a11y.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             />
             <MobileWarning />
             <ThemeToggle />
+            <PerformanceModeToggle />
             <MenuBar />
             <main className="flex-grow">
               <Routes>

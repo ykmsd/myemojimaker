@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { generateStaticPng } from '../utils/staticEffects';
 import { downloadUri } from '../utils/download';
 import { BLANK_GIF } from '../constants';
@@ -12,6 +12,9 @@ interface StaticEmojiPanelProps {
   updateKey: number;
 }
 
+// Cache for static PNGs
+const staticPngCache = new Map<string, string>();
+
 const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
   img,
   transformation,
@@ -22,25 +25,60 @@ const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
 }) => {
   const [pngUrl, setPngUrl] = useState(BLANK_GIF);
   const [loading, setLoading] = useState(false);
+  const generationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!img) return;
 
+    // Clear previous timeout if it exists
+    if (generationTimeoutRef.current) {
+      clearTimeout(generationTimeoutRef.current);
+    }
+
+    // Generate cache key
+    const cacheKey = `${img.slice(0, 50)}-${transformation}-${primaryColor}-${strokeColor}-${updateKey}`;
+    
+    // Check if we have this in cache
+    if (staticPngCache.has(cacheKey)) {
+      setPngUrl(staticPngCache.get(cacheKey)!);
+      return;
+    }
+
     setLoading(true);
     setPngUrl(BLANK_GIF);
 
-    generateStaticPng(img, transformation, primaryColor, strokeColor)
-      .then((blob) => {
-        const url = URL.createObjectURL(blob);
-        setPngUrl(url);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error generating PNG:', error);
-        setLoading(false);
-      });
+    // Delay generation slightly to avoid blocking the main thread
+    generationTimeoutRef.current = setTimeout(() => {
+      generateStaticPng(img, transformation, primaryColor, strokeColor)
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          setPngUrl(url);
+          
+          // Cache the result (limit cache size)
+          if (staticPngCache.size > 50) {
+            const firstKey = staticPngCache.keys().next().value;
+            const oldUrl = staticPngCache.get(firstKey);
+            if (oldUrl && oldUrl !== BLANK_GIF) {
+              URL.revokeObjectURL(oldUrl);
+            }
+            staticPngCache.delete(firstKey);
+          }
+          staticPngCache.set(cacheKey, url);
+          
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error generating PNG:', error);
+          setLoading(false);
+        });
+    }, 50);
 
     return () => {
+      if (generationTimeoutRef.current) {
+        clearTimeout(generationTimeoutRef.current);
+      }
+      
+      // Don't revoke BLANK_GIF
       if (pngUrl !== BLANK_GIF) {
         URL.revokeObjectURL(pngUrl);
       }
