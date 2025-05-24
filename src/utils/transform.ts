@@ -1,5 +1,5 @@
 import { AnimatedEffectType as TransformationType } from '../types/effects';
-import { WIDTH, HEIGHT, FRAME_COUNT, PERFORMANCE_MODE_KEY } from '../constants';
+import { WIDTH, HEIGHT, FRAME_COUNT } from '../constants';
 import { transforms } from './transforms';
 
 // Cache transformed images to avoid redundant processing
@@ -31,8 +31,10 @@ export const transform = async (
         desynchronized: true,
       }) as CanvasRenderingContext2D;
 
-      // Optimize canvas rendering
-      ctx.imageSmoothingEnabled = false; // Disable anti-aliasing for better performance
+      // Enable better image smoothing
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
       ctx.clearRect(0, 0, WIDTH, HEIGHT);
       ctx.save();
       
@@ -42,9 +44,7 @@ export const transform = async (
       ctx.restore();
 
       // Get image data with appropriate quality settings
-      const isPerformanceMode = localStorage.getItem(PERFORMANCE_MODE_KEY) === 'true';
-      const quality = isPerformanceMode ? 0.8 : 0.95;
-      const result = canvas.toDataURL('image/png', quality);
+      const result = canvas.toDataURL('image/png', 0.95);
       
       // Cache the result (limit cache size)
       if (transformCache.size > 100) {

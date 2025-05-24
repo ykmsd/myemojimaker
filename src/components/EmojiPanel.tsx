@@ -4,7 +4,7 @@ import { LoadingSpinner } from './a11y/LoadingSpinner';
 import GIF from 'gif.js';
 import { AnimatedEffectType } from '../types/effects';
 import { transform } from '../utils/transform';
-import { BLANK_GIF, WIDTH, HEIGHT, FRAME_COUNT, PERFORMANCE_MODE_KEY, PERFORMANCE_SETTINGS } from '../constants';
+import { BLANK_GIF, WIDTH, HEIGHT, FRAME_COUNT } from '../constants';
 import { downloadUri } from '../utils/download';
 
 interface EmojiPanelProps {
@@ -25,12 +25,6 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
   const [gif, setGif] = useState(BLANK_GIF);
   const [loading, setLoading] = useState(false);
   const { handleKeyPress } = useA11y();
-  
-  // Get performance mode from localStorage
-  const isPerformanceMode = localStorage.getItem(PERFORMANCE_MODE_KEY) === 'true';
-  const settings = isPerformanceMode 
-    ? PERFORMANCE_SETTINGS.performance 
-    : PERFORMANCE_SETTINGS.standard;
 
   useEffect(() => {
     if (!img) return;
@@ -39,12 +33,10 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
     setGif(BLANK_GIF);
     setLoading(true);
     
-    // Use a smaller timeout to avoid blocking the main thread
+    // Use a small timeout to avoid blocking the main thread
     const timeoutId = setTimeout(async () => {
       try {
-        // Reduce frame count for performance mode
-        const actualFrameCount = isPerformanceMode ? Math.min(6, frameCount) : frameCount;
-        const framesArray = [...Array(actualFrameCount)].fill(null);
+        const framesArray = [...Array(frameCount)].fill(null);
         
         // Process frames in batches to avoid blocking the main thread
         const batchSize = 2;
@@ -79,15 +71,15 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
         if (!isMounted) return;
 
         const gif = new GIF({
-          workers: settings.workers,
-          quality: settings.quality,
+          workers: 4,
+          quality: 5,
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
           transparent: 0x000000,
           background: null,
           workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
-          dither: settings.dither,
+          dither: false,
           debug: false
         });
 
@@ -108,7 +100,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
             ctx.globalCompositeOperation = 'copy';
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
             ctx.save();
-            ctx.imageSmoothingEnabled = false;
+            ctx.imageSmoothingEnabled = true;
             ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
             ctx.restore();
             
@@ -156,7 +148,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
         URL.revokeObjectURL(gif);
       }
     };
-  }, [img, transformation, interval, frameCount, isPerformanceMode, settings]);
+  }, [img, transformation, interval, frameCount]);
 
   const isClickable = gif !== BLANK_GIF;
 
