@@ -46,7 +46,18 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
       setIsProcessing(true);
       toast.loading('Removing background...');
 
-      const blob = await removeBackground(currentImage);
+      // Create a new Image object and wait for it to load
+      const image = new Image();
+      image.crossOrigin = 'anonymous';
+      
+      await new Promise((resolve, reject) => {
+        image.onload = resolve;
+        image.onerror = reject;
+        image.src = currentImage;
+      });
+
+      // Use the loaded image for background removal
+      const blob = await removeBackground(image);
       const newImageUrl = URL.createObjectURL(blob);
       
       setCurrentImage(newImageUrl);
