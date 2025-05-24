@@ -20,22 +20,23 @@ export const transform = async (
         desynchronized: true,
       }) as CanvasRenderingContext2D;
 
-      // ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-      // ctx.fillRect(0, 0, WIDTH, HEIGHT);
-
-      // Enable better image smoothing
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-
+      // Clear the canvas with a fully transparent background
       ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      
+      // Save the context state before transformations
       ctx.save();
+      
+      // Apply the transformation
       const transformationFn = transforms[transformation];
       await transformationFn(ctx, img, i);
+      
+      // Restore the context state
       ctx.restore();
 
-      // Use higher quality PNG encoding
-      resolve(canvas.toDataURL('image/png', 0.95));
+      // Use PNG with alpha channel support for best quality
+      resolve(canvas.toDataURL('image/png', 1.0));
 
+      // Clean up DOM elements
       if (img.parentNode) img.parentNode.removeChild(img);
       canvas.remove();
     };

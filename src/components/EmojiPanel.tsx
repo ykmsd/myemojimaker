@@ -59,8 +59,9 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
-          // Use a very unlikely to appear color as transparent (bright magenta)
+          // Set transparent color to a very bright magenta that won't appear in any normal image
           transparent: 0xFF00FF,
+          // Set background to null to ensure transparency is preserved
           background: null,
           workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
           dither: false,
@@ -78,16 +79,31 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
             powerPreference: 'high-performance'
           });
           if (ctx) {
-            // Use 'source-over' instead of 'copy' to preserve transparency correctly
-            ctx.globalCompositeOperation = 'source-over';
+            // Fill with transparent pixels first
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            
+            // Draw the image using 'source-over' to preserve transparency
+            ctx.globalCompositeOperation = 'source-over';
             ctx.save();
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
             ctx.restore();
+            
+            // Important: Mark magenta pixels as transparent
+            // This is done by making a second pass and changing any magenta pixels
+            // to transparent before adding the frame to the GIF
+            const imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT);
+            const { data } = imageData;
+            for (let i = 0; i < data.length; i += 4) {
+              // If a pixel is exactly magenta (255, 0, 255), make it transparent
+              if (data[i] === 255 && data[i+1] === 0 && data[i+2] === 255) {
+                data[i+3] = 0; // Set alpha to 0
+              }
+            }
+            ctx.putImageData(imageData, 0, 0);
+            
             gif.addFrame(canvas, { 
               delay: interval * 1000, 
-              // Keep transparency handling but with magenta as transparent color
               transparent: true,
               disposal: 2
             });
