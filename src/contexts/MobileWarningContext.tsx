@@ -11,19 +11,8 @@ export function MobileWarningProvider({ children }: { children: React.ReactNode 
   const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
-    // More precise mobile detection
-    // 1. Check user agent for mobile devices
-    const mobileUserAgent = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    // 2. Check screen size - typically mobile devices have smaller screens
-    const isSmallScreen = window.innerWidth <= 768;
-    
-    // 3. Check if it's a touch-only device (has touch but no mouse)
-    const isTouchOnly = window.matchMedia('(pointer: coarse)').matches && 
-                        !window.matchMedia('(pointer: fine)').matches;
-    
-    // Only show warning if it's likely a true mobile device
-    const isMobile = mobileUserAgent && (isSmallScreen || isTouchOnly);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
     const hasSeenWarning = localStorage.getItem('hasSeenMobileWarning');
     
     if (isMobile && !hasSeenWarning) {

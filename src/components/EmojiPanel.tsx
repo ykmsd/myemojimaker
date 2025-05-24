@@ -61,7 +61,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           height: HEIGHT,
           transparent: 0x000000,
           background: null,
-          workerScript: '/gif.worker.js',
+          workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
           dither: false,
           debug: false
         });
