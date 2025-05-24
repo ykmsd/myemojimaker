@@ -59,7 +59,8 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
-          transparent: 0x000000,
+          // Use a very unlikely to appear color as transparent (bright magenta)
+          transparent: 0xFF00FF,
           background: null,
           workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
           dither: false,
@@ -77,7 +78,8 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
             powerPreference: 'high-performance'
           });
           if (ctx) {
-            ctx.globalCompositeOperation = 'copy';
+            // Use 'source-over' instead of 'copy' to preserve transparency correctly
+            ctx.globalCompositeOperation = 'source-over';
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
             ctx.save();
             ctx.imageSmoothingEnabled = false;
@@ -85,6 +87,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
             ctx.restore();
             gif.addFrame(canvas, { 
               delay: interval * 1000, 
+              // Keep transparency handling but with magenta as transparent color
               transparent: true,
               disposal: 2
             });
