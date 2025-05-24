@@ -1,4 +1,4 @@
-interface EmojiPanelProps {
+export interface EmojiPanelProps {
   img: string;
   transformation: keyof typeof TransformationType;
   name: string;
@@ -31,7 +31,7 @@ export interface FontOption {
   url: string;
 }
 
-enum TransformationType {
+export enum TransformationType {
   COLORS = 'colors',
   SPIN = 'spin',
   PARTY = 'party',
