@@ -34,6 +34,7 @@ export default defineConfig({
       },
       input: {
         main: resolve(__dirname, 'index.html'),
+        'gif.worker': resolve(__dirname, 'public', 'gif.worker.js'),
       },
     },
     target: 'esnext',
@@ -50,9 +51,6 @@ export default defineConfig({
   plugins: [
     react()
   ],
-  worker: {
-    format: 'es'
-  },
   optimizeDeps: {
     include: [
       'react', 
