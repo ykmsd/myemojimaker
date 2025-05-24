@@ -16,7 +16,7 @@ export const rainbowFilter = (ctx: CanvasRenderingContext2D, offset: number) => 
 
   ctx.save();
   ctx.globalCompositeOperation = "source-atop";
-  ctx.globalAlpha = 0.8;
+  ctx.globalAlpha = 0.8;  // Increased opacity for brighter effect
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.translate(0, -offset);
   ctx.fillStyle = gradient;
