@@ -1,7 +1,7 @@
 // Gradient-based filters
 export const rainbowFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   // Create a gradient that's much larger than needed to ensure smooth looping
-  const totalHeight = ctx.canvas.height * 5;
+  const totalHeight = ctx.canvas.height * 6; // Increased from 5x to 6x height
   const gradient = ctx.createLinearGradient(0, 0, 0, totalHeight);
   
   // Use many color stops with identical start/end colors for seamless looping
@@ -18,22 +18,23 @@ export const rainbowFilter = (ctx: CanvasRenderingContext2D, offset: number) => 
   ctx.globalAlpha = 0.8;  // Increased opacity for brighter effect
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   
-  // Calculate a continuous, seamless offset that wraps perfectly
+  // Use a continuous movement based on frame percentage
+  // This ensures the animation continues smoothly without any pauses
   const normalizedOffset = (offset / ctx.canvas.height) % 1;  
   const continuousOffset = normalizedOffset * totalHeight;
   
   ctx.translate(0, -continuousOffset);
   ctx.fillStyle = gradient;
   
-  // Fill a much larger area to ensure no visible edges
-  ctx.fillRect(0, 0, ctx.canvas.width, totalHeight + ctx.canvas.height);
+  // Fill a much larger area to ensure no visible edges or seams
+  ctx.fillRect(0, 0, ctx.canvas.width * 1.5, totalHeight + ctx.canvas.height * 2);
   
   ctx.restore();
 };
 
 export const neonFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   // Create a gradient that's much larger than needed to ensure smooth looping
-  const totalHeight = ctx.canvas.height * 5;
+  const totalHeight = ctx.canvas.height * 6; // Increased from 5x to 6x height
   const gradient = ctx.createLinearGradient(0, 0, 0, totalHeight);
   
   // Add more color stops with identical start/end colors for seamless looping
@@ -49,22 +50,22 @@ export const neonFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   ctx.globalAlpha = 0.7;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   
-  // Calculate a continuous, seamless offset that wraps perfectly
+  // Use a continuous movement based on frame percentage
   const normalizedOffset = (offset / ctx.canvas.height) % 1;  
   const continuousOffset = normalizedOffset * totalHeight;
   
   ctx.translate(0, -continuousOffset);
   ctx.fillStyle = gradient;
   
-  // Fill a much larger area to ensure no visible edges
-  ctx.fillRect(0, 0, ctx.canvas.width, totalHeight + ctx.canvas.height);
+  // Fill a much larger area to ensure no visible edges or seams
+  ctx.fillRect(0, 0, ctx.canvas.width * 1.5, totalHeight + ctx.canvas.height * 2);
   
   ctx.restore();
 };
 
 export const synthwaveFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   // Create a gradient that's much larger than needed to ensure smooth looping
-  const totalHeight = ctx.canvas.height * 5;
+  const totalHeight = ctx.canvas.height * 6; // Increased from 5x to 6x height
   const gradient = ctx.createLinearGradient(0, 0, 0, totalHeight);
   
   // Add more color stops with identical start/end colors for seamless looping
@@ -79,22 +80,22 @@ export const synthwaveFilter = (ctx: CanvasRenderingContext2D, offset: number) =
   ctx.globalAlpha = 0.5;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   
-  // Calculate a continuous, seamless offset that wraps perfectly
+  // Use a continuous movement based on frame percentage
   const normalizedOffset = (offset / ctx.canvas.height) % 1;  
   const continuousOffset = normalizedOffset * totalHeight;
   
   ctx.translate(0, -continuousOffset);
   ctx.fillStyle = gradient;
   
-  // Fill a much larger area to ensure no visible edges
-  ctx.fillRect(0, 0, ctx.canvas.width, totalHeight + ctx.canvas.height);
+  // Fill a much larger area to ensure no visible edges or seams
+  ctx.fillRect(0, 0, ctx.canvas.width * 1.5, totalHeight + ctx.canvas.height * 2);
   
   ctx.restore();
 };
 
 export const fireFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   // Create a gradient that's much larger than needed to ensure smooth looping
-  const totalHeight = ctx.canvas.height * 5;
+  const totalHeight = ctx.canvas.height * 6; // Increased from 5x to 6x height
   const gradient = ctx.createLinearGradient(0, 0, 0, totalHeight);
   
   // Add more color stops with identical start/end colors for seamless looping
@@ -109,22 +110,22 @@ export const fireFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   ctx.globalAlpha = 0.55;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   
-  // Calculate a continuous, seamless offset that wraps perfectly
+  // Use a continuous movement based on frame percentage
   const normalizedOffset = (offset / ctx.canvas.height) % 1;  
   const continuousOffset = normalizedOffset * totalHeight;
   
   ctx.translate(0, -continuousOffset);
   ctx.fillStyle = gradient;
   
-  // Fill a much larger area to ensure no visible edges
-  ctx.fillRect(0, 0, ctx.canvas.width, totalHeight + ctx.canvas.height);
+  // Fill a much larger area to ensure no visible edges or seams
+  ctx.fillRect(0, 0, ctx.canvas.width * 1.5, totalHeight + ctx.canvas.height * 2);
   
   ctx.restore();
 };
 
 export const frozenFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   // Create a gradient that's much larger than needed to ensure smooth looping
-  const totalHeight = ctx.canvas.height * 5;
+  const totalHeight = ctx.canvas.height * 6; // Increased from 5x to 6x height
   const gradient = ctx.createLinearGradient(0, 0, 0, totalHeight);
   
   // Add more color stops with identical start/end colors for seamless looping
@@ -139,15 +140,15 @@ export const frozenFilter = (ctx: CanvasRenderingContext2D, offset: number) => {
   ctx.globalAlpha = 0.7;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   
-  // Calculate a continuous, seamless offset that wraps perfectly
+  // Use a continuous movement based on frame percentage
   const normalizedOffset = (offset / ctx.canvas.height) % 1;  
   const continuousOffset = normalizedOffset * totalHeight;
   
   ctx.translate(0, -continuousOffset);
   ctx.fillStyle = gradient;
   
-  // Fill a much larger area to ensure no visible edges
-  ctx.fillRect(0, 0, ctx.canvas.width, totalHeight + ctx.canvas.height);
+  // Fill a much larger area to ensure no visible edges or seams
+  ctx.fillRect(0, 0, ctx.canvas.width * 1.5, totalHeight + ctx.canvas.height * 2);
   
   ctx.restore();
 };
