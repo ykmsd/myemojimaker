@@ -53,13 +53,18 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           )
         );
 
+        // Use a highly specific color that's unlikely to appear in images
+        // This specific magenta color (RGB: 255, 0, 219) won't be treated as transparent
+        // if it appears in the actual image content
+        const transparentColor = 0xFF00DB;
+
         const gif = new GIF({
           workers: 4,
           quality: 5,
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
-          transparent: 0x000000,
+          transparent: transparentColor,
           background: null,
           workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
           dither: false,
@@ -77,12 +82,15 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
             powerPreference: 'high-performance'
           });
           if (ctx) {
-            ctx.globalCompositeOperation = 'copy';
+            // Clear the canvas with transparent background (not with the transparent color)
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            
+            // Draw the image
             ctx.save();
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
             ctx.restore();
+            
             gif.addFrame(canvas, { 
               delay: interval * 1000, 
               transparent: true,
