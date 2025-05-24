@@ -1,5 +1,5 @@
 import { AnimatedEffectType } from '../../types/effects';
-import { WIDTH, HEIGHT, CONTRAST } from '../../constants';
+import { WIDTH, HEIGHT, CONTRAST, FRAME_COUNT } from '../../constants';
 import {
   contrastFilter,
   rainbowFilter,
@@ -20,7 +20,8 @@ import { createCuteHeartsEffect } from '../effects/hearts';
 export const effectTransforms = {
   [AnimatedEffectType.RAINBOW]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    const offset = ((10 - i) / 10) * HEIGHT * 2;
+    // Use a smoother continuous animation based on frame index
+    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
@@ -43,7 +44,8 @@ export const effectTransforms = {
 
   [AnimatedEffectType.NEON]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    const offset = ((10 - i) / 10) * HEIGHT * 2;
+    // Use a smoother continuous animation based on frame index
+    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
@@ -53,7 +55,8 @@ export const effectTransforms = {
 
   [AnimatedEffectType.SYNTHWAVE]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    const offset = ((10 - i) / 10) * HEIGHT * 2;
+    // Use a smoother continuous animation based on frame index
+    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
@@ -63,7 +66,8 @@ export const effectTransforms = {
 
   [AnimatedEffectType.FIRE]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    const offset = ((10 - i) / 10) * HEIGHT * 2;
+    // Use a smoother continuous animation based on frame index
+    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
@@ -73,7 +77,8 @@ export const effectTransforms = {
 
   [AnimatedEffectType.FROZEN]: (ctx, img, i) => {
     const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    const offset = ((10 - i) / 10) * HEIGHT * 2;
+    // Use a smoother continuous animation based on frame index
+    const offset = i * (HEIGHT * 2 / FRAME_COUNT);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.translate(WIDTH / 2, HEIGHT / 2);
     ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
