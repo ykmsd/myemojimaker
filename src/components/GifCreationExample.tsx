@@ -57,7 +57,7 @@ export const GifCreationExample: React.FC<GifCreationExampleProps> = ({
   }
 
   return (
-    <div className="flex items-center justify-center gap-4 mb-8 max-w-xl mx-auto">
+    <div className="flex items-center justify-center flex-wrap sm:flex-nowrap gap-2 sm:gap-4 mb-8 max-w-xl mx-auto">
       <div className="text-center">
         {activeSection === 'image' ? (
           <img
@@ -74,7 +74,7 @@ export const GifCreationExample: React.FC<GifCreationExampleProps> = ({
           {example.first.label}
         </p>
       </div>
-      <Plus className="w-4 h-4 text-purple-500" />
+      <Plus className="w-4 h-4 text-purple-500 my-2 sm:my-0" />
       <div className="text-center">
         <img
           src={example.second.src}
@@ -85,7 +85,7 @@ export const GifCreationExample: React.FC<GifCreationExampleProps> = ({
           {example.second.label}
         </p>
       </div>
-      <Equal className="w-4 h-4 text-purple-500" />
+      <Equal className="w-4 h-4 text-purple-500 my-2 sm:my-0" />
       <div className="text-center">
         <img
           src={example.result.src}

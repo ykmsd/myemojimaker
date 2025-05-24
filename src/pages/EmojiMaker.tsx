@@ -48,14 +48,16 @@ export const EmojiMaker: React.FC = () => {
   return (
     <>
       <SkipLink />
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-2 sm:px-4 py-4">
         <Header />
         <main id="main-content">
           <Navigation
             activeSection={activeSection}
             onSectionChange={handleSectionChange}
           />
-          <GifCreationExample activeSection={activeSection} />
+          {activeSection !== 'combine' && (
+            <GifCreationExample activeSection={activeSection} />
+          )}
 
           {activeSection === 'image' ? (
             <ImageEmojiSection
