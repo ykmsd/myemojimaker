@@ -4,12 +4,11 @@ import { textToImage } from '../utils/textToImage';
 import { FONTS } from '../constants/fonts';
 import { FontSelector } from './FontSelector';
 import { useFont } from '../hooks/useFont';
-import { useDebounce } from '../hooks/useDebounce';
 import { SectionContainer } from './SectionContainer';
 import { GifFilterUploader } from './GifFilterUploader';
 import { regenerateCustomGif } from '../utils/gif/regenerator';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
-import { Sparkles, AlertCircle } from 'lucide-react';
+import { Sparkles, AlertCircle, Wand2 } from 'lucide-react';
 
 interface TextEmojiSectionProps {
   interval: number;
@@ -30,7 +29,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [selectedFont, setSelectedFont] = useState(DEFAULT_FONT);
   const fontLoaded = useFont(selectedFont);
   const [previewUrl, setPreviewUrl] = useState('');
-  const debouncedText = useDebounce(text, 500);
   const [isGenerating, setIsGenerating] = useState(false);
   const [interfaceReady, setInterfaceReady] = useState(false);
 
@@ -41,13 +39,13 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
     }
   }, [fontLoaded, interfaceReady]);
 
-  useEffect(() => {
-    const generateImage = async () => {
-      if (!fontLoaded || !interfaceReady) return;
-      
-      setIsGenerating(true);
+  const handleGenerateEmoji = async () => {
+    if (!fontLoaded || !text) return;
+    
+    setIsGenerating(true);
+    try {
       const imageUrl = textToImage(
-        debouncedText,
+        text,
         textColor,
         selectedFont.value,
         isTransparent ? null : backgroundColor,
@@ -57,24 +55,17 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
       setPreviewUrl(imageUrl);
       // Regenerate custom GIF with new text image
       await regenerateCustomGif(undefined, imageUrl);
+    } catch (error) {
+      console.error('Error generating text image:', error);
+    } finally {
       setIsGenerating(false);
-    };
-
-    generateImage();
-  }, [
-    debouncedText,
-    textColor,
-    backgroundColor,
-    isTransparent,
-    outlineColor,
-    outlineWidth,
-    selectedFont,
-    fontLoaded,
-    interfaceReady,
-  ]);
+    }
+  };
 
   const handleGifSelect = (gifData: string) => {
-    regenerateCustomGif(gifData, previewUrl);
+    if (previewUrl) {
+      regenerateCustomGif(gifData, previewUrl);
+    }
   };
 
   if (!interfaceReady) {
@@ -201,23 +192,48 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
               </div>
             </div>
           </div>
+          
+          {/* Generate Button */}
+          <div className="mt-6">
+            <button
+              onClick={handleGenerateEmoji}
+              disabled={!fontLoaded || isGenerating}
+              className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-white 
+                ${!fontLoaded || isGenerating 
+                  ? 'bg-purple-400 cursor-not-allowed' 
+                  : 'bg-purple-600 hover:bg-purple-700 transition-colors'}`}
+            >
+              {isGenerating ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Generating...</span>
+                </div>
+              ) : (
+                <>
+                  <Wand2 className="w-5 h-5" />
+                  <span>Generate Emoji</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
       <GifFilterUploader onGifSelect={handleGifSelect} />
 
-      {fontLoaded ? (
-        isGenerating || !previewUrl ? (
-          <div className="flex justify-center items-center py-12">
-            <LoadingSpinner label="Generating text emoji..." />
-          </div>
-        ) : (
-          <EffectsGrid
-            img={previewUrl}
-            interval={interval}
-            showStatic={false}
-          />
-        )
+      {previewUrl ? (
+        <EffectsGrid
+          img={previewUrl}
+          interval={interval}
+          showStatic={false}
+        />
+      ) : fontLoaded ? (
+        <div className="flex flex-col justify-center items-center py-16 text-center">
+          <Wand2 className="w-12 h-12 text-purple-400 dark:text-purple-500 mb-4" />
+          <p className="text-gray-600 dark:text-gray-400 max-w-md">
+            Customize your text, then click the Generate Emoji button to create your emoji animations.
+          </p>
+        </div>
       ) : (
         <div className="flex justify-center items-center py-12">
           <LoadingSpinner label={`Loading font: ${selectedFont.label}...`} />
