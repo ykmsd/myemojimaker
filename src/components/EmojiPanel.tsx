@@ -77,17 +77,12 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
             powerPreference: 'high-performance'
           });
           if (ctx) {
-            // First, fill with a solid color that won't be in the image
-            // This ensures transparency works correctly
-            ctx.fillStyle = '#010101'; // Almost black but not exactly 0x000000
-            ctx.fillRect(0, 0, WIDTH, HEIGHT);
-            
-            // Then draw the image
+            ctx.globalCompositeOperation = 'copy';
+            ctx.clearRect(0, 0, WIDTH, HEIGHT);
             ctx.save();
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
             ctx.restore();
-            
             gif.addFrame(canvas, { 
               delay: interval * 1000, 
               transparent: true,
