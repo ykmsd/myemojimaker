@@ -67,5 +67,20 @@ export default defineConfig({
     headers: {
       'Cache-Control': 'public, max-age=31536000'
     }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    css: false,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/test/',
+        '**/*.d.ts',
+      ]
+    }
   }
 });
