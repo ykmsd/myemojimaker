@@ -9,7 +9,7 @@ import { SectionContainer } from './SectionContainer';
 import { GifFilterUploader } from './GifFilterUploader';
 import { regenerateCustomGif } from '../utils/gif/regenerator';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, AlertCircle } from 'lucide-react';
 
 interface TextEmojiSectionProps {
   interval: number;
@@ -32,9 +32,19 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [previewUrl, setPreviewUrl] = useState('');
   const debouncedText = useDebounce(text, 500);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [interfaceReady, setInterfaceReady] = useState(false);
+
+  useEffect(() => {
+    // Set interface ready when the initial font is loaded
+    if (fontLoaded && !interfaceReady) {
+      setInterfaceReady(true);
+    }
+  }, [fontLoaded, interfaceReady]);
 
   useEffect(() => {
     const generateImage = async () => {
+      if (!fontLoaded || !interfaceReady) return;
+      
       setIsGenerating(true);
       const imageUrl = textToImage(
         debouncedText,
@@ -50,9 +60,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
       setIsGenerating(false);
     };
 
-    if (fontLoaded) {
-      generateImage();
-    }
+    generateImage();
   }, [
     debouncedText,
     textColor,
@@ -62,11 +70,25 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
     outlineWidth,
     selectedFont,
     fontLoaded,
+    interfaceReady,
   ]);
 
   const handleGifSelect = (gifData: string) => {
     regenerateCustomGif(gifData, previewUrl);
   };
+
+  if (!interfaceReady) {
+    return (
+      <SectionContainer>
+        <div className="flex flex-col items-center justify-center py-16 space-y-4">
+          <LoadingSpinner label="Loading fonts..." />
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            Preparing text emoji generator...
+          </p>
+        </div>
+      </SectionContainer>
+    );
+  }
 
   return (
     <SectionContainer>
@@ -106,9 +128,19 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
             </label>
             <FontSelector
               selectedFont={selectedFont}
-              onFontSelect={setSelectedFont}
+              onFontSelect={(font) => {
+                setSelectedFont(font);
+                // Clear preview URL when changing font to avoid showing emoji with wrong font
+                setPreviewUrl('');
+              }}
               sampleText={text}
             />
+            {selectedFont && !fontLoaded && (
+              <div className="mt-2 flex items-center text-sm text-amber-600 dark:text-amber-400">
+                <AlertCircle className="w-4 h-4 mr-1" />
+                <span>Loading font: {selectedFont.label}...</span>
+              </div>
+            )}
           </div>
 
           {/* Color Controls */}
@@ -174,9 +206,8 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
 
       <GifFilterUploader onGifSelect={handleGifSelect} />
 
-      {fontLoaded &&
-        previewUrl &&
-        (isGenerating ? (
+      {fontLoaded ? (
+        isGenerating || !previewUrl ? (
           <div className="flex justify-center items-center py-12">
             <LoadingSpinner label="Generating text emoji..." />
           </div>
@@ -186,7 +217,12 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
             interval={interval}
             showStatic={false}
           />
-        ))}
+        )
+      ) : (
+        <div className="flex justify-center items-center py-12">
+          <LoadingSpinner label={`Loading font: ${selectedFont.label}...`} />
+        </div>
+      )}
     </SectionContainer>
   );
 };

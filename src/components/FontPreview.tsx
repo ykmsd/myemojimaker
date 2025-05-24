@@ -28,24 +28,36 @@ export const FontPreview: React.FC<FontPreviewProps> = ({
       style={{
         opacity: fontLoaded ? 1 : 0.5,
       }}
+      disabled={!fontLoaded}
+      aria-busy={!fontLoaded}
     >
-      <p
-        className={`text-lg mb-1 truncate ${
+      <div className="relative">
+        {!fontLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+        <p
+          className={`text-lg mb-1 truncate ${
+            isSelected 
+              ? 'text-white' 
+              : 'text-gray-900 dark:text-gray-100'
+          }`}
+          style={{ 
+            fontFamily: fontLoaded ? font.value : 'sans-serif',
+            visibility: fontLoaded ? 'visible' : 'hidden'
+          }}
+        >
+          {sampleText}
+        </p>
+        <p className={`text-xs truncate ${
           isSelected 
-            ? 'text-white' 
-            : 'text-gray-900 dark:text-gray-100'
-        }`}
-        style={{ fontFamily: font.value }}
-      >
-        {sampleText}
-      </p>
-      <p className={`text-xs truncate ${
-        isSelected 
-          ? 'text-gray-100' 
-          : 'text-gray-500 dark:text-gray-400'
-      }`}>
-        {font.label}
-      </p>
+            ? 'text-gray-100' 
+            : 'text-gray-500 dark:text-gray-400'
+        }`}>
+          {font.label}
+        </p>
+      </div>
     </button>
   );
 };
