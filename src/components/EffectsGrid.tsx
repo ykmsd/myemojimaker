@@ -6,7 +6,6 @@ import { ShowAllFiltersButton } from './ShowAllFiltersButton';
 import { getCustomGifFrames } from '../utils/gif/customFilter';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
 
-// Lazy load the heavy components
 const EmojiPanel = lazy(() => import('./EmojiPanel'));
 const StaticEmojiPanel = lazy(() => import('./StaticEmojiPanel'));
 
@@ -29,7 +28,6 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
 }) => {
   const { isFilterVisible, toggleFilter, showAllFilters, hiddenCount } = useFilterVisibility();
   const [hasCustomGif, setHasCustomGif] = useState(false);
-  const [visibleEffects, setVisibleEffects] = useState<string[]>([]);
 
   useEffect(() => {
     const checkCustomGif = () => {
@@ -38,11 +36,10 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
     };
 
     checkCustomGif();
-    const checkInterval = setInterval(checkCustomGif, 1000); // Reduced from 500ms to 1000ms
+    const checkInterval = setInterval(checkCustomGif, 500);
     return () => clearInterval(checkInterval);
   }, []);
 
-  // Get all animated effects that should be available
   const animatedEffects = Object.values(AnimatedEffectType).filter(effect => 
     effect !== AnimatedEffectType.CUSTOM_GIF || hasCustomGif
   );
@@ -65,22 +62,6 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
       effects: animatedEffects,
     }
   ];
-
-  // Implement a virtualized rendering approach - only render effects that are likely to be visible
-  useEffect(() => {
-    // Initially show only the first few effects
-    const initialVisible = effectSections.flatMap(section => 
-      section.effects.slice(0, 12)
-    );
-    setVisibleEffects(initialVisible);
-
-    // After a short delay, load the rest of the effects
-    const timer = setTimeout(() => {
-      setVisibleEffects(effectSections.flatMap(section => section.effects));
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [animatedEffects.length]);
 
   return (
     <div className="max-w-6xl mx-auto space-y-12">
@@ -106,9 +87,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-items-center">
             {effects.map((type) => {
               const isVisible = isFilterVisible(type);
-              const shouldRender = visibleEffects.includes(type);
-              
-              if (!isVisible || !shouldRender) return null;
+              if (!isVisible) return null;
 
               return (
                 <div key={type} className="relative">
