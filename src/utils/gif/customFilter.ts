@@ -38,4 +38,4 @@ export async function setCustomGifFilter(
 }
 
 export { getCustomGifFrames };
-;
+export { clearState as clearCustomGifFilter } from './state';

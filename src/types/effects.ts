@@ -69,7 +69,7 @@ export enum StaticEffectType {
 }
 
 // Types for static effect configuration
-interface StaticEffect {
+export interface StaticEffect {
   src: string;
   position?: {
     x?: number;

@@ -18,7 +18,7 @@ export function setCurrentImage(image: HTMLImageElement | null): void {
   currentImage = image;
 }
 
-function clearState(): void {
+export function clearState(): void {
   customGifFrames = null;
   currentImage = null;
 }
