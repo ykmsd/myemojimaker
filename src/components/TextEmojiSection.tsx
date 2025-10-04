@@ -33,7 +33,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [previewUrl, setPreviewUrl] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [interfaceReady, setInterfaceReady] = useState(false);
-  const [activeTab, setActiveTab] = useState<'animated' | 'static'>('animated');
+  const [activeTab, setActiveTab] = useState<'animated' | 'static'>('static');
 
   useEffect(() => {
     // Set interface ready when the initial font is loaded
@@ -85,16 +85,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
         {/* Tab Navigation */}
         <div className="flex gap-2 mb-6">
           <button
-            onClick={() => setActiveTab('animated')}
-            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
-              activeTab === 'animated'
-                ? 'bg-purple-600 text-white shadow-lg'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-            }`}
-          >
-            Animated Emoji
-          </button>
-          <button
             onClick={() => setActiveTab('static')}
             className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
               activeTab === 'static'
@@ -103,6 +93,16 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
             }`}
           >
             Static Emoji
+          </button>
+          <button
+            onClick={() => setActiveTab('animated')}
+            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'animated'
+                ? 'bg-purple-600 text-white shadow-lg'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+            }`}
+          >
+            Animated Emoji
           </button>
         </div>
 
