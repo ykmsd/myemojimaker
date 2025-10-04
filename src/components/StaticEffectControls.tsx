@@ -45,7 +45,7 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
     <div className="space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-            Static Effect Colors
+            Effect Colors
           </h3>
           <div className="grid grid-cols-2 gap-6">
             <ColorPicker
@@ -144,7 +144,7 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
 
         <div>
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-            Static Effect Position & Size
+            Effect Position & Size
           </h3>
           <div className="space-y-4">
             <div>
