@@ -67,8 +67,6 @@ async function createAnimatedOverlayEffect(
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-  ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
-
   const tempCanvas = document.createElement('canvas');
   tempCanvas.width = WIDTH;
   tempCanvas.height = HEIGHT;
@@ -82,6 +80,8 @@ async function createAnimatedOverlayEffect(
   const y = (HEIGHT - gifHeight) / 2;
 
   ctx.drawImage(tempCanvas, x, y, gifWidth, gifHeight);
+
+  ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
 }
 
 export const animatedOverlayTransforms = {
