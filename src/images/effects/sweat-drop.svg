@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <style>
+      .sweat-primary { fill: currentColor; }
+      .sweat-stroke { stroke: var(--stroke-color, #000); stroke-width: 2; }
+      .sweat-highlight { fill: white; opacity: 0.5; }
+    </style>
+  </defs>
+
+  <!-- Sweat drop -->
+  <g transform="translate(90, 20)">
+    <path class="sweat-primary sweat-stroke"
+          d="M 15 0 Q 20 8 20 15 Q 20 25 15 25 Q 10 25 10 15 Q 10 8 15 0 Z"/>
+    <ellipse class="sweat-highlight" cx="13" cy="12" rx="4" ry="5"/>
+  </g>
+</svg>

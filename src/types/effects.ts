@@ -65,7 +65,15 @@ export enum StaticEffectType {
   EFFECT_EXCLAMATION = 'exclamation',
   EFFECT_NANI = 'nani',
   EFFECT_QUESTION = 'question',
-  EFFECT_SPEED_LINES = 'speed-lines'
+  EFFECT_SPEED_LINES = 'speed-lines',
+
+  // Cute Effects
+  EFFECT_SPARKLES = 'sparkles',
+  EFFECT_BLUSH = 'blush',
+  EFFECT_SWEAT_DROP = 'sweat-drop',
+  EFFECT_MUSIC_NOTES = 'music-notes',
+  EFFECT_ZZZ = 'zzz',
+  EFFECT_STARS = 'stars'
 }
 
 // Types for static effect configuration

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <style>
+      .note-primary { fill: currentColor; }
+      .note-stroke { stroke: var(--stroke-color, #000); stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <!-- Music note 1 -->
+  <g transform="translate(85, 15)">
+    <ellipse class="note-primary note-stroke" cx="4" cy="20" rx="5" ry="4" transform="rotate(-20 4 20)"/>
+    <rect class="note-primary note-stroke" x="8" y="2" width="2" height="18" rx="1"/>
+    <path class="note-primary note-stroke" d="M 10 2 Q 18 0 20 6" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Music note 2 -->
+  <g transform="translate(15, 25)">
+    <ellipse class="note-primary note-stroke" cx="5" cy="16" rx="5" ry="4" transform="rotate(-20 5 16)"/>
+    <rect class="note-primary note-stroke" x="9" y="0" width="2" height="16" rx="1"/>
+  </g>
+
+  <!-- Music note 3 (eighth note) -->
+  <g transform="translate(10, 85)">
+    <ellipse class="note-primary note-stroke" cx="4" cy="18" rx="5" ry="4" transform="rotate(-20 4 18)"/>
+    <rect class="note-primary note-stroke" x="8" y="2" width="2" height="16" rx="1"/>
+    <ellipse class="note-primary note-stroke" cx="14" cy="16" rx="5" ry="4" transform="rotate(-20 14 16)"/>
+    <rect class="note-primary note-stroke" x="18" y="0" width="2" height="16" rx="1"/>
+    <line class="note-primary note-stroke" x1="10" y1="2" x2="20" y2="0" stroke-linecap="round"/>
+  </g>
+</svg>

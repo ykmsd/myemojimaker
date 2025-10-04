@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <style>
+      .sparkle-primary { fill: currentColor; }
+      .sparkle-stroke { stroke: var(--stroke-color, #000); stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Small sparkle top left -->
+  <g transform="translate(15, 10)">
+    <path class="sparkle-primary sparkle-stroke" d="M 6 0 L 7 5 L 12 6 L 7 7 L 6 12 L 5 7 L 0 6 L 5 5 Z"/>
+  </g>
+
+  <!-- Medium sparkle top right -->
+  <g transform="translate(95, 15)">
+    <path class="sparkle-primary sparkle-stroke" d="M 8 0 L 9 7 L 16 8 L 9 9 L 8 16 L 7 9 L 0 8 L 7 7 Z"/>
+  </g>
+
+  <!-- Large sparkle bottom left -->
+  <g transform="translate(10, 95)">
+    <path class="sparkle-primary sparkle-stroke" d="M 10 0 L 11 9 L 20 10 L 11 11 L 10 20 L 9 11 L 0 10 L 9 9 Z"/>
+  </g>
+
+  <!-- Small sparkle bottom right -->
+  <g transform="translate(100, 100)">
+    <path class="sparkle-primary sparkle-stroke" d="M 6 0 L 7 5 L 12 6 L 7 7 L 6 12 L 5 7 L 0 6 L 5 5 Z"/>
+  </g>
+
+  <!-- Tiny sparkle middle right -->
+  <g transform="translate(105, 55)">
+    <path class="sparkle-primary sparkle-stroke" d="M 4 0 L 4.5 3 L 8 4 L 4.5 5 L 4 8 L 3.5 5 L 0 4 L 3.5 3 Z"/>
+  </g>
+</svg>
