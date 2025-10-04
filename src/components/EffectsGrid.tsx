@@ -59,20 +59,6 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
     effect !== AnimatedEffectType.CUSTOM_GIF || hasCustomGif
   );
 
-  const effectSections = showStatic ? [
-    {
-      title: 'Manga Effects',
-      subtitle: 'Overlays & Text',
-      effects: Object.values(StaticEffectType),
-    },
-  ] : [
-    {
-      title: 'Animated Effects',
-      subtitle: 'Movement & Color',
-      effects: animatedEffects,
-    }
-  ];
-
   return (
     <div className="max-w-6xl mx-auto space-y-12">
       <div className="flex justify-end">
