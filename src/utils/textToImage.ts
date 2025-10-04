@@ -23,37 +23,25 @@ export const textToImage = (
   
   if (!ctx) return '';
   
-  // Calculate effective dimensions accounting for padding
-  const effectiveWidth = width - (padding * 2);
-  const effectiveHeight = height - (padding * 2);
-
   // Clear canvas
   // Fill with transparent background first
   ctx.fillStyle = 'rgba(0, 0, 0, 0)';
   ctx.fillRect(0, 0, width, height);
-  
+
   // Fill background if specified
   if (backgroundColor) {
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, width, height);
   }
-  
+
   // Set text properties
   ctx.textAlign = textAlign;
   ctx.textBaseline = textBaseline;
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
 
-  // Use dynamic font size
+  // Use dynamic font size - user has full control
   ctx.font = `bold ${fontSize}px "${fontFamily}"`;
-  
-  // Measure text and calculate scale
-  const metrics = ctx.measureText(text);
-  const textWidth = metrics.width;
-  
-  // Adjust scale calculation to allow larger text (use 0.8 as minimum scale)
-  // This ensures even when we need to scale down, it won't be too small
-  const scale = Math.min(1, effectiveWidth / textWidth);
   
   // Apply transformations based on alignment
   let xPos = width / 2;
@@ -72,7 +60,6 @@ export const textToImage = (
   }
 
   ctx.translate(xPos, yPos);
-  ctx.scale(scale, scale);
   
   // Add outline if specified
   if (outlineColor) {
