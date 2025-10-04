@@ -50,16 +50,16 @@ const colors = [
 
 const initConfetti = () => {
   if (confetti.length === 0) {
-    confetti = Array.from({ length: 200 }, (_, i) => ({
+    confetti = Array.from({ length: 150 }, () => ({
       x: Math.random() * WIDTH,
-      y: -HEIGHT * 3 + (i / 200) * HEIGHT * 3,
+      y: Math.random() * HEIGHT * -2,
       width: Math.random() * 10 + 6,
       height: Math.random() * 8 + 4,
       rotation: Math.random() * Math.PI * 2,
       rotationSpeed: (Math.random() - 0.5) * 0.4,
       color: colors[Math.floor(Math.random() * colors.length)],
-      speedY: Math.random() * 2 + 1,
-      speedX: (Math.random() - 0.5) * 3,
+      speedY: Math.random() * 4 + 3,
+      speedX: (Math.random() - 0.5) * 2,
     }));
   }
 };
@@ -80,9 +80,11 @@ export const createConfettiEffect = (
     piece.x += piece.speedX;
     piece.rotation += piece.rotationSpeed;
 
-    if (piece.y > HEIGHT + 10) {
-      piece.y = -10;
+    if (piece.y > HEIGHT + 20) {
+      piece.y = -20;
       piece.x = Math.random() * WIDTH;
+      piece.speedY = Math.random() * 4 + 3;
+      piece.speedX = (Math.random() - 0.5) * 2;
     }
   });
 
