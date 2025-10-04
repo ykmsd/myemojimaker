@@ -41,7 +41,6 @@ export const bounceTranslations = [
   [0, 0],
 ];
 
-export const twistAngles = generateSteps(-30, 30, true);
 export const jelloScales = [
   [1, 1],
   [1.25, 0.75],

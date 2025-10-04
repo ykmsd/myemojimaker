@@ -35,20 +35,6 @@ export const basicTransforms = {
     contrastFilter(ctx, CONTRAST);
   },
 
-  [AnimatedEffectType.TWIST]: (
-    ctx: CanvasRenderingContext2D,
-    img: HTMLImageElement,
-    i: number
-  ) => {
-    const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-    const angle = (animations.twistAngles[i] * Math.PI) / 180;
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    ctx.translate(WIDTH / 2, HEIGHT / 2);
-    ctx.rotate(angle);
-    ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-    contrastFilter(ctx, CONTRAST);
-  },
-
   [AnimatedEffectType.JELLO]: (
     ctx: CanvasRenderingContext2D,
     img: HTMLImageElement,
