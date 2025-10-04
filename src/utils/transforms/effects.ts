@@ -18,6 +18,7 @@ import { createRainbowRainEffect } from '../effects/rainbowRain';
 import { createCuteHeartsEffect } from '../effects/hearts';
 import { createConfettiEffect } from '../effects/confetti';
 import { createStarsEffect } from '../effects/stars';
+import { createMoneyRainEffect } from '../effects/money';
 
 export const effectTransforms = {
   [AnimatedEffectType.RAINBOW]: (ctx, img, i) => {
@@ -129,5 +130,9 @@ export const effectTransforms = {
 
   [AnimatedEffectType.STARS]: (ctx, img, i) => {
     createStarsEffect(ctx, img, i);
+  },
+
+  [AnimatedEffectType.MONEY_RAIN]: (ctx, img, i) => {
+    createMoneyRainEffect(ctx, img, i);
   }
 };
