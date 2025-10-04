@@ -61,7 +61,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
 
   const effectSections = showStatic ? [
     {
-      title: 'Static Effects',
+      title: 'Manga Effects',
       subtitle: 'Overlays & Text',
       effects: Object.values(StaticEffectType),
     },
@@ -107,7 +107,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
               return (
                 <div key={type} className="relative">
                   <Suspense fallback={<LoadingSpinner />}>
-                    {title === 'Static Effects' ? (
+                    {title === 'Manga Effects' ? (
                       <StaticEmojiPanel
                         img={img}
                         primaryColor={primaryColor}
