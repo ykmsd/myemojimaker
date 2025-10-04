@@ -25,9 +25,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
   const [outlineColor, setOutlineColor] = useState('#FFFFFF');
   const [outlineWidth, setOutlineWidth] = useState(2);
-  const [fontSize, setFontSize] = useState(90);
-  const [textAlign, setTextAlign] = useState<CanvasTextAlign>('center');
-  const [textBaseline, setTextBaseline] = useState<CanvasTextBaseline>('middle');
   const [selectedFont, setSelectedFont] = useState(DEFAULT_FONT);
   const fontLoaded = useFont(selectedFont);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -52,13 +49,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
         selectedFont.value,
         isTransparent ? null : backgroundColor,
         outlineColor,
-        outlineWidth,
-        128,
-        128,
-        20,
-        fontSize,
-        textAlign,
-        textBaseline
+        outlineWidth
       );
       setPreviewUrl(imageUrl);
       // Regenerate custom GIF with new text image
@@ -165,118 +156,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
                 className="w-full h-10 rounded-md cursor-pointer"
                 aria-label="Select outline color"
               />
-            </div>
-
-            {/* Outline Width */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                Outline Width: {outlineWidth}px
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="8"
-                step="1"
-                value={outlineWidth}
-                onChange={(e) => setOutlineWidth(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                aria-label="Select outline width"
-              />
-            </div>
-
-            {/* Font Size */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                Font Size: {fontSize}px
-              </label>
-              <input
-                type="range"
-                min="30"
-                max="150"
-                step="5"
-                value={fontSize}
-                onChange={(e) => setFontSize(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                aria-label="Select font size"
-              />
-            </div>
-
-            {/* Text Alignment */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                Horizontal Alignment
-              </label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setTextAlign('left')}
-                  className={`flex-1 px-4 py-2 rounded-md border transition-colors ${
-                    textAlign === 'left'
-                      ? 'bg-purple-600 text-white border-purple-600'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:border-purple-400'
-                  }`}
-                >
-                  Left
-                </button>
-                <button
-                  onClick={() => setTextAlign('center')}
-                  className={`flex-1 px-4 py-2 rounded-md border transition-colors ${
-                    textAlign === 'center'
-                      ? 'bg-purple-600 text-white border-purple-600'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:border-purple-400'
-                  }`}
-                >
-                  Center
-                </button>
-                <button
-                  onClick={() => setTextAlign('right')}
-                  className={`flex-1 px-4 py-2 rounded-md border transition-colors ${
-                    textAlign === 'right'
-                      ? 'bg-purple-600 text-white border-purple-600'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:border-purple-400'
-                  }`}
-                >
-                  Right
-                </button>
-              </div>
-            </div>
-
-            {/* Vertical Alignment */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                Vertical Alignment
-              </label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setTextBaseline('top')}
-                  className={`flex-1 px-4 py-2 rounded-md border transition-colors ${
-                    textBaseline === 'top'
-                      ? 'bg-purple-600 text-white border-purple-600'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:border-purple-400'
-                  }`}
-                >
-                  Top
-                </button>
-                <button
-                  onClick={() => setTextBaseline('middle')}
-                  className={`flex-1 px-4 py-2 rounded-md border transition-colors ${
-                    textBaseline === 'middle'
-                      ? 'bg-purple-600 text-white border-purple-600'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:border-purple-400'
-                  }`}
-                >
-                  Middle
-                </button>
-                <button
-                  onClick={() => setTextBaseline('bottom')}
-                  className={`flex-1 px-4 py-2 rounded-md border transition-colors ${
-                    textBaseline === 'bottom'
-                      ? 'bg-purple-600 text-white border-purple-600'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:border-purple-400'
-                  }`}
-                >
-                  Bottom
-                </button>
-              </div>
             </div>
 
             {/* Background Controls */}
