@@ -16,36 +16,22 @@ interface ConfettiPiece {
 let confetti: ConfettiPiece[] = [];
 
 const colors = [
-  '#ff0000',
-  '#ff1744',
-  '#ff4081',
-  '#e91e63',
-  '#9c27b0',
-  '#673ab7',
-  '#3f51b5',
-  '#2196f3',
-  '#03a9f4',
-  '#00bcd4',
-  '#00e5ff',
-  '#00ffff',
-  '#1de9b6',
-  '#00e676',
-  '#76ff03',
-  '#c6ff00',
-  '#ffea00',
-  '#ffc400',
-  '#ff9100',
-  '#ff6d00',
-  '#ff5722',
-  '#f50057',
-  '#d500f9',
-  '#651fff',
-  '#00e5ff',
-  '#ffd700',
-  '#ff1493',
-  '#00ff7f',
-  '#ff6347',
-  '#4169e1',
+  '#F44336', // Red 500
+  '#E91E63', // Pink 500
+  '#9C27B0', // Purple 500
+  '#673AB7', // Deep Purple 500
+  '#3F51B5', // Indigo 500
+  '#2196F3', // Blue 500
+  '#03A9F4', // Light Blue 500
+  '#00BCD4', // Cyan 500
+  '#009688', // Teal 500
+  '#4CAF50', // Green 500
+  '#8BC34A', // Light Green 500
+  '#CDDC39', // Lime 500
+  '#FFEB3B', // Yellow 500
+  '#FFC107', // Amber 500
+  '#FF9800', // Orange 500
+  '#FF5722', // Deep Orange 500
 ];
 
 const initConfetti = () => {
