@@ -6,7 +6,7 @@ export interface EmojiPanelProps {
   frameCount?: number;
 }
 
-export type Section = 'image' | 'text';
+export type Section = 'image' | 'text' | 'manga' | 'combine';
 
 export interface NavigationProps {
   activeSection: Section;

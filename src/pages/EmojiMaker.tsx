@@ -5,6 +5,7 @@ import { useAnimationSpeed } from '../hooks/useAnimationSpeed';
 import { Navigation } from '../components/Navigation';
 import { ImageEmojiSection } from '../components/ImageEmojiSection';
 import { TextEmojiSection } from '../components/TextEmojiSection';
+import { MangaEmojiSection } from '../components/MangaEmojiSection';
 import { EmojiCombiner } from '../components/EmojiCombiner';
 import { Header } from '../components/Header';
 import { GifCreationExample } from '../components/GifCreationExample';
@@ -23,7 +24,7 @@ export const EmojiMaker: React.FC = () => {
   const getSectionFromUrl = (): Section => {
     const params = new URLSearchParams(location.search);
     const section = params.get('section');
-    if (section === 'text' || section === 'combine' || section === 'image') {
+    if (section === 'text' || section === 'combine' || section === 'image' || section === 'manga') {
       return section;
     }
     return 'image';
@@ -69,6 +70,14 @@ export const EmojiMaker: React.FC = () => {
             />
           ) : activeSection === 'text' ? (
             <TextEmojiSection interval={interval} />
+          ) : activeSection === 'manga' ? (
+            <MangaEmojiSection
+              selectedImage={selectedImage}
+              onImageSelect={setSelectedImage}
+              interval={interval}
+              selectedSpeed={speed}
+              onSpeedChange={setSpeed}
+            />
           ) : (
             <EmojiCombiner />
           )}
