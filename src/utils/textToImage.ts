@@ -11,50 +11,74 @@ export const textToImage = (
   outlineWidth: number = 2,
   width: number = 128,
   height: number = 128,
-  padding: number = 20
+  padding: number = 20,
+  fontSize: number = 90,
+  textAlign: CanvasTextAlign = 'center',
+  textBaseline: CanvasTextBaseline = 'middle'
 ): string => {
+  // Create canvas at fixed size for animations
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  
+
   if (!ctx) return '';
-  
-  // Calculate effective dimensions accounting for padding
-  const effectiveWidth = width - (padding * 2);
-  const effectiveHeight = height - (padding * 2);
 
   // Clear canvas
-  // Fill with transparent background first
   ctx.fillStyle = 'rgba(0, 0, 0, 0)';
   ctx.fillRect(0, 0, width, height);
-  
+
   // Fill background if specified
   if (backgroundColor) {
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, width, height);
   }
-  
+
   // Set text properties
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
+  ctx.textAlign = textAlign;
+  ctx.textBaseline = textBaseline;
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
-  
-  // Much larger font size - start at 90px instead of 64px
-  ctx.font = `bold 90px "${fontFamily}"`;
-  
-  // Measure text and calculate scale
+
+  // Use dynamic font size
+  ctx.font = `bold ${fontSize}px "${fontFamily}"`;
+
+  // Measure text to check if it needs scaling
   const metrics = ctx.measureText(text);
   const textWidth = metrics.width;
-  
-  // Adjust scale calculation to allow larger text (use 0.8 as minimum scale)
-  // This ensures even when we need to scale down, it won't be too small
-  const scale = Math.min(1, effectiveWidth / textWidth);
-  
-  // Apply transformations
-  ctx.translate(width / 2, height / 2);
-  ctx.scale(scale, scale);
+  const textHeight = fontSize;
+
+  // Calculate available space
+  const availableWidth = width - padding * 2;
+  const availableHeight = height - padding * 2;
+
+  // Calculate scale if text is too large
+  const scaleX = textWidth > availableWidth ? availableWidth / textWidth : 1;
+  const scaleY = textHeight > availableHeight ? availableHeight / textHeight : 1;
+  const scale = Math.min(scaleX, scaleY);
+
+  // Apply transformations based on alignment
+  let xPos = width / 2;
+  let yPos = height / 2;
+
+  if (textAlign === 'left') {
+    xPos = padding;
+  } else if (textAlign === 'right') {
+    xPos = width - padding;
+  }
+
+  if (textBaseline === 'top') {
+    yPos = padding;
+  } else if (textBaseline === 'bottom') {
+    yPos = height - padding;
+  }
+
+  ctx.translate(xPos, yPos);
+
+  // Apply scale if needed
+  if (scale < 1) {
+    ctx.scale(scale, scale);
+  }
   
   // Add outline if specified
   if (outlineColor) {
