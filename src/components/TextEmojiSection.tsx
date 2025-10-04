@@ -32,6 +32,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [previewUrl, setPreviewUrl] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [interfaceReady, setInterfaceReady] = useState(false);
+  const [activeTab, setActiveTab] = useState<'animated' | 'static'>('animated');
 
   useEffect(() => {
     // Set interface ready when the initial font is loaded
@@ -231,28 +232,39 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
 
       {previewUrl ? (
         <>
-          <EffectsGrid
-            img={previewUrl}
-            interval={interval}
-            showStatic={false}
-            showUploadCard={true}
-          />
+          {/* Tab Navigation */}
+          <div className="flex gap-2 mb-6">
+            <button
+              onClick={() => setActiveTab('animated')}
+              className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+                activeTab === 'animated'
+                  ? 'bg-purple-600 text-white shadow-lg'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+            >
+              Animated Emoji
+            </button>
+            <button
+              onClick={() => setActiveTab('static')}
+              className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+                activeTab === 'static'
+                  ? 'bg-purple-600 text-white shadow-lg'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+            >
+              Static Emoji
+            </button>
+          </div>
 
-          {/* Static Emoji Section */}
-          <div className="mt-12">
-            <div className="flex items-center justify-center gap-2 mb-8">
-              <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent flex-grow" />
-              <div className="text-center px-4">
-                <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200 font-mono">
-                  Static Emoji
-                </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Download as PNG
-                </p>
-              </div>
-              <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent flex-grow" />
-            </div>
-
+          {/* Tab Content */}
+          {activeTab === 'animated' ? (
+            <EffectsGrid
+              img={previewUrl}
+              interval={interval}
+              showStatic={false}
+              showUploadCard={true}
+            />
+          ) : (
             <div className="flex justify-center">
               <StaticTextEmoji
                 text={text}
@@ -263,7 +275,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
                 fontFamily={selectedFont.value}
               />
             </div>
-          </div>
+          )}
         </>
       ) : fontLoaded ? (
         <div className="flex flex-col justify-center items-center py-16 text-center">
