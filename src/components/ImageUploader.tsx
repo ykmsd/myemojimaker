@@ -140,7 +140,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
           <Eraser className="w-4 h-4" />
           {isProcessing ? 'Processing...' : 'Remove Background'}
         </button>
-        <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 translate-y-full
+        <div className="absolute left-1/2 -translate-x-1/2 -top-2 -translate-y-full
           opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
           <div className="bg-gray-900 text-white text-sm px-3 py-1 rounded-lg whitespace-nowrap">
             {buttonTooltip}
