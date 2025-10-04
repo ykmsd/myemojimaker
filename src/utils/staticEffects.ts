@@ -7,7 +7,10 @@ export async function generateStaticPng(
   imageUrl: string,
   effectClass: string,
   primaryColor: string,
-  strokeColor: string
+  strokeColor: string,
+  overlayScale: number = 100,
+  overlayX: number = 0,
+  overlayY: number = 0
 ): Promise<Blob> {
   try {
     const image = await loadImage(imageUrl);
@@ -52,23 +55,31 @@ export async function generateStaticPng(
         }
 
         // Get overlay dimensions and position
-        let overlayWidth = effect.size?.width ?? WIDTH;
-        let overlayHeight = effect.size?.height ?? HEIGHT;
+        let baseWidth = effect.size?.width ?? WIDTH;
+        let baseHeight = effect.size?.height ?? HEIGHT;
 
         // If only width is specified, calculate height to maintain aspect ratio
         if (effect.size?.width && !effect.size?.height) {
           const aspectRatio = overlayImage.width / overlayImage.height;
-          overlayHeight = overlayWidth / aspectRatio;
+          baseHeight = baseWidth / aspectRatio;
         }
 
-        const overlayX = effect.position?.x ?? (WIDTH - overlayWidth) / 2;
-        const overlayY = effect.position?.y ?? (HEIGHT - overlayHeight) / 2;
+        // Apply scale
+        const scaleFactor = overlayScale / 100;
+        let overlayWidth = baseWidth * scaleFactor;
+        let overlayHeight = baseHeight * scaleFactor;
+
+        // Calculate position with custom offset
+        const baseX = effect.position?.x ?? (WIDTH - overlayWidth) / 2;
+        const baseY = effect.position?.y ?? (HEIGHT - overlayHeight) / 2;
+        const finalX = baseX + overlayX;
+        const finalY = baseY + overlayY;
 
         // Draw overlay
         ctx.drawImage(
           overlayImage,
-          overlayX,
-          overlayY,
+          finalX,
+          finalY,
           overlayWidth,
           overlayHeight
         );

@@ -18,6 +18,9 @@ interface EffectsGridProps extends React.PropsWithChildren {
   updateKey?: number;
   showStatic?: boolean;
   showUploadCard?: boolean;
+  overlayScale?: number;
+  overlayX?: number;
+  overlayY?: number;
 }
 
 export const EffectsGrid: React.FC<EffectsGridProps> = ({
@@ -27,7 +30,10 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
   strokeColor = '#000000',
   updateKey = 0,
   showStatic = true,
-  showUploadCard = false
+  showUploadCard = false,
+  overlayScale = 100,
+  overlayX = 0,
+  overlayY = 0
 }) => {
   const { isFilterVisible, toggleFilter, showAllFilters, hiddenCount } = useFilterVisibility();
   const [hasCustomGif, setHasCustomGif] = useState(false);
@@ -103,6 +109,9 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
                         updateKey={updateKey}
                         transformation={type}
                         name={type.toLowerCase()}
+                        overlayScale={overlayScale}
+                        overlayX={overlayX}
+                        overlayY={overlayY}
                       />
                     ) : (
                       <EmojiPanel

@@ -11,6 +11,12 @@ interface ControlsPanelProps {
   onImageSelect: (imageData: string) => void;
   selectedSpeed: AnimationSpeed;
   onSpeedChange: (speed: AnimationSpeed) => void;
+  overlayScale?: number;
+  onOverlayScaleChange?: (scale: number) => void;
+  overlayX?: number;
+  onOverlayXChange?: (x: number) => void;
+  overlayY?: number;
+  onOverlayYChange?: (y: number) => void;
 }
 
 export const ControlsPanel: React.FC<ControlsPanelProps> = ({
@@ -21,6 +27,12 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
   onImageSelect,
   selectedSpeed,
   onSpeedChange,
+  overlayScale,
+  onOverlayScaleChange,
+  overlayX,
+  onOverlayXChange,
+  overlayY,
+  onOverlayYChange,
 }) => {
   return (
     <div className="grid grid-cols-2 gap-6 mb-8">
@@ -38,6 +50,12 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
         onStrokeColorChange={onStrokeColorChange}
         selectedSpeed={selectedSpeed}
         onSpeedChange={onSpeedChange}
+        overlayScale={overlayScale}
+        onOverlayScaleChange={onOverlayScaleChange}
+        overlayX={overlayX}
+        onOverlayXChange={onOverlayXChange}
+        overlayY={overlayY}
+        onOverlayYChange={onOverlayYChange}
       />
     </div>
   );

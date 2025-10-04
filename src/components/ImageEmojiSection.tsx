@@ -21,6 +21,10 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
 }) => {
   const [primaryColor, setPrimaryColor] = useState('#FFFFFF');
   const [strokeColor, setStrokeColor] = useState('#000000');
+  const [overlayScale, setOverlayScale] = useState(100);
+  const [overlayX, setOverlayX] = useState(0);
+  const [overlayY, setOverlayY] = useState(0);
+  const [updateKey, setUpdateKey] = useState(0);
 
   return (
     <SectionContainer>
@@ -32,6 +36,21 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
         onImageSelect={onImageSelect}
         selectedSpeed={selectedSpeed}
         onSpeedChange={onSpeedChange}
+        overlayScale={overlayScale}
+        onOverlayScaleChange={(scale) => {
+          setOverlayScale(scale);
+          setUpdateKey(prev => prev + 1);
+        }}
+        overlayX={overlayX}
+        onOverlayXChange={(x) => {
+          setOverlayX(x);
+          setUpdateKey(prev => prev + 1);
+        }}
+        overlayY={overlayY}
+        onOverlayYChange={(y) => {
+          setOverlayY(y);
+          setUpdateKey(prev => prev + 1);
+        }}
       />
 
       <EffectsGrid
@@ -40,6 +59,10 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
         primaryColor={primaryColor}
         strokeColor={strokeColor}
         showUploadCard={true}
+        updateKey={updateKey}
+        overlayScale={overlayScale}
+        overlayX={overlayX}
+        overlayY={overlayY}
       />
     </SectionContainer>
   );
