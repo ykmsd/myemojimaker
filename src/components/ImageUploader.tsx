@@ -1,16 +1,18 @@
-import React, { useCallback } from 'react';
-import { ImagePlus, Eraser, Upload } from 'lucide-react';
+import React, { useCallback, useState } from 'react';
+import { ImagePlus, Eraser, Smile } from 'lucide-react';
 import { toast } from 'sonner';
 import { regenerateCustomGif } from '../utils/gif/regenerator';
 import { removeBackground } from '@imgly/background-removal';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 interface ImageUploaderProps {
   onImageSelect: (imageData: string) => void;
 }
 
 export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) => {
-  const [isProcessing, setIsProcessing] = React.useState(false);
-  const [currentImage, setCurrentImage] = React.useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleImageUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -21,10 +23,9 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
       const result = e.target?.result;
       if (typeof result === 'string') {
         setCurrentImage(result);
-        // Regenerate custom GIF with new image
         await regenerateCustomGif(undefined, result);
         onImageSelect(result);
-        
+
         toast.success('Image uploaded successfully!', {
           description: `${file.name} is ready to be transformed.`
         });
@@ -32,6 +33,32 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
     };
     reader.readAsDataURL(file);
   }, [onImageSelect]);
+
+  const handleEmojiSelect = async (emojiData: EmojiClickData) => {
+    setShowEmojiPicker(false);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+
+    if (ctx) {
+      ctx.clearRect(0, 0, 512, 512);
+      ctx.font = '400px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emojiData.emoji, 256, 256);
+
+      const imageUrl = canvas.toDataURL('image/png');
+      setCurrentImage(imageUrl);
+      await regenerateCustomGif(undefined, imageUrl);
+      onImageSelect(imageUrl);
+
+      toast.success('Emoji selected!', {
+        description: `${emojiData.emoji} is ready to be transformed.`
+      });
+    }
+  };
 
   const buttonTooltip = !currentImage 
     ? "Upload an image first to use background removal" 
@@ -75,6 +102,31 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
 
   return (
     <div className="w-full max-w-sm mx-auto space-y-4">
+      <div className="flex gap-2">
+        <button
+          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+        >
+          <Smile className="w-5 h-5" />
+          Select Emoji
+        </button>
+      </div>
+
+      {showEmojiPicker && (
+        <div className="flex justify-center">
+          <EmojiPicker onEmojiClick={handleEmojiSelect} width={300} height={400} />
+        </div>
+      )}
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">or</span>
+        </div>
+      </div>
+
       <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-purple-300 dark:border-purple-700 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group">
         <div className="flex flex-col items-center justify-center pt-5 pb-6">
           <ImagePlus className="w-10 h-10 mb-3 text-purple-400 dark:text-purple-500 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors" />
