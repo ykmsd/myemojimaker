@@ -11,10 +11,7 @@ export const textToImage = (
   outlineWidth: number = 2,
   width: number = 128,
   height: number = 128,
-  padding: number = 20,
-  fontSize: number = 90,
-  textAlign: CanvasTextAlign = 'center',
-  textBaseline: CanvasTextBaseline = 'middle'
+  padding: number = 20
 ): string => {
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -39,13 +36,13 @@ export const textToImage = (
   }
   
   // Set text properties
-  ctx.textAlign = textAlign;
-  ctx.textBaseline = textBaseline;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
-
-  // Use dynamic font size
-  ctx.font = `bold ${fontSize}px "${fontFamily}"`;
+  
+  // Much larger font size - start at 90px instead of 64px
+  ctx.font = `bold 90px "${fontFamily}"`;
   
   // Measure text and calculate scale
   const metrics = ctx.measureText(text);
@@ -55,23 +52,8 @@ export const textToImage = (
   // This ensures even when we need to scale down, it won't be too small
   const scale = Math.min(1, effectiveWidth / textWidth);
   
-  // Apply transformations based on alignment
-  let xPos = width / 2;
-  let yPos = height / 2;
-
-  if (textAlign === 'left') {
-    xPos = padding;
-  } else if (textAlign === 'right') {
-    xPos = width - padding;
-  }
-
-  if (textBaseline === 'top') {
-    yPos = padding;
-  } else if (textBaseline === 'bottom') {
-    yPos = height - padding;
-  }
-
-  ctx.translate(xPos, yPos);
+  // Apply transformations
+  ctx.translate(width / 2, height / 2);
   ctx.scale(scale, scale);
   
   // Add outline if specified
