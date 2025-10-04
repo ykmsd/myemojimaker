@@ -36,8 +36,6 @@ export enum AnimatedEffectType {
   STARS = 'stars',
   FIREWORKS = 'fireworks',
   EXPLODE = 'explode',
-  CONFUSED = 'confused',
-  SLEEPING = 'sleeping',
 
   // Color Effects
   RAINBOW = 'rainbow',

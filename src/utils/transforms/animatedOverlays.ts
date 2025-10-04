@@ -2,8 +2,6 @@ import { WIDTH, HEIGHT } from '../../constants';
 import { AnimatedEffectType } from '../../types/effects';
 import e1672Gif from '../../images/effects/e1672.gif?url';
 import e1676Gif from '../../images/effects/e1676.gif?url';
-import exclamationQuestionGif from '../../images/effects/exclamation-question-mark01-r.gif?url';
-import sleepGif from '../../images/effects/sleep01.gif?url';
 import { parseGIF, decompressFrames } from 'gifuct-js';
 
 interface GifFrameCache {
@@ -100,19 +98,5 @@ export const animatedOverlayTransforms = {
     frameIndex: number
   ) => {
     await createAnimatedOverlayEffect(e1676Gif, ctx, img, frameIndex);
-  },
-  [AnimatedEffectType.CONFUSED]: async (
-    ctx: CanvasRenderingContext2D,
-    img: HTMLImageElement,
-    frameIndex: number
-  ) => {
-    await createAnimatedOverlayEffect(exclamationQuestionGif, ctx, img, frameIndex);
-  },
-  [AnimatedEffectType.SLEEPING]: async (
-    ctx: CanvasRenderingContext2D,
-    img: HTMLImageElement,
-    frameIndex: number
-  ) => {
-    await createAnimatedOverlayEffect(sleepGif, ctx, img, frameIndex);
   },
 };
