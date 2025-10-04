@@ -71,13 +71,10 @@ export const createConfettiEffect = (
 ) => {
   initConfetti();
 
-  const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
-
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-  ctx.translate(WIDTH / 2, HEIGHT / 2);
-  ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-  ctx.translate(-WIDTH / 2, -HEIGHT / 2);
+  // Draw image stretched to full canvas like matrix effect
+  ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
 
   confetti.forEach((piece) => {
     piece.y += piece.speedY;
