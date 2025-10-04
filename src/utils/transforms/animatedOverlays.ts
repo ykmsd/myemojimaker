@@ -59,8 +59,7 @@ async function createAnimatedOverlayEffect(
   gifUrl: string,
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
-  frameIndex: number,
-  animate: boolean = false
+  frameIndex: number
 ) {
   const gifFrames = await loadGifFrames(gifUrl);
   const gifFrameIndex = frameIndex % gifFrames.frameCount;
@@ -77,24 +76,10 @@ async function createAnimatedOverlayEffect(
   const scale = 1.5;
   const gifWidth = WIDTH * scale;
   const gifHeight = HEIGHT * scale;
+  const x = (WIDTH - gifWidth) / 2;
+  const y = (HEIGHT - gifHeight) / 2;
 
-  if (animate) {
-    const totalFrames = 30;
-    const progress = (frameIndex % totalFrames) / totalFrames;
-    const xOffset = WIDTH * progress;
-
-    const x1 = xOffset;
-    const y = (HEIGHT - gifHeight) / 2;
-
-    ctx.drawImage(tempCanvas, x1, y, gifWidth, gifHeight);
-
-    const x2 = xOffset - WIDTH;
-    ctx.drawImage(tempCanvas, x2, y, gifWidth, gifHeight);
-  } else {
-    const x = (WIDTH - gifWidth) / 2;
-    const y = (HEIGHT - gifHeight) / 2;
-    ctx.drawImage(tempCanvas, x, y, gifWidth, gifHeight);
-  }
+  ctx.drawImage(tempCanvas, x, y, gifWidth, gifHeight);
 
   ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
 }
@@ -105,13 +90,13 @@ export const animatedOverlayTransforms = {
     img: HTMLImageElement,
     frameIndex: number
   ) => {
-    await createAnimatedOverlayEffect(e1672Gif, ctx, img, frameIndex, true);
+    await createAnimatedOverlayEffect(e1672Gif, ctx, img, frameIndex);
   },
   [AnimatedEffectType.EXPLODE]: async (
     ctx: CanvasRenderingContext2D,
     img: HTMLImageElement,
     frameIndex: number
   ) => {
-    await createAnimatedOverlayEffect(e1676Gif, ctx, img, frameIndex, true);
+    await createAnimatedOverlayEffect(e1676Gif, ctx, img, frameIndex);
   },
 };
