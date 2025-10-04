@@ -25,7 +25,7 @@ function calculateAnimatedPosition(
   animation: OverlayAnimationType,
   params: AnimationParams
 ): { x: number; y: number } {
-  const { frameIndex, totalFrames, overlayWidth, canvasWidth, baseX, baseY, instanceIndex, totalInstances } = params;
+  const { frameIndex, totalFrames, overlayWidth, overlayHeight, canvasWidth, canvasHeight, baseX, baseY, instanceIndex, totalInstances } = params;
   const progress = frameIndex / totalFrames;
   const phaseOffset = (instanceIndex / totalInstances);
 
@@ -34,17 +34,24 @@ function calculateAnimatedPosition(
       const startX = -overlayWidth;
       const endX = canvasWidth;
       const totalDistance = endX - startX;
-      const instanceSpacing = totalDistance / totalInstances;
       const adjustedProgress = (progress + phaseOffset) % 1;
       const x = startX + totalDistance * adjustedProgress;
-      return { x, y: baseY };
+
+      const verticalSpacing = canvasHeight / (totalInstances + 1);
+      const y = verticalSpacing * (instanceIndex + 1) - overlayHeight / 2;
+
+      return { x, y };
     }
 
     case 'float': {
       const angle = (progress + phaseOffset) * Math.PI * 2;
-      const floatRadius = 20;
-      const x = baseX + Math.sin(angle) * floatRadius;
-      const y = baseY + Math.cos(angle) * floatRadius * 0.5;
+      const radiusVariation = 20 + (instanceIndex * 15);
+
+      const horizontalSpacing = canvasWidth / (totalInstances + 1);
+      const centerX = horizontalSpacing * (instanceIndex + 1);
+
+      const x = centerX + Math.sin(angle) * radiusVariation;
+      const y = baseY + Math.cos(angle) * radiusVariation * 0.5;
       return { x, y };
     }
 
