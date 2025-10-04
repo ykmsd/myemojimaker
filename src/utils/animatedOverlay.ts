@@ -80,6 +80,8 @@ export async function generateAnimatedOverlayGif(
       width: WIDTH,
       height: HEIGHT,
       workerScript: '/gif.worker.js',
+      transparent: 0x000000,
+      background: null,
     });
 
     const ratio = Math.min(WIDTH / image.width, HEIGHT / image.height);
@@ -104,13 +106,21 @@ export async function generateAnimatedOverlayGif(
     const baseOverlayY = effect.position?.y ?? (HEIGHT - overlayHeight) / 2;
 
     for (let frameIndex = 0; frameIndex < FRAME_COUNT; frameIndex++) {
-      const { canvas, ctx } = createCanvas(WIDTH, HEIGHT);
+      const canvas = document.createElement('canvas');
+      canvas.width = WIDTH;
+      canvas.height = HEIGHT;
+      const ctx = canvas.getContext('2d', {
+        willReadFrequently: true,
+        alpha: true,
+      });
 
-      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      if (!ctx) continue;
 
       if (backgroundColor) {
         ctx.fillStyle = backgroundColor;
         ctx.fillRect(0, 0, WIDTH, HEIGHT);
+      } else {
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
       }
 
       ctx.drawImage(image, x, y, width, height);
@@ -151,7 +161,7 @@ export async function generateAnimatedOverlayGif(
 
       ctx.restore();
 
-      gif.addFrame(ctx, { copy: true, delay: FRAME_DELAY });
+      gif.addFrame(canvas, { copy: true, delay: FRAME_DELAY, transparent: true, disposal: 2 });
     }
 
     return new Promise((resolve, reject) => {
