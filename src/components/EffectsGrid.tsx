@@ -5,6 +5,7 @@ import { FilterToggle } from './FilterToggle';
 import { ShowAllFiltersButton } from './ShowAllFiltersButton';
 import { getCustomGifFrames } from '../utils/gif/customFilter';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
+import { GifUploadCard } from './GifUploadCard';
 
 const EmojiPanel = lazy(() => import('./EmojiPanel'));
 const StaticEmojiPanel = lazy(() => import('./StaticEmojiPanel'));
@@ -16,15 +17,17 @@ interface EffectsGridProps extends React.PropsWithChildren {
   strokeColor?: string;
   updateKey?: number;
   showStatic?: boolean;
+  showUploadCard?: boolean;
 }
 
-export const EffectsGrid: React.FC<EffectsGridProps> = ({ 
-  img, 
+export const EffectsGrid: React.FC<EffectsGridProps> = ({
+  img,
   interval,
   primaryColor = '#000000',
   strokeColor = '#000000',
   updateKey = 0,
-  showStatic = true 
+  showStatic = true,
+  showUploadCard = false
 }) => {
   const { isFilterVisible, toggleFilter, showAllFilters, hiddenCount } = useFilterVisibility();
   const [hasCustomGif, setHasCustomGif] = useState(false);
@@ -117,6 +120,10 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
                 </div>
               );
             })}
+
+            {title === 'Animated Effects' && showUploadCard && (
+              <GifUploadCard currentImage={img} />
+            )}
           </div>
         </div>
       ))}

@@ -1,10 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { EffectsGrid } from './EffectsGrid';
 import { ControlsPanel } from './ControlsPanel';
-import { setCustomGifFilter } from '../utils/gif/customFilter';
 import { SectionContainer } from './SectionContainer';
 import { AnimationSpeed } from '../types';
-import sampleImage from '../images/sample/pistache.png';
 
 interface ImageEmojiSectionProps {
   selectedImage: string;
@@ -24,17 +22,6 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
   const [primaryColor, setPrimaryColor] = useState('#FFFFFF');
   const [strokeColor, setStrokeColor] = useState('#000000');
 
-  const handleGifSelect = useCallback(
-    (gifData: string) => {
-      setCustomGifFilter(gifData);
-      // If no image is selected, use the sample image
-      if (!selectedImage) {
-        onImageSelect(sampleImage);
-      }
-    },
-    [selectedImage, onImageSelect]
-  );
-
   return (
     <SectionContainer>
       <ControlsPanel
@@ -42,7 +29,6 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
         onPrimaryColorChange={setPrimaryColor}
         strokeColor={strokeColor}
         onStrokeColorChange={setStrokeColor}
-        onGifSelect={handleGifSelect}
         onImageSelect={onImageSelect}
         selectedSpeed={selectedSpeed}
         onSpeedChange={onSpeedChange}
@@ -53,6 +39,7 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
         interval={interval}
         primaryColor={primaryColor}
         strokeColor={strokeColor}
+        showUploadCard={true}
       />
     </SectionContainer>
   );

@@ -5,7 +5,6 @@ import { FONTS } from '../constants/fonts';
 import { FontSelector } from './FontSelector';
 import { useFont } from '../hooks/useFont';
 import { SectionContainer } from './SectionContainer';
-import { GifFilterUploader } from './GifFilterUploader';
 import { regenerateCustomGif } from '../utils/gif/regenerator';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
 import { Sparkles, AlertCircle, Wand2 } from 'lucide-react';
@@ -62,11 +61,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
     }
   };
 
-  const handleGifSelect = (gifData: string) => {
-    if (previewUrl) {
-      regenerateCustomGif(gifData, previewUrl);
-    }
-  };
 
   if (!interfaceReady) {
     return (
@@ -219,13 +213,12 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
         </div>
       </div>
 
-      <GifFilterUploader onGifSelect={handleGifSelect} />
-
       {previewUrl ? (
         <EffectsGrid
           img={previewUrl}
           interval={interval}
           showStatic={false}
+          showUploadCard={true}
         />
       ) : fontLoaded ? (
         <div className="flex flex-col justify-center items-center py-16 text-center">
