@@ -61,13 +61,11 @@ export const createMoneyRainEffect = (
 
     const x = centerX + Math.cos(piece.angle) * piece.distance;
     const y = centerY + Math.sin(piece.angle) * piece.distance;
-    const opacity = Math.max(0.3, 1 - progress);
 
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(piece.rotation);
     ctx.scale(piece.scale, piece.scale);
-    ctx.globalAlpha = opacity;
 
     ctx.font = '32px Arial';
     ctx.fillText('💸', -16, 16);
