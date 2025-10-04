@@ -24,8 +24,8 @@ export const GifUploadCard: React.FC<GifUploadCardProps> = ({ currentImage }) =>
       const result = e.target?.result;
       if (typeof result === 'string') {
         await regenerateCustomGif(result, currentImage);
-        toast.success('GIF filter uploaded successfully!', {
-          description: `${file.name} is ready to be used as a filter.`
+        toast.success('GIF background uploaded successfully!', {
+          description: `${file.name} is ready to be used as a background.`
         });
       }
     };
@@ -80,7 +80,7 @@ export const GifUploadCard: React.FC<GifUploadCardProps> = ({ currentImage }) =>
       </div>
 
       <p className="mt-2 text-xs text-center text-gray-600 dark:text-gray-400 max-w-[120px]">
-        Upload GIF Filter
+        Upload GIF Background
       </p>
 
       <input
@@ -89,7 +89,7 @@ export const GifUploadCard: React.FC<GifUploadCardProps> = ({ currentImage }) =>
         accept="image/gif"
         onChange={handleFileChange}
         className="hidden"
-        aria-label="Upload custom GIF filter"
+        aria-label="Upload custom GIF background"
       />
     </div>
   );

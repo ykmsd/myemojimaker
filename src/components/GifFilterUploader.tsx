@@ -26,12 +26,12 @@ export const GifFilterUploader: React.FC<GifFilterUploaderProps> = ({
     reader.onload = async (e) => {
       const result = e.target?.result;
       if (typeof result === 'string') {
-        // Regenerate custom GIF with new filter
+        // Regenerate custom GIF with new background
         await regenerateCustomGif(result);
         onGifSelect(result);
-        
-        toast.success('GIF filter uploaded successfully!', {
-          description: `${file.name} is ready to be used as a filter.`
+
+        toast.success('GIF background uploaded successfully!', {
+          description: `${file.name} is ready to be used as a background.`
         });
       }
     };
@@ -44,10 +44,10 @@ export const GifFilterUploader: React.FC<GifFilterUploaderProps> = ({
         <div className="flex flex-col items-center justify-center pt-4 pb-4">
           <Upload className="w-8 h-8 mb-2 text-purple-400 dark:text-purple-500 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors" />
           <p className="text-sm text-gray-500 dark:text-gray-400 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors">
-            <span className="font-semibold">Upload a GIF filter</span>
+            <span className="font-semibold">Upload a GIF background</span>
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            This GIF will be used as a background filter
+            This GIF will be used as a background
           </p>
         </div>
         <input

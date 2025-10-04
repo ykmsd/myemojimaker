@@ -1,4 +1,4 @@
-// Manages the state of custom GIF filters and images
+// Manages the state of custom GIF backgrounds and images
 let customGifFrames: ImageData[] | null = null;
 let currentImage: HTMLImageElement | null = null;
 
