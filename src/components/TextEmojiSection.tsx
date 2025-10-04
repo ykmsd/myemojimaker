@@ -244,65 +244,78 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
             )}
           </div>
           
-          {/* Generate Button */}
-          <div className="mt-6">
-            <button
-              onClick={handleGenerateEmoji}
-              disabled={!fontLoaded || isGenerating}
-              className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-white 
-                ${!fontLoaded || isGenerating 
-                  ? 'bg-purple-400 cursor-not-allowed' 
-                  : 'bg-purple-600 hover:bg-purple-700 transition-colors'}`}
-            >
-              {isGenerating ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Generating...</span>
-                </div>
-              ) : (
-                <>
-                  <Wand2 className="w-5 h-5" />
-                  <span>Generate Emoji</span>
-                </>
-              )}
-            </button>
-          </div>
+          {/* Generate Button - Only for Animated Tab */}
+          {activeTab === 'animated' && (
+            <div className="mt-6">
+              <button
+                onClick={handleGenerateEmoji}
+                disabled={!fontLoaded || isGenerating}
+                className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-white
+                  ${!fontLoaded || isGenerating
+                    ? 'bg-purple-400 cursor-not-allowed'
+                    : 'bg-purple-600 hover:bg-purple-700 transition-colors'}`}
+              >
+                {isGenerating ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Generating...</span>
+                  </div>
+                ) : (
+                  <>
+                    <Wand2 className="w-5 h-5" />
+                    <span>Generate Animated Emoji</span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {previewUrl ? (
-        <>
-          {activeTab === 'animated' ? (
-            <EffectsGrid
-              img={previewUrl}
-              interval={interval}
-              showStatic={false}
-              showUploadCard={true}
-            />
-          ) : (
-            <div className="flex justify-center">
-              <StaticTextEmoji
-                text={text}
-                textColor={textColor}
-                backgroundColor={staticBackgroundColor}
-                outlineColor={hasOutline ? outlineColor : null}
-                outlineWidth={hasOutline ? outlineWidth : 0}
-                fontFamily={selectedFont.value}
-              />
-            </div>
-          )}
-        </>
-      ) : fontLoaded ? (
-        <div className="flex flex-col justify-center items-center py-16 text-center">
-          <Wand2 className="w-12 h-12 text-purple-400 dark:text-purple-500 mb-4" />
-          <p className="text-gray-600 dark:text-gray-400 max-w-md">
-            Customize your text, then click the Generate Emoji button to create your emoji animations.
-          </p>
-        </div>
+      {activeTab === 'animated' ? (
+        previewUrl ? (
+          <EffectsGrid
+            img={previewUrl}
+            interval={interval}
+            showStatic={false}
+            showUploadCard={true}
+          />
+        ) : fontLoaded ? (
+          <div className="flex flex-col justify-center items-center py-16 text-center">
+            <Wand2 className="w-12 h-12 text-purple-400 dark:text-purple-500 mb-4" />
+            <p className="text-gray-600 dark:text-gray-400 max-w-md">
+              Customize your text, then click the Generate Animated Emoji button to create your emoji animations.
+            </p>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center py-12">
+            <LoadingSpinner label={`Loading font: ${selectedFont.label}...`} />
+          </div>
+        )
       ) : (
-        <div className="flex justify-center items-center py-12">
-          <LoadingSpinner label={`Loading font: ${selectedFont.label}...`} />
-        </div>
+        fontLoaded && text ? (
+          <div className="flex justify-center">
+            <StaticTextEmoji
+              text={text}
+              textColor={textColor}
+              backgroundColor={staticBackgroundColor}
+              outlineColor={hasOutline ? outlineColor : null}
+              outlineWidth={hasOutline ? outlineWidth : 0}
+              fontFamily={selectedFont.value}
+            />
+          </div>
+        ) : fontLoaded ? (
+          <div className="flex flex-col justify-center items-center py-16 text-center">
+            <Wand2 className="w-12 h-12 text-purple-400 dark:text-purple-500 mb-4" />
+            <p className="text-gray-600 dark:text-gray-400 max-w-md">
+              Enter some text above to see your static emoji preview.
+            </p>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center py-12">
+            <LoadingSpinner label={`Loading font: ${selectedFont.label}...`} />
+          </div>
+        )
       )}
     </SectionContainer>
   );
