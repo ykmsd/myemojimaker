@@ -48,7 +48,7 @@ function calculateAnimatedPosition(
       const radiusVariation = 20 + (instanceIndex * 15);
 
       const horizontalSpacing = canvasWidth / (totalInstances + 1);
-      const centerX = horizontalSpacing * (instanceIndex + 1);
+      const centerX = horizontalSpacing * (instanceIndex + 1) - overlayWidth / 2;
 
       const x = centerX + Math.sin(angle) * radiusVariation;
       const y = baseY + Math.cos(angle) * radiusVariation * 0.5;
