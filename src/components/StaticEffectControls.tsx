@@ -168,9 +168,9 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
               </label>
               <input
                 type="range"
-                min="-200"
-                max="200"
-                step="10"
+                min="-50"
+                max="50"
+                step="5"
                 value={overlayX}
                 onChange={(e) => onOverlayXChange?.(Number(e.target.value))}
                 className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
@@ -183,9 +183,9 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
               </label>
               <input
                 type="range"
-                min="-200"
-                max="200"
-                step="10"
+                min="-50"
+                max="50"
+                step="5"
                 value={overlayY}
                 onChange={(e) => onOverlayYChange?.(Number(e.target.value))}
                 className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
