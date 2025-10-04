@@ -1,7 +1,7 @@
 import { WIDTH, HEIGHT } from '../../constants';
 import { AnimatedEffectType } from '../../types/effects';
 import e1672Gif from '../../images/effects/e1672.gif?url';
-import e1679Gif from '../../images/effects/e1679.gif?url';
+import e1676Gif from '../../images/effects/e1676.gif?url';
 import { parseGIF, decompressFrames } from 'gifuct-js';
 
 interface GifFrameCache {
@@ -97,6 +97,6 @@ export const animatedOverlayTransforms = {
     img: HTMLImageElement,
     frameIndex: number
   ) => {
-    await createAnimatedOverlayEffect(e1679Gif, ctx, img, frameIndex);
+    await createAnimatedOverlayEffect(e1676Gif, ctx, img, frameIndex);
   },
 };

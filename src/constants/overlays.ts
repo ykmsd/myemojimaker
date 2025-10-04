@@ -20,7 +20,7 @@ import speedLinesEffect from '../images/effects/straight-lines.svg?url';
 
 // Animated GIF overlays
 import e1672Effect from '../images/effects/e1672.gif?url';
-import e1679Effect from '../images/effects/e1679.gif?url';
+import e1676Effect from '../images/effects/e1676.gif?url';
 
 export const overlayMap = {
   dododo: {
@@ -123,7 +123,7 @@ export const overlayMap = {
     isAnimated: true,
   },
   'explode': {
-    src: e1679Effect,
+    src: e1676Effect,
     opacity: 1,
     isAnimated: true,
   },
