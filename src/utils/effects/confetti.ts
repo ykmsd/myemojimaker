@@ -74,9 +74,6 @@ export const createConfettiEffect = (
   const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  ctx.translate(WIDTH / 2, HEIGHT / 2);
-  ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-  ctx.translate(-WIDTH / 2, -HEIGHT / 2);
 
   confetti.forEach((piece) => {
     piece.y += piece.speedY;
@@ -87,7 +84,13 @@ export const createConfettiEffect = (
       piece.y = -10;
       piece.x = Math.random() * WIDTH;
     }
+  });
 
+  ctx.translate(WIDTH / 2, HEIGHT / 2);
+  ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
+  ctx.translate(-WIDTH / 2, -HEIGHT / 2);
+
+  confetti.forEach((piece) => {
     ctx.save();
     ctx.translate(piece.x, piece.y);
     ctx.rotate(piece.rotation);
