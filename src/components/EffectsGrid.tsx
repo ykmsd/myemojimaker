@@ -61,14 +61,14 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
 
   const effectSections = showStatic ? [
     {
-      title: 'Manga Effects',
-      subtitle: 'Overlays & Text',
+      title: '',
+      subtitle: '',
       effects: Object.values(StaticEffectType),
     },
   ] : [
     {
-      title: 'Animated Effects',
-      subtitle: 'Movement & Color',
+      title: '',
+      subtitle: '',
       effects: animatedEffects,
     }
   ];
@@ -79,20 +79,8 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
         <ShowAllFiltersButton onShowAll={showAllFilters} hiddenCount={hiddenCount} />
       </div>
 
-      {effectSections.map(({ title, subtitle, effects }) => (
-        <div key={title}>
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent flex-grow" />
-            <div className="text-center px-4">
-              <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200 font-mono">
-                {title}
-              </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {subtitle}
-              </p>
-            </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent flex-grow" />
-          </div>
+      {effectSections.map(({ title, subtitle, effects }, index) => (
+        <div key={index}>
 
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-items-center">
             {effects.map((type) => {
@@ -102,7 +90,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
               return (
                 <div key={type} className="relative">
                   <Suspense fallback={<LoadingSpinner />}>
-                    {title === 'Manga Effects' ? (
+                    {showStatic ? (
                       <StaticEmojiPanel
                         img={img}
                         primaryColor={primaryColor}
@@ -135,7 +123,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
               );
             })}
 
-            {title === 'Animated Effects' && showUploadCard && (
+            {!showStatic && showUploadCard && (
               <GifUploadCard currentImage={img} />
             )}
           </div>
