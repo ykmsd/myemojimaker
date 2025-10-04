@@ -66,7 +66,7 @@ export const GifUploadCard: React.FC<GifUploadCardProps> = ({ currentImage }) =>
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         className={`
-          w-28 h-28 rounded-lg border-2 border-dashed cursor-pointer
+          w-28 h-28 rounded-lg border border-dashed cursor-pointer
           flex flex-col items-center justify-center gap-2
           transition-all duration-200
           ${isDragging
