@@ -33,8 +33,6 @@ export const createStarsEffect = (
   const dims = calculateAspectRatioFit(img.width, img.height, WIDTH, HEIGHT);
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  ctx.fillStyle = 'rgba(10, 10, 30, 0.5)';
-  ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
   ctx.translate(WIDTH / 2, HEIGHT / 2);
   ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
