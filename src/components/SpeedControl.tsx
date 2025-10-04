@@ -1,25 +1,31 @@
 import React from 'react';
-import { Microscope } from 'lucide-react';
 import { AnimationSpeed, SpeedControlProps } from '../types';
 
 export const SpeedControl: React.FC<SpeedControlProps> = ({
   selectedSpeed,
   onSpeedChange,
 }) => {
+  const speeds = [
+    { value: AnimationSpeed.SLOW, label: 'Slow' },
+    { value: AnimationSpeed.NORMAL, label: 'Normal' },
+    { value: AnimationSpeed.FAST, label: 'Fast' },
+  ];
+
   return (
-    <div className="flex flex-col items-center gap-2 mb-8">
-      <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-md p-2 border border-purple-100 dark:border-purple-900">
-        <Microscope className="w-5 h-5 text-purple-600 dark:text-purple-400 mr-2" />
-        <select
-          value={selectedSpeed}
-          onChange={(e) => onSpeedChange(e.target.value as AnimationSpeed)}
-          className="bg-transparent text-gray-700 dark:text-gray-300 text-sm font-medium focus:outline-none cursor-pointer hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+    <div className="flex gap-2">
+      {speeds.map(({ value, label }) => (
+        <button
+          key={value}
+          onClick={() => onSpeedChange(value)}
+          className={`flex-1 px-4 py-2 rounded-lg font-medium transition-all ${
+            selectedSpeed === value
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+          }`}
         >
-          <option value={AnimationSpeed.SLOW}>Slow</option>
-          <option value={AnimationSpeed.NORMAL}>Normal</option>
-          <option value={AnimationSpeed.FAST}>Fast</option>
-        </select>
-      </div>
+          {label}
+        </button>
+      ))}
     </div>
   );
 };
