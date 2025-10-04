@@ -14,8 +14,8 @@ let moneyPieces: MoneyPiece[] = [];
 
 const initMoney = () => {
   if (moneyPieces.length === 0) {
-    moneyPieces = Array.from({ length: 50 }, (_, idx) => {
-      const progress = idx / 50;
+    moneyPieces = Array.from({ length: 20 }, (_, idx) => {
+      const progress = idx / 20;
       const totalDistance = HEIGHT + 40;
       const currentPosition = progress * totalDistance;
 
