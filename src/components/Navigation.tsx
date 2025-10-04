@@ -3,10 +3,10 @@ import { NavigationProps, Section } from '../types';
 
 export const Navigation: React.FC<NavigationProps> = ({ activeSection, onSectionChange }) => {
   const sections: { id: Section; label: string }[] = [
-    { id: 'image', label: 'Image Emoji' },
-    { id: 'manga', label: 'Manga Emoji' },
-    { id: 'text', label: 'Text Emoji' },
-    { id: 'combine', label: 'Combine Emoji' },
+    { id: 'image', label: 'Animate' },
+    { id: 'manga', label: 'Manga' },
+    { id: 'text', label: 'Text' },
+    { id: 'combine', label: 'Combine' },
   ];
 
   return (
@@ -20,9 +20,9 @@ export const Navigation: React.FC<NavigationProps> = ({ activeSection, onSection
               ${activeSection === id
                 ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white'
                 : 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
-              } ${id === 'combine' && window.innerWidth < 360 ? 'text-xs' : ''}`}
+              }`}
           >
-            {window.innerWidth < 360 && id === 'combine' ? 'Combine' : label}
+            {label}
           </button>
         ))}
       </div>
