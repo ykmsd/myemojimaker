@@ -36,9 +36,13 @@ export const createStarsEffect = (
   ctx.fillStyle = 'rgba(10, 10, 30, 0.5)';
   ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
+  ctx.translate(WIDTH / 2, HEIGHT / 2);
+  ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
+  ctx.translate(-WIDTH / 2, -HEIGHT / 2);
+
   stars.forEach((star) => {
     star.twinkle += star.twinkleSpeed;
-    const brightness = (Math.sin(star.twinkle) + 1) / 2;
+    const brightness = Math.max(0.3, (Math.sin(star.twinkle) + 1) / 2);
 
     const gradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 1.5);
     gradient.addColorStop(0, `rgba(255, 255, 255, ${brightness})`);
@@ -62,8 +66,4 @@ export const createStarsEffect = (
       ctx.stroke();
     }
   });
-
-  ctx.translate(WIDTH / 2, HEIGHT / 2);
-  ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-  ctx.translate(-WIDTH / 2, -HEIGHT / 2);
 };
