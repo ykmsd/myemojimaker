@@ -20,6 +20,8 @@ interface ControlsPanelProps {
   onOverlayYChange?: (y: number) => void;
   overlayAnimation?: OverlayAnimationType;
   onOverlayAnimationChange?: (animation: OverlayAnimationType) => void;
+  overlayCount?: number;
+  onOverlayCountChange?: (count: number) => void;
 }
 
 export const ControlsPanel: React.FC<ControlsPanelProps> = ({
@@ -38,6 +40,8 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
   onOverlayYChange,
   overlayAnimation,
   onOverlayAnimationChange,
+  overlayCount,
+  onOverlayCountChange,
 }) => {
   return (
     <div className="grid grid-cols-2 gap-6 mb-8">
@@ -63,6 +67,8 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
         onOverlayYChange={onOverlayYChange}
         overlayAnimation={overlayAnimation}
         onOverlayAnimationChange={onOverlayAnimationChange}
+        overlayCount={overlayCount}
+        onOverlayCountChange={onOverlayCountChange}
       />
     </div>
   );

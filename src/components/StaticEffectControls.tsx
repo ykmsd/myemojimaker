@@ -19,6 +19,8 @@ interface StaticEffectControlsProps {
   onOverlayYChange?: (y: number) => void;
   overlayAnimation?: OverlayAnimationType;
   onOverlayAnimationChange?: (animation: OverlayAnimationType) => void;
+  overlayCount?: number;
+  onOverlayCountChange?: (count: number) => void;
 }
 
 export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
@@ -36,6 +38,8 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
   onOverlayYChange,
   overlayAnimation = 'none',
   onOverlayAnimationChange,
+  overlayCount = 1,
+  onOverlayCountChange,
 }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -104,6 +108,29 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
               Float
             </button>
           </div>
+          {overlayAnimation !== 'none' && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Number of Overlays: {overlayCount}
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="5"
+                step="1"
+                value={overlayCount}
+                onChange={(e) => onOverlayCountChange?.(Number(e.target.value))}
+                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              />
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+              </div>
+            </div>
+          )}
         </div>
 
         <div>

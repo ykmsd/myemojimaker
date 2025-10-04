@@ -26,6 +26,7 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
   const [overlayX, setOverlayX] = useState(0);
   const [overlayY, setOverlayY] = useState(0);
   const [overlayAnimation, setOverlayAnimation] = useState<OverlayAnimationType>('none');
+  const [overlayCount, setOverlayCount] = useState(1);
   const [updateKey, setUpdateKey] = useState(0);
 
   return (
@@ -58,6 +59,11 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
           setOverlayAnimation(animation);
           setUpdateKey(prev => prev + 1);
         }}
+        overlayCount={overlayCount}
+        onOverlayCountChange={(count) => {
+          setOverlayCount(count);
+          setUpdateKey(prev => prev + 1);
+        }}
       />
 
       <EffectsGrid
@@ -71,6 +77,7 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
         overlayX={overlayX}
         overlayY={overlayY}
         overlayAnimation={overlayAnimation}
+        overlayCount={overlayCount}
       />
     </SectionContainer>
   );

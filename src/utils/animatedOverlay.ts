@@ -17,25 +17,31 @@ interface AnimationParams {
   canvasHeight: number;
   baseX: number;
   baseY: number;
+  instanceIndex: number;
+  totalInstances: number;
 }
 
 function calculateAnimatedPosition(
   animation: OverlayAnimationType,
   params: AnimationParams
 ): { x: number; y: number } {
-  const { frameIndex, totalFrames, overlayWidth, canvasWidth, baseX, baseY } = params;
+  const { frameIndex, totalFrames, overlayWidth, canvasWidth, baseX, baseY, instanceIndex, totalInstances } = params;
   const progress = frameIndex / totalFrames;
+  const phaseOffset = (instanceIndex / totalInstances);
 
   switch (animation) {
     case 'slide-right': {
       const startX = -overlayWidth;
       const endX = canvasWidth;
-      const x = startX + (endX - startX) * progress;
+      const totalDistance = endX - startX;
+      const instanceSpacing = totalDistance / totalInstances;
+      const adjustedProgress = (progress + phaseOffset) % 1;
+      const x = startX + totalDistance * adjustedProgress;
       return { x, y: baseY };
     }
 
     case 'float': {
-      const angle = progress * Math.PI * 2;
+      const angle = (progress + phaseOffset) * Math.PI * 2;
       const floatRadius = 20;
       const x = baseX + Math.sin(angle) * floatRadius;
       const y = baseY + Math.cos(angle) * floatRadius * 0.5;
@@ -56,6 +62,7 @@ export async function generateAnimatedOverlayGif(
   overlayX: number = 0,
   overlayY: number = 0,
   animation: OverlayAnimationType = 'none',
+  overlayCount: number = 1,
   backgroundColor?: string
 ): Promise<Blob> {
   try {
@@ -125,41 +132,45 @@ export async function generateAnimatedOverlayGif(
 
       ctx.drawImage(image, x, y, width, height);
 
-      ctx.save();
+      for (let instanceIndex = 0; instanceIndex < overlayCount; instanceIndex++) {
+        ctx.save();
 
-      if (effect.opacity) {
-        ctx.globalAlpha = effect.opacity;
+        if (effect.opacity) {
+          ctx.globalAlpha = effect.opacity;
+        }
+
+        if (effect.blendMode) {
+          ctx.globalCompositeOperation = effect.blendMode;
+        }
+
+        const animationParams: AnimationParams = {
+          frameIndex,
+          totalFrames: FRAME_COUNT,
+          overlayWidth,
+          overlayHeight,
+          canvasWidth: WIDTH,
+          canvasHeight: HEIGHT,
+          baseX: baseOverlayX + overlayX,
+          baseY: baseOverlayY + overlayY,
+          instanceIndex,
+          totalInstances: overlayCount,
+        };
+
+        const { x: finalX, y: finalY } = calculateAnimatedPosition(
+          animation,
+          animationParams
+        );
+
+        ctx.drawImage(
+          overlayImage,
+          finalX,
+          finalY,
+          overlayWidth,
+          overlayHeight
+        );
+
+        ctx.restore();
       }
-
-      if (effect.blendMode) {
-        ctx.globalCompositeOperation = effect.blendMode;
-      }
-
-      const animationParams: AnimationParams = {
-        frameIndex,
-        totalFrames: FRAME_COUNT,
-        overlayWidth,
-        overlayHeight,
-        canvasWidth: WIDTH,
-        canvasHeight: HEIGHT,
-        baseX: baseOverlayX + overlayX,
-        baseY: baseOverlayY + overlayY,
-      };
-
-      const { x: finalX, y: finalY } = calculateAnimatedPosition(
-        animation,
-        animationParams
-      );
-
-      ctx.drawImage(
-        overlayImage,
-        finalX,
-        finalY,
-        overlayWidth,
-        overlayHeight
-      );
-
-      ctx.restore();
 
       gif.addFrame(canvas, { copy: true, delay: FRAME_DELAY, transparent: true, disposal: 2 });
     }

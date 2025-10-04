@@ -22,6 +22,7 @@ interface EffectsGridProps extends React.PropsWithChildren {
   overlayX?: number;
   overlayY?: number;
   overlayAnimation?: OverlayAnimationType;
+  overlayCount?: number;
   backgroundColor?: string;
 }
 
@@ -37,6 +38,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
   overlayX = 0,
   overlayY = 0,
   overlayAnimation = 'none',
+  overlayCount = 1,
   backgroundColor
 }) => {
   const { isFilterVisible, toggleFilter, showAllFilters, hiddenCount } = useFilterVisibility();
@@ -117,6 +119,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
                         overlayX={overlayX}
                         overlayY={overlayY}
                         overlayAnimation={overlayAnimation}
+                        overlayCount={overlayCount}
                         backgroundColor={backgroundColor}
                       />
                     ) : (
