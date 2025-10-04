@@ -17,27 +17,49 @@ let confetti: ConfettiPiece[] = [];
 
 const colors = [
   '#ff0000',
-  '#00ff00',
-  '#0000ff',
-  '#ffff00',
-  '#ff00ff',
+  '#ff1744',
+  '#ff4081',
+  '#e91e63',
+  '#9c27b0',
+  '#673ab7',
+  '#3f51b5',
+  '#2196f3',
+  '#03a9f4',
+  '#00bcd4',
+  '#00e5ff',
   '#00ffff',
-  '#ff8800',
-  '#ff0088',
+  '#1de9b6',
+  '#00e676',
+  '#76ff03',
+  '#c6ff00',
+  '#ffea00',
+  '#ffc400',
+  '#ff9100',
+  '#ff6d00',
+  '#ff5722',
+  '#f50057',
+  '#d500f9',
+  '#651fff',
+  '#00e5ff',
+  '#ffd700',
+  '#ff1493',
+  '#00ff7f',
+  '#ff6347',
+  '#4169e1',
 ];
 
 const initConfetti = () => {
   if (confetti.length === 0) {
-    confetti = Array.from({ length: 60 }, () => ({
+    confetti = Array.from({ length: 200 }, () => ({
       x: Math.random() * WIDTH,
-      y: -Math.random() * HEIGHT,
-      width: Math.random() * 8 + 4,
-      height: Math.random() * 6 + 3,
+      y: -Math.random() * HEIGHT * 2,
+      width: Math.random() * 10 + 6,
+      height: Math.random() * 8 + 4,
       rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.3,
+      rotationSpeed: (Math.random() - 0.5) * 0.4,
       color: colors[Math.floor(Math.random() * colors.length)],
-      speedY: Math.random() * 2 + 1,
-      speedX: (Math.random() - 0.5) * 2,
+      speedY: Math.random() * 3 + 1.5,
+      speedX: (Math.random() - 0.5) * 3,
     }));
   }
 };
