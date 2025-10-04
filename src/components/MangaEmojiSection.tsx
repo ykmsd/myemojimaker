@@ -31,47 +31,51 @@ export const MangaEmojiSection: React.FC<MangaEmojiSectionProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto space-y-8">
-      <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-            Upload Image
-          </h3>
-          <ImageUploader onImageSelect={onImageSelect} />
-        </div>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-6">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+              Upload Image
+            </h3>
+            <ImageUploader onImageSelect={onImageSelect} />
+          </div>
 
-        <StaticEffectControls
-          primaryColor={primaryColor}
-          onPrimaryColorChange={setPrimaryColor}
-          strokeColor={strokeColor}
-          onStrokeColorChange={setStrokeColor}
-          selectedSpeed={selectedSpeed}
-          onSpeedChange={onSpeedChange}
-          overlayScale={overlayScale}
-          onOverlayScaleChange={(scale) => {
-            setOverlayScale(scale);
-            setUpdateKey(prev => prev + 1);
-          }}
-          overlayX={overlayX}
-          onOverlayXChange={(x) => {
-            setOverlayX(x);
-            setUpdateKey(prev => prev + 1);
-          }}
-          overlayY={overlayY}
-          onOverlayYChange={(y) => {
-            setOverlayY(y);
-            setUpdateKey(prev => prev + 1);
-          }}
-          overlayAnimation={overlayAnimation}
-          onOverlayAnimationChange={(animation) => {
-            setOverlayAnimation(animation);
-            setUpdateKey(prev => prev + 1);
-          }}
-          overlayCount={overlayCount}
-          onOverlayCountChange={(count) => {
-            setOverlayCount(count);
-            setUpdateKey(prev => prev + 1);
-          }}
-        />
+          <div>
+            <StaticEffectControls
+              primaryColor={primaryColor}
+              onPrimaryColorChange={setPrimaryColor}
+              strokeColor={strokeColor}
+              onStrokeColorChange={setStrokeColor}
+              selectedSpeed={selectedSpeed}
+              onSpeedChange={onSpeedChange}
+              overlayScale={overlayScale}
+              onOverlayScaleChange={(scale) => {
+                setOverlayScale(scale);
+                setUpdateKey(prev => prev + 1);
+              }}
+              overlayX={overlayX}
+              onOverlayXChange={(x) => {
+                setOverlayX(x);
+                setUpdateKey(prev => prev + 1);
+              }}
+              overlayY={overlayY}
+              onOverlayYChange={(y) => {
+                setOverlayY(y);
+                setUpdateKey(prev => prev + 1);
+              }}
+              overlayAnimation={overlayAnimation}
+              onOverlayAnimationChange={(animation) => {
+                setOverlayAnimation(animation);
+                setUpdateKey(prev => prev + 1);
+              }}
+              overlayCount={overlayCount}
+              onOverlayCountChange={(count) => {
+                setOverlayCount(count);
+                setUpdateKey(prev => prev + 1);
+              }}
+            />
+          </div>
+        </div>
       </div>
 
       <EffectsGrid

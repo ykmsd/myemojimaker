@@ -42,8 +42,7 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
   onOverlayCountChange,
 }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
             Static Effect Colors
@@ -194,7 +193,6 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 };
