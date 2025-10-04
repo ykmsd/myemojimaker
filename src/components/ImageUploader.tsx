@@ -118,6 +118,28 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
         />
       </label>
 
+      <div className="relative group">
+        <button
+          onClick={handleRemoveBackground}
+          disabled={isProcessing || !currentImage}
+          className={`w-full flex items-center justify-center gap-2 px-4 py-2
+            ${currentImage
+              ? 'bg-purple-600 hover:bg-purple-700'
+              : 'bg-gray-400 cursor-not-allowed'}
+            text-white rounded-lg transition-colors
+            ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          <Eraser className="w-4 h-4" />
+          {isProcessing ? 'Processing...' : 'Remove Background'}
+        </button>
+        <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 translate-y-full
+          opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          <div className="bg-gray-900 text-white text-sm px-3 py-1 rounded-lg whitespace-nowrap">
+            {buttonTooltip}
+          </div>
+        </div>
+      </div>
+
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
@@ -127,37 +149,13 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
         </div>
       </div>
 
-      <div className="flex gap-2">
-        <button
-          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
-        >
-          <Smile className="w-5 h-5" />
-          Select Emoji
-        </button>
-
-        <div className="relative group">
-          <button
-            onClick={handleRemoveBackground}
-            disabled={isProcessing || !currentImage}
-            className={`flex items-center justify-center gap-2 px-4 py-3
-              ${currentImage
-                ? 'bg-purple-600 hover:bg-purple-700'
-                : 'bg-gray-400 cursor-not-allowed'}
-              text-white rounded-lg transition-colors
-              ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            <Eraser className="w-4 h-4" />
-            {isProcessing ? 'Processing...' : 'Remove BG'}
-          </button>
-          <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 translate-y-full
-            opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-            <div className="bg-gray-900 text-white text-sm px-3 py-1 rounded-lg whitespace-nowrap">
-              {buttonTooltip}
-            </div>
-          </div>
-        </div>
-      </div>
+      <button
+        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+      >
+        <Smile className="w-5 h-5" />
+        Select Emoji
+      </button>
 
       {showEmojiPicker && (
         <div className="flex justify-center">
