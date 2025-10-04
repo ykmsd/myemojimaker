@@ -121,6 +121,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
                         overlayAnimation={overlayAnimation}
                         overlayCount={overlayCount}
                         backgroundColor={backgroundColor}
+                        animationSpeed={interval}
                       />
                     ) : (
                       <EmojiPanel

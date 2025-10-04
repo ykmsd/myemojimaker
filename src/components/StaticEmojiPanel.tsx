@@ -18,6 +18,7 @@ interface StaticEmojiPanelProps {
   overlayAnimation?: OverlayAnimationType;
   overlayCount?: number;
   backgroundColor?: string;
+  animationSpeed?: number;
 }
 
 const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
@@ -33,6 +34,7 @@ const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
   overlayAnimation = 'none',
   overlayCount = 1,
   backgroundColor,
+  animationSpeed = 0.1,
 }) => {
   const [pngUrl, setPngUrl] = useState(BLANK_GIF);
   const [loading, setLoading] = useState(false);
@@ -55,7 +57,8 @@ const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
           overlayY,
           overlayAnimation,
           overlayCount,
-          backgroundColor
+          backgroundColor,
+          animationSpeed
         )
       : generateStaticPng(
           img,
@@ -84,7 +87,7 @@ const StaticEmojiPanel: React.FC<StaticEmojiPanelProps> = ({
         URL.revokeObjectURL(pngUrl);
       }
     };
-  }, [img, transformation, primaryColor, strokeColor, updateKey, overlayScale, overlayX, overlayY, overlayAnimation, overlayCount, backgroundColor]);
+  }, [img, transformation, primaryColor, strokeColor, updateKey, overlayScale, overlayX, overlayY, overlayAnimation, overlayCount, backgroundColor, animationSpeed]);
 
   const isClickable = pngUrl !== BLANK_GIF;
 

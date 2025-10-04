@@ -6,7 +6,6 @@ import { OverlayAnimationType } from '../types/effects';
 import GIF from 'gif.js';
 
 const FRAME_COUNT = 30;
-const FRAME_DELAY = 50;
 
 interface AnimationParams {
   frameIndex: number;
@@ -82,7 +81,8 @@ export async function generateAnimatedOverlayGif(
   overlayY: number = 0,
   animation: OverlayAnimationType = 'none',
   overlayCount: number = 1,
-  backgroundColor?: string
+  backgroundColor?: string,
+  animationSpeed: number = 0.1
 ): Promise<Blob> {
   try {
     const image = await loadImage(imageUrl);
@@ -191,7 +191,8 @@ export async function generateAnimatedOverlayGif(
         ctx.restore();
       }
 
-      gif.addFrame(canvas, { copy: true, delay: FRAME_DELAY, transparent: true, disposal: 2 });
+      const frameDelay = animationSpeed * 1000;
+      gif.addFrame(canvas, { copy: true, delay: frameDelay, transparent: true, disposal: 2 });
     }
 
     return new Promise((resolve, reject) => {
