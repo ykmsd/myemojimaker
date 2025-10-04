@@ -13,7 +13,7 @@ let stars: Star[] = [];
 
 const initStars = () => {
   if (stars.length === 0) {
-    stars = Array.from({ length: 40 }, () => ({
+    stars = Array.from({ length: 25 }, () => ({
       x: Math.random() * WIDTH,
       y: Math.random() * HEIGHT,
       size: Math.random() * 4 + 3,
