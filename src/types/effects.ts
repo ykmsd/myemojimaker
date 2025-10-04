@@ -35,6 +35,8 @@ export enum AnimatedEffectType {
   CONFETTI = 'confetti',
   STARS = 'stars',
   MONEY_RAIN = 'money-rain',
+  EFFECT_E1672 = 'e1672',
+  EFFECT_E1679 = 'e1679',
 
   // Color Effects
   RAINBOW = 'rainbow',
@@ -83,4 +85,5 @@ export interface StaticEffect {
   };
   opacity?: number;
   blendMode?: GlobalCompositeOperation;
+  isAnimated?: boolean;
 }

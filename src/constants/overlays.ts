@@ -18,6 +18,10 @@ import naniEffect from '../images/effects/nani.svg?url';
 import questionEffect from '../images/effects/question-mark.svg?url';
 import speedLinesEffect from '../images/effects/straight-lines.svg?url';
 
+// Animated GIF overlays
+import e1672Effect from '../images/effects/e1672.gif?url';
+import e1679Effect from '../images/effects/e1679.gif?url';
+
 export const overlayMap = {
   dododo: {
     src: dododoText,
@@ -112,5 +116,15 @@ export const overlayMap = {
     src: speedLinesEffect,
     opacity: 0.7,
     blendMode: 'multiply',
+  },
+  'e1672': {
+    src: e1672Effect,
+    opacity: 1,
+    isAnimated: true,
+  },
+  'e1679': {
+    src: e1679Effect,
+    opacity: 1,
+    isAnimated: true,
   },
 } as const;
