@@ -36,8 +36,8 @@ const colors = [
 
 const initConfetti = () => {
   if (confetti.length === 0) {
-    confetti = Array.from({ length: 150 }, (_, idx) => {
-      const progress = idx / 150;
+    confetti = Array.from({ length: 80 }, (_, idx) => {
+      const progress = idx / 80;
       const totalDistance = HEIGHT + 40;
       const currentPosition = progress * totalDistance;
 
