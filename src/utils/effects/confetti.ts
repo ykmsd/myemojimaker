@@ -53,8 +53,8 @@ const initConfetti = () => {
     confetti = Array.from({ length: 150 }, () => ({
       x: Math.random() * WIDTH,
       y: Math.random() * HEIGHT * -2,
-      width: Math.random() * 10 + 6,
-      height: Math.random() * 8 + 4,
+      width: Math.random() * 6 + 3,
+      height: Math.random() * 4 + 2,
       rotation: Math.random() * Math.PI * 2,
       rotationSpeed: (Math.random() - 0.5) * 0.4,
       color: colors[Math.floor(Math.random() * colors.length)],
