@@ -117,12 +117,12 @@ export const overlayMap = {
     opacity: 0.7,
     blendMode: 'multiply',
   },
-  'e1672': {
+  'fireworks': {
     src: e1672Effect,
     opacity: 1,
     isAnimated: true,
   },
-  'e1679': {
+  'explode': {
     src: e1679Effect,
     opacity: 1,
     isAnimated: true,

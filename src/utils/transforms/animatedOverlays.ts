@@ -85,14 +85,14 @@ async function createAnimatedOverlayEffect(
 }
 
 export const animatedOverlayTransforms = {
-  [AnimatedEffectType.EFFECT_E1672]: async (
+  [AnimatedEffectType.FIREWORKS]: async (
     ctx: CanvasRenderingContext2D,
     img: HTMLImageElement,
     frameIndex: number
   ) => {
     await createAnimatedOverlayEffect(e1672Gif, ctx, img, frameIndex);
   },
-  [AnimatedEffectType.EFFECT_E1679]: async (
+  [AnimatedEffectType.EXPLODE]: async (
     ctx: CanvasRenderingContext2D,
     img: HTMLImageElement,
     frameIndex: number
