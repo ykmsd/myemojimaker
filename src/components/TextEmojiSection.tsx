@@ -81,6 +81,30 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   return (
     <SectionContainer>
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+        {/* Tab Navigation */}
+        <div className="flex gap-2 mb-6">
+          <button
+            onClick={() => setActiveTab('animated')}
+            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'animated'
+                ? 'bg-purple-600 text-white shadow-lg'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+            }`}
+          >
+            Animated Emoji
+          </button>
+          <button
+            onClick={() => setActiveTab('static')}
+            className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'static'
+                ? 'bg-purple-600 text-white shadow-lg'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+            }`}
+          >
+            Static Emoji
+          </button>
+        </div>
+
         <div className="space-y-4">
           {/* Text Input */}
           <div>
@@ -161,47 +185,48 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
               />
             </div>
 
-            {/* Background Controls */}
-            <div className="space-y-2">
-              <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-200">
-                <input
-                  type="checkbox"
-                  className="mr-2 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                  checked={isTransparent}
-                  onChange={(e) => setIsTransparent(e.target.checked)}
-                  aria-label="Toggle transparent background"
-                />
-                Transparent Background
-              </label>
+            {/* Background Controls - Conditional based on tab */}
+            {activeTab === 'animated' ? (
+              <div className="space-y-2">
+                <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                  <input
+                    type="checkbox"
+                    className="mr-2 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                    checked={isTransparent}
+                    onChange={(e) => setIsTransparent(e.target.checked)}
+                    aria-label="Toggle transparent background"
+                  />
+                  Transparent Background
+                </label>
 
-              <div className={isTransparent ? 'opacity-50' : ''}>
+                <div className={isTransparent ? 'opacity-50' : ''}>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                    Background Color
+                  </label>
+                  <input
+                    type="color"
+                    value={backgroundColor}
+                    onChange={(e) => setBackgroundColor(e.target.value)}
+                    className="w-full h-10 rounded-md cursor-pointer"
+                    disabled={isTransparent}
+                    aria-label="Select background color"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                  Background Color (for animated emojis)
+                  Background Color
                 </label>
                 <input
                   type="color"
-                  value={backgroundColor}
-                  onChange={(e) => setBackgroundColor(e.target.value)}
+                  value={staticBackgroundColor}
+                  onChange={(e) => setStaticBackgroundColor(e.target.value)}
                   className="w-full h-10 rounded-md cursor-pointer"
-                  disabled={isTransparent}
                   aria-label="Select background color"
                 />
               </div>
-            </div>
-
-            {/* Static Background Controls */}
-            <div className="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                Background Color (for static emojis)
-              </label>
-              <input
-                type="color"
-                value={staticBackgroundColor}
-                onChange={(e) => setStaticBackgroundColor(e.target.value)}
-                className="w-full h-10 rounded-md cursor-pointer"
-                aria-label="Select static background color"
-              />
-            </div>
+            )}
           </div>
           
           {/* Generate Button */}
@@ -232,31 +257,6 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
 
       {previewUrl ? (
         <>
-          {/* Tab Navigation */}
-          <div className="flex gap-2 mb-6">
-            <button
-              onClick={() => setActiveTab('animated')}
-              className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
-                activeTab === 'animated'
-                  ? 'bg-purple-600 text-white shadow-lg'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-              }`}
-            >
-              Animated Emoji
-            </button>
-            <button
-              onClick={() => setActiveTab('static')}
-              className={`flex-1 px-6 py-3 rounded-lg font-medium transition-colors ${
-                activeTab === 'static'
-                  ? 'bg-purple-600 text-white shadow-lg'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-              }`}
-            >
-              Static Emoji
-            </button>
-          </div>
-
-          {/* Tab Content */}
           {activeTab === 'animated' ? (
             <EffectsGrid
               img={previewUrl}
