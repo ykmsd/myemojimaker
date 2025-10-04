@@ -21,6 +21,8 @@ import speedLinesEffect from '../images/effects/straight-lines.svg?url';
 // Animated GIF overlays
 import e1672Effect from '../images/effects/e1672.gif?url';
 import e1676Effect from '../images/effects/e1676.gif?url';
+import exclamationQuestionEffect from '../images/effects/exclamation-question-mark01-r.gif?url';
+import sleepEffect from '../images/effects/sleep01.gif?url';
 
 export const overlayMap = {
   dododo: {
@@ -126,5 +128,19 @@ export const overlayMap = {
     src: e1676Effect,
     opacity: 1,
     isAnimated: true,
+  },
+  'confused': {
+    src: exclamationQuestionEffect,
+    opacity: 1,
+    isAnimated: true,
+    position: { x: 10, y: 10 },
+    size: { width: 60 },
+  },
+  'sleeping': {
+    src: sleepEffect,
+    opacity: 1,
+    isAnimated: true,
+    position: { x: 10, y: 10 },
+    size: { width: 50 },
   },
 } as const;
