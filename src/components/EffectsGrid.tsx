@@ -65,11 +65,6 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
       subtitle: 'Overlays & Text',
       effects: Object.values(StaticEffectType),
     },
-    {
-      title: 'Animated Effects',
-      subtitle: 'Movement & Color',
-      effects: animatedEffects,
-    },
   ] : [
     {
       title: 'Animated Effects',
