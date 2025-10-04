@@ -55,6 +55,25 @@ function calculateAnimatedPosition(
       return { x, y };
     }
 
+    case 'intense': {
+      const speed = 4;
+      const fastProgress = (progress * speed + phaseOffset) % 1;
+
+      const shake = Math.sin(fastProgress * Math.PI * 20) * 10;
+      const vibrate = Math.cos(fastProgress * Math.PI * 15) * 8;
+
+      const horizontalSpacing = canvasWidth / (totalInstances + 1);
+      const verticalSpacing = canvasHeight / (totalInstances + 1);
+
+      const centerX = horizontalSpacing * (instanceIndex + 1);
+      const centerY = verticalSpacing * (instanceIndex + 1);
+
+      const x = centerX + shake + Math.sin(fastProgress * Math.PI * 8) * 30;
+      const y = centerY + vibrate + Math.cos(fastProgress * Math.PI * 6) * 25;
+
+      return { x, y };
+    }
+
     default:
       return { x: baseX, y: baseY };
   }

@@ -72,7 +72,7 @@ export enum StaticEffectType {
 }
 
 // Animation types for static overlays
-export type OverlayAnimationType = 'none' | 'slide-right' | 'float';
+export type OverlayAnimationType = 'none' | 'slide-right' | 'float' | 'intense';
 
 // Types for static effect configuration
 export interface StaticEffect {

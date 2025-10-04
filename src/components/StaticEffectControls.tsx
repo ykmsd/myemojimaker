@@ -76,7 +76,7 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
             Overlay Animation
           </h3>
-          <div className="flex gap-2 mb-2">
+          <div className="grid grid-cols-2 gap-2 mb-2">
             <button
               onClick={() => onOverlayAnimationChange?.('none')}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
@@ -106,6 +106,16 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
               }`}
             >
               Float
+            </button>
+            <button
+              onClick={() => onOverlayAnimationChange?.('intense')}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                overlayAnimation === 'intense'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+            >
+              Intense
             </button>
           </div>
           {overlayAnimation !== 'none' && (
