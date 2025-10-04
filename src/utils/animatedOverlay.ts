@@ -47,10 +47,7 @@ function calculateAnimatedPosition(
       const angle = (progress + phaseOffset) * Math.PI * 2;
       const radiusVariation = 20 + (instanceIndex * 15);
 
-      const horizontalSpacing = canvasWidth / (totalInstances + 1);
-      const centerX = horizontalSpacing * (instanceIndex + 1) - overlayWidth / 2;
-
-      const x = centerX + Math.sin(angle) * radiusVariation;
+      const x = baseX + Math.sin(angle) * radiusVariation;
       const y = baseY + Math.cos(angle) * radiusVariation * 0.5;
       return { x, y };
     }
@@ -61,10 +58,7 @@ function calculateAnimatedPosition(
       const shake = Math.sin(adjustedProgress * Math.PI * 16) * 3;
       const vibrate = Math.cos(adjustedProgress * Math.PI * 12) * 2;
 
-      const horizontalSpacing = canvasWidth / (totalInstances + 1);
-      const centerX = horizontalSpacing * (instanceIndex + 1) - overlayWidth / 2;
-
-      const x = centerX + shake;
+      const x = baseX + shake;
       const y = baseY + vibrate;
 
       return { x, y };
