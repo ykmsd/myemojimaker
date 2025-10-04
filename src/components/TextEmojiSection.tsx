@@ -7,6 +7,7 @@ import { useFont } from '../hooks/useFont';
 import { SectionContainer } from './SectionContainer';
 import { regenerateCustomGif } from '../utils/gif/regenerator';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
+import { StaticTextEmoji } from './StaticTextEmoji';
 import { Sparkles, AlertCircle, Wand2 } from 'lucide-react';
 
 interface TextEmojiSectionProps {
@@ -229,15 +230,41 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
       </div>
 
       {previewUrl ? (
-        <EffectsGrid
-          img={previewUrl}
-          interval={interval}
-          showStatic={true}
-          showUploadCard={true}
-          primaryColor={textColor}
-          strokeColor={outlineColor}
-          backgroundColor={staticBackgroundColor}
-        />
+        <>
+          <EffectsGrid
+            img={previewUrl}
+            interval={interval}
+            showStatic={false}
+            showUploadCard={true}
+          />
+
+          {/* Static Emoji Section */}
+          <div className="mt-12">
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent flex-grow" />
+              <div className="text-center px-4">
+                <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200 font-mono">
+                  Static Emoji
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Download as PNG
+                </p>
+              </div>
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent flex-grow" />
+            </div>
+
+            <div className="flex justify-center">
+              <StaticTextEmoji
+                text={text}
+                textColor={textColor}
+                backgroundColor={staticBackgroundColor}
+                outlineColor={outlineColor}
+                outlineWidth={outlineWidth}
+                fontFamily={selectedFont.value}
+              />
+            </div>
+          </div>
+        </>
       ) : fontLoaded ? (
         <div className="flex flex-col justify-center items-center py-16 text-center">
           <Wand2 className="w-12 h-12 text-purple-400 dark:text-purple-500 mb-4" />
