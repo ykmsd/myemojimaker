@@ -34,7 +34,6 @@ export enum AnimatedEffectType {
   CUTE_HEARTS = 'cute-hearts',
   CONFETTI = 'confetti',
   STARS = 'stars',
-  MONEY_RAIN = 'money-rain',
   FIREWORKS = 'fireworks',
   EXPLODE = 'explode',
 
