@@ -58,11 +58,11 @@ function calculateAnimatedPosition(
       const shake = Math.sin(adjustedProgress * Math.PI * 16) * 3;
       const vibrate = Math.cos(adjustedProgress * Math.PI * 12) * 2;
 
-      const horizontalSpacing = canvasWidth / (totalInstances + 1);
-      const centerX = horizontalSpacing * (instanceIndex + 1) - overlayWidth / 2;
+      const verticalSpacing = canvasHeight / (totalInstances + 1);
+      const centerY = verticalSpacing * (instanceIndex + 1) - overlayHeight / 2;
 
-      const x = centerX + shake;
-      const y = baseY + vibrate;
+      const x = baseX + shake;
+      const y = centerY + vibrate;
 
       return { x, y };
     }
