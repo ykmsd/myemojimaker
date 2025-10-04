@@ -17,12 +17,6 @@ import exclamationEffect from '../images/effects/exclamation-mark.svg?url';
 import naniEffect from '../images/effects/nani.svg?url';
 import questionEffect from '../images/effects/question-mark.svg?url';
 import speedLinesEffect from '../images/effects/straight-lines.svg?url';
-import sparklesEffect from '../images/effects/sparkles.svg?url';
-import blushEffect from '../images/effects/blush.svg?url';
-import sweatDropEffect from '../images/effects/sweat-drop.svg?url';
-import musicNotesEffect from '../images/effects/music-notes.svg?url';
-import zzzEffect from '../images/effects/zzz.svg?url';
-import starsEffect from '../images/effects/stars.svg?url';
 
 export const overlayMap = {
   dododo: {
@@ -118,33 +112,5 @@ export const overlayMap = {
     src: speedLinesEffect,
     opacity: 0.7,
     blendMode: 'multiply',
-  },
-  sparkles: {
-    src: sparklesEffect,
-    opacity: 1,
-  },
-  blush: {
-    src: blushEffect,
-    opacity: 0.8,
-  },
-  'sweat-drop': {
-    src: sweatDropEffect,
-    opacity: 1,
-    position: { x: 70, y: 5 },
-    size: { width: 35, height: 45 },
-  },
-  'music-notes': {
-    src: musicNotesEffect,
-    opacity: 1,
-  },
-  zzz: {
-    src: zzzEffect,
-    opacity: 0.9,
-    position: { x: 65, y: 10 },
-    size: { width: 50 },
-  },
-  stars: {
-    src: starsEffect,
-    opacity: 1,
   },
 } as const;
