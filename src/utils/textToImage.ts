@@ -16,41 +16,22 @@ export const textToImage = (
   textAlign: CanvasTextAlign = 'center',
   textBaseline: CanvasTextBaseline = 'middle'
 ): string => {
-  // Create temporary canvas to measure text
-  const tempCanvas = document.createElement('canvas');
-  const tempCtx = tempCanvas.getContext('2d');
-
-  if (!tempCtx) return '';
-
-  // Set font to measure text accurately
-  tempCtx.font = `bold ${fontSize}px "${fontFamily}"`;
-  const metrics = tempCtx.measureText(text);
-
-  // Calculate text dimensions including outline
-  const outlinePadding = outlineWidth * 4;
-  const textWidth = metrics.width + outlinePadding;
-  const textHeight = fontSize + outlinePadding;
-
-  // Calculate canvas size - ensure it fits the text with padding
-  const canvasWidth = Math.max(width, textWidth + padding * 2);
-  const canvasHeight = Math.max(height, textHeight + padding * 2);
-
-  // Create actual canvas with dynamic size
+  // Create canvas at fixed size for animations
   const canvas = document.createElement('canvas');
-  canvas.width = canvasWidth;
-  canvas.height = canvasHeight;
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
   if (!ctx) return '';
 
   // Clear canvas
   ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  ctx.fillRect(0, 0, width, height);
 
   // Fill background if specified
   if (backgroundColor) {
     ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    ctx.fillRect(0, 0, width, height);
   }
 
   // Set text properties
@@ -62,23 +43,42 @@ export const textToImage = (
   // Use dynamic font size
   ctx.font = `bold ${fontSize}px "${fontFamily}"`;
 
+  // Measure text to check if it needs scaling
+  const metrics = ctx.measureText(text);
+  const textWidth = metrics.width;
+  const textHeight = fontSize;
+
+  // Calculate available space
+  const availableWidth = width - padding * 2;
+  const availableHeight = height - padding * 2;
+
+  // Calculate scale if text is too large
+  const scaleX = textWidth > availableWidth ? availableWidth / textWidth : 1;
+  const scaleY = textHeight > availableHeight ? availableHeight / textHeight : 1;
+  const scale = Math.min(scaleX, scaleY);
+
   // Apply transformations based on alignment
-  let xPos = canvasWidth / 2;
-  let yPos = canvasHeight / 2;
+  let xPos = width / 2;
+  let yPos = height / 2;
 
   if (textAlign === 'left') {
     xPos = padding;
   } else if (textAlign === 'right') {
-    xPos = canvasWidth - padding;
+    xPos = width - padding;
   }
 
   if (textBaseline === 'top') {
     yPos = padding;
   } else if (textBaseline === 'bottom') {
-    yPos = canvasHeight - padding;
+    yPos = height - padding;
   }
 
   ctx.translate(xPos, yPos);
+
+  // Apply scale if needed
+  if (scale < 1) {
+    ctx.scale(scale, scale);
+  }
   
   // Add outline if specified
   if (outlineColor) {
