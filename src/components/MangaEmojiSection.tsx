@@ -20,8 +20,8 @@ export const MangaEmojiSection: React.FC<MangaEmojiSectionProps> = ({
   selectedSpeed,
   onSpeedChange,
 }) => {
-  const [primaryColor, setPrimaryColor] = useState('#000000');
-  const [strokeColor, setStrokeColor] = useState('#FFFFFF');
+  const [primaryColor, setPrimaryColor] = useState('#FFFFFF');
+  const [strokeColor, setStrokeColor] = useState('#000000');
   const [overlayScale, setOverlayScale] = useState(100);
   const [overlayX, setOverlayX] = useState(0);
   const [overlayY, setOverlayY] = useState(0);
