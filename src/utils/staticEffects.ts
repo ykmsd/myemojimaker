@@ -10,7 +10,8 @@ export async function generateStaticPng(
   strokeColor: string,
   overlayScale: number = 100,
   overlayX: number = 0,
-  overlayY: number = 0
+  overlayY: number = 0,
+  backgroundColor?: string
 ): Promise<Blob> {
   try {
     const image = await loadImage(imageUrl);
@@ -23,8 +24,14 @@ export async function generateStaticPng(
     const x = (WIDTH - width) / 2;
     const y = (HEIGHT - height) / 2;
 
-    // Clear canvas and set background to transparent
+    // Clear canvas and set background
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+    // Apply background color if provided
+    if (backgroundColor) {
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    }
 
     // Draw the base image
     ctx.drawImage(image, x, y, width, height);

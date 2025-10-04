@@ -23,6 +23,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [textColor, setTextColor] = useState('#9333EA'); // purple-600
   const [isTransparent, setIsTransparent] = useState(true);
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
+  const [staticBackgroundColor, setStaticBackgroundColor] = useState('#FFFFFF');
   const [outlineColor, setOutlineColor] = useState('#FFFFFF');
   const [outlineWidth, setOutlineWidth] = useState(2);
   const [selectedFont, setSelectedFont] = useState(DEFAULT_FONT);
@@ -173,7 +174,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
 
               <div className={isTransparent ? 'opacity-50' : ''}>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                  Background Color
+                  Background Color (for animated emojis)
                 </label>
                 <input
                   type="color"
@@ -184,6 +185,20 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
                   aria-label="Select background color"
                 />
               </div>
+            </div>
+
+            {/* Static Background Controls */}
+            <div className="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                Background Color (for static emojis)
+              </label>
+              <input
+                type="color"
+                value={staticBackgroundColor}
+                onChange={(e) => setStaticBackgroundColor(e.target.value)}
+                className="w-full h-10 rounded-md cursor-pointer"
+                aria-label="Select static background color"
+              />
             </div>
           </div>
           
@@ -217,8 +232,11 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
         <EffectsGrid
           img={previewUrl}
           interval={interval}
-          showStatic={false}
+          showStatic={true}
           showUploadCard={true}
+          primaryColor={textColor}
+          strokeColor={outlineColor}
+          backgroundColor={staticBackgroundColor}
         />
       ) : fontLoaded ? (
         <div className="flex flex-col justify-center items-center py-16 text-center">
