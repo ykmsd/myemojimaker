@@ -50,9 +50,9 @@ const colors = [
 
 const initConfetti = () => {
   if (confetti.length === 0) {
-    confetti = Array.from({ length: 150 }, () => ({
+    confetti = Array.from({ length: 150 }, (_, i) => ({
       x: Math.random() * WIDTH,
-      y: Math.random() * HEIGHT * -2,
+      y: -Math.random() * HEIGHT - (i * 5),
       width: Math.random() * 6 + 3,
       height: Math.random() * 4 + 2,
       rotation: Math.random() * Math.PI * 2,
