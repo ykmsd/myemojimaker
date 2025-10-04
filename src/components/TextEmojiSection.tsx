@@ -27,6 +27,7 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
   const [staticBackgroundColor, setStaticBackgroundColor] = useState('#FFFFFF');
   const [outlineColor, setOutlineColor] = useState('#FFFFFF');
   const [outlineWidth, setOutlineWidth] = useState(2);
+  const [hasOutline, setHasOutline] = useState(true);
   const [selectedFont, setSelectedFont] = useState(DEFAULT_FONT);
   const fontLoaded = useFont(selectedFont);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -51,8 +52,8 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
         textColor,
         selectedFont.value,
         isTransparent ? null : backgroundColor,
-        outlineColor,
-        outlineWidth
+        hasOutline ? outlineColor : null,
+        hasOutline ? outlineWidth : 0
       );
       setPreviewUrl(imageUrl);
       // Regenerate custom GIF with new text image
@@ -171,18 +172,32 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
               />
             </div>
 
-            {/* Outline Color */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                Outline Color
+            {/* Outline Controls */}
+            <div className="space-y-2">
+              <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                <input
+                  type="checkbox"
+                  className="mr-2 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  checked={hasOutline}
+                  onChange={(e) => setHasOutline(e.target.checked)}
+                  aria-label="Toggle outline"
+                />
+                Enable Outline
               </label>
-              <input
-                type="color"
-                value={outlineColor}
-                onChange={(e) => setOutlineColor(e.target.value)}
-                className="w-full h-10 rounded-md cursor-pointer"
-                aria-label="Select outline color"
-              />
+
+              <div className={!hasOutline ? 'opacity-50' : ''}>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                  Outline Color
+                </label>
+                <input
+                  type="color"
+                  value={outlineColor}
+                  onChange={(e) => setOutlineColor(e.target.value)}
+                  className="w-full h-10 rounded-md cursor-pointer"
+                  disabled={!hasOutline}
+                  aria-label="Select outline color"
+                />
+              </div>
             </div>
 
             {/* Background Controls - Conditional based on tab */}
@@ -270,8 +285,8 @@ export const TextEmojiSection: React.FC<TextEmojiSectionProps> = ({
                 text={text}
                 textColor={textColor}
                 backgroundColor={staticBackgroundColor}
-                outlineColor={outlineColor}
-                outlineWidth={outlineWidth}
+                outlineColor={hasOutline ? outlineColor : null}
+                outlineWidth={hasOutline ? outlineWidth : 0}
                 fontFamily={selectedFont.value}
               />
             </div>

@@ -6,7 +6,7 @@ interface StaticTextEmojiProps {
   text: string;
   textColor: string;
   backgroundColor: string;
-  outlineColor: string;
+  outlineColor: string | null;
   outlineWidth: number;
   fontFamily: string;
 }
