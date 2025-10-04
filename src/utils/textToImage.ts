@@ -16,22 +16,41 @@ export const textToImage = (
   textAlign: CanvasTextAlign = 'center',
   textBaseline: CanvasTextBaseline = 'middle'
 ): string => {
+  // Create temporary canvas to measure text
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+
+  if (!tempCtx) return '';
+
+  // Set font to measure text accurately
+  tempCtx.font = `bold ${fontSize}px "${fontFamily}"`;
+  const metrics = tempCtx.measureText(text);
+
+  // Calculate text dimensions including outline
+  const outlinePadding = outlineWidth * 4;
+  const textWidth = metrics.width + outlinePadding;
+  const textHeight = fontSize + outlinePadding;
+
+  // Calculate canvas size - ensure it fits the text with padding
+  const canvasWidth = Math.max(width, textWidth + padding * 2);
+  const canvasHeight = Math.max(height, textHeight + padding * 2);
+
+  // Create actual canvas with dynamic size
   const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  
+
   if (!ctx) return '';
-  
+
   // Clear canvas
-  // Fill with transparent background first
   ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   // Fill background if specified
   if (backgroundColor) {
     ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, width, height);
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
   }
 
   // Set text properties
@@ -40,23 +59,23 @@ export const textToImage = (
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
 
-  // Use dynamic font size - user has full control
+  // Use dynamic font size
   ctx.font = `bold ${fontSize}px "${fontFamily}"`;
-  
+
   // Apply transformations based on alignment
-  let xPos = width / 2;
-  let yPos = height / 2;
+  let xPos = canvasWidth / 2;
+  let yPos = canvasHeight / 2;
 
   if (textAlign === 'left') {
     xPos = padding;
   } else if (textAlign === 'right') {
-    xPos = width - padding;
+    xPos = canvasWidth - padding;
   }
 
   if (textBaseline === 'top') {
     yPos = padding;
   } else if (textBaseline === 'bottom') {
-    yPos = height - padding;
+    yPos = canvasHeight - padding;
   }
 
   ctx.translate(xPos, yPos);
