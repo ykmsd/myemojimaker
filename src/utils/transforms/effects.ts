@@ -16,6 +16,12 @@ import { createMatrixEffect } from '../effects/matrix';
 import { createSpaceTravelEffect } from '../effects/spaceTravel';
 import { createRainbowRainEffect } from '../effects/rainbowRain';
 import { createCuteHeartsEffect } from '../effects/hearts';
+import { createSnowEffect } from '../effects/snow';
+import { createBubblesEffect } from '../effects/bubbles';
+import { createConfettiEffect } from '../effects/confetti';
+import { createLightningEffect } from '../effects/lightning';
+import { createParticleExplosionEffect } from '../effects/particles';
+import { createStarsEffect } from '../effects/stars';
 
 export const effectTransforms = {
   [AnimatedEffectType.RAINBOW]: (ctx, img, i) => {
@@ -119,5 +125,29 @@ export const effectTransforms = {
 
   [AnimatedEffectType.CUTE_HEARTS]: (ctx, img, i) => {
     createCuteHeartsEffect(ctx, img, i);
+  },
+
+  [AnimatedEffectType.SNOW]: (ctx, img, i) => {
+    createSnowEffect(ctx, img, i);
+  },
+
+  [AnimatedEffectType.BUBBLES]: (ctx, img, i) => {
+    createBubblesEffect(ctx, img, i);
+  },
+
+  [AnimatedEffectType.CONFETTI]: (ctx, img, i) => {
+    createConfettiEffect(ctx, img, i);
+  },
+
+  [AnimatedEffectType.LIGHTNING]: (ctx, img, i) => {
+    createLightningEffect(ctx, img, i);
+  },
+
+  [AnimatedEffectType.PARTICLE_EXPLOSION]: (ctx, img, i) => {
+    createParticleExplosionEffect(ctx, img, i);
+  },
+
+  [AnimatedEffectType.STARS]: (ctx, img, i) => {
+    createStarsEffect(ctx, img, i);
   }
 };

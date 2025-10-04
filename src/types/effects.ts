@@ -33,6 +33,12 @@ export enum AnimatedEffectType {
   MATRIX = 'matrix',
   SPACE_TRAVEL = 'space-travel',
   CUTE_HEARTS = 'cute-hearts',
+  SNOW = 'snow',
+  BUBBLES = 'bubbles',
+  CONFETTI = 'confetti',
+  LIGHTNING = 'lightning',
+  PARTICLE_EXPLOSION = 'particle-explosion',
+  STARS = 'stars',
 
   // Color Effects
   RAINBOW = 'rainbow',
