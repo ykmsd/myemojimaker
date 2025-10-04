@@ -69,14 +69,15 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
   const handleRemoveBackground = async () => {
     if (!currentImage || isProcessing) return;
 
+    const toastId = toast.loading('Removing background...');
+
     try {
       setIsProcessing(true);
-      toast.loading('Removing background...');
 
       // Create a new Image object and wait for it to load
       const image = new Image();
       image.crossOrigin = 'anonymous';
-      
+
       await new Promise((resolve, reject) => {
         image.onload = resolve;
         image.onerror = reject;
@@ -85,15 +86,22 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
 
       // Use the loaded image for background removal
       const blob = await removeBackground(image);
-      const newImageUrl = URL.createObjectURL(blob);
-      
-      setCurrentImage(newImageUrl);
-      await regenerateCustomGif(undefined, newImageUrl);
-      onImageSelect(newImageUrl);
 
-      toast.success('Background removed successfully!');
+      // Convert blob to data URL for better compatibility
+      const reader = new FileReader();
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+
+      setCurrentImage(dataUrl);
+      await regenerateCustomGif(undefined, dataUrl);
+      onImageSelect(dataUrl);
+
+      toast.success('Background removed successfully!', { id: toastId });
     } catch (error) {
-      toast.error('Failed to remove background');
+      toast.error('Failed to remove background. Please try again.', { id: toastId });
       console.error('Background removal error:', error);
     } finally {
       setIsProcessing(false);
