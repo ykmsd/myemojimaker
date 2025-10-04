@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Upload, FileImage } from 'lucide-react';
 import { regenerateCustomGif } from '../utils/gif/regenerator';
-import { parseGif } from 'gifuct-js';
+import { toast } from 'sonner';
 
 interface GifUploadCardProps {
   currentImage: string;
@@ -12,35 +12,30 @@ export const GifUploadCard: React.FC<GifUploadCardProps> = ({ currentImage }) =>
   const [isDragging, setIsDragging] = useState(false);
 
   const handleGifSelect = async (file: File) => {
-    try {
-      const arrayBuffer = await file.arrayBuffer();
-      const gif = parseGif(arrayBuffer);
-
-      if (!gif.frames || gif.frames.length === 0) {
-        alert('Invalid GIF file: No frames found');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        if (result && currentImage) {
-          regenerateCustomGif(result, currentImage);
-        }
-      };
-      reader.readAsDataURL(file);
-    } catch (error) {
-      console.error('Error processing GIF:', error);
-      alert('Failed to process GIF file. Please try another file.');
+    if (!file.type.startsWith('image/gif')) {
+      toast.error('Invalid file type', {
+        description: 'Please upload a GIF file.'
+      });
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const result = e.target?.result;
+      if (typeof result === 'string') {
+        await regenerateCustomGif(result, currentImage);
+        toast.success('GIF filter uploaded successfully!', {
+          description: `${file.name} is ready to be used as a filter.`
+        });
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.type === 'image/gif') {
+    if (file) {
       handleGifSelect(file);
-    } else if (file) {
-      alert('Please select a valid GIF file');
     }
   };
 
@@ -49,10 +44,8 @@ export const GifUploadCard: React.FC<GifUploadCardProps> = ({ currentImage }) =>
     setIsDragging(false);
 
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type === 'image/gif') {
+    if (file) {
       handleGifSelect(file);
-    } else if (file) {
-      alert('Please select a valid GIF file');
     }
   };
 
