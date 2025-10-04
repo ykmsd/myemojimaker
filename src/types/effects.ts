@@ -71,6 +71,9 @@ export enum StaticEffectType {
   EFFECT_SPEED_LINES = 'speed-lines'
 }
 
+// Animation types for static overlays
+export type OverlayAnimationType = 'none' | 'slide-right' | 'float';
+
 // Types for static effect configuration
 export interface StaticEffect {
   src: string;
@@ -85,4 +88,5 @@ export interface StaticEffect {
   opacity?: number;
   blendMode?: GlobalCompositeOperation;
   isAnimated?: boolean;
+  animation?: OverlayAnimationType;
 }

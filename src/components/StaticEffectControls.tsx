@@ -2,6 +2,7 @@ import React from 'react';
 import { ColorPicker } from './ColorPicker';
 import { SpeedControl } from './SpeedControl';
 import { AnimationSpeed } from '../types';
+import { OverlayAnimationType } from '../types/effects';
 
 interface StaticEffectControlsProps {
   primaryColor: string;
@@ -16,6 +17,8 @@ interface StaticEffectControlsProps {
   onOverlayXChange?: (x: number) => void;
   overlayY?: number;
   onOverlayYChange?: (y: number) => void;
+  overlayAnimation?: OverlayAnimationType;
+  onOverlayAnimationChange?: (animation: OverlayAnimationType) => void;
 }
 
 export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
@@ -31,6 +34,8 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
   onOverlayXChange,
   overlayY = 0,
   onOverlayYChange,
+  overlayAnimation = 'none',
+  onOverlayAnimationChange,
 }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -61,6 +66,44 @@ export const StaticEffectControls: React.FC<StaticEffectControlsProps> = ({
             selectedSpeed={selectedSpeed}
             onSpeedChange={onSpeedChange}
           />
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+            Overlay Animation
+          </h3>
+          <div className="flex gap-2 mb-2">
+            <button
+              onClick={() => onOverlayAnimationChange?.('none')}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                overlayAnimation === 'none'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+            >
+              None
+            </button>
+            <button
+              onClick={() => onOverlayAnimationChange?.('slide-right')}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                overlayAnimation === 'slide-right'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+            >
+              Slide Right
+            </button>
+            <button
+              onClick={() => onOverlayAnimationChange?.('float')}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                overlayAnimation === 'float'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+            >
+              Float
+            </button>
+          </div>
         </div>
 
         <div>

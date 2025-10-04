@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { AnimatedEffectType, StaticEffectType } from '../types/effects';
+import { AnimatedEffectType, StaticEffectType, OverlayAnimationType } from '../types/effects';
 import { useFilterVisibility } from '../hooks/useFilterVisibility';
 import { FilterToggle } from './FilterToggle';
 import { ShowAllFiltersButton } from './ShowAllFiltersButton';
@@ -21,6 +21,7 @@ interface EffectsGridProps extends React.PropsWithChildren {
   overlayScale?: number;
   overlayX?: number;
   overlayY?: number;
+  overlayAnimation?: OverlayAnimationType;
   backgroundColor?: string;
 }
 
@@ -35,6 +36,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
   overlayScale = 100,
   overlayX = 0,
   overlayY = 0,
+  overlayAnimation = 'none',
   backgroundColor
 }) => {
   const { isFilterVisible, toggleFilter, showAllFilters, hiddenCount } = useFilterVisibility();
@@ -114,6 +116,7 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
                         overlayScale={overlayScale}
                         overlayX={overlayX}
                         overlayY={overlayY}
+                        overlayAnimation={overlayAnimation}
                         backgroundColor={backgroundColor}
                       />
                     ) : (

@@ -2,6 +2,7 @@ import React from 'react';
 import { ImageUploader } from './ImageUploader';
 import { StaticEffectControls } from './StaticEffectControls';
 import { AnimationSpeed } from '../types';
+import { OverlayAnimationType } from '../types/effects';
 
 interface ControlsPanelProps {
   primaryColor: string;
@@ -17,6 +18,8 @@ interface ControlsPanelProps {
   onOverlayXChange?: (x: number) => void;
   overlayY?: number;
   onOverlayYChange?: (y: number) => void;
+  overlayAnimation?: OverlayAnimationType;
+  onOverlayAnimationChange?: (animation: OverlayAnimationType) => void;
 }
 
 export const ControlsPanel: React.FC<ControlsPanelProps> = ({
@@ -33,6 +36,8 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
   onOverlayXChange,
   overlayY,
   onOverlayYChange,
+  overlayAnimation,
+  onOverlayAnimationChange,
 }) => {
   return (
     <div className="grid grid-cols-2 gap-6 mb-8">
@@ -56,6 +61,8 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
         onOverlayXChange={onOverlayXChange}
         overlayY={overlayY}
         onOverlayYChange={onOverlayYChange}
+        overlayAnimation={overlayAnimation}
+        onOverlayAnimationChange={onOverlayAnimationChange}
       />
     </div>
   );

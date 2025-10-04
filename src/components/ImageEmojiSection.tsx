@@ -3,6 +3,7 @@ import { EffectsGrid } from './EffectsGrid';
 import { ControlsPanel } from './ControlsPanel';
 import { SectionContainer } from './SectionContainer';
 import { AnimationSpeed } from '../types';
+import { OverlayAnimationType } from '../types/effects';
 
 interface ImageEmojiSectionProps {
   selectedImage: string;
@@ -24,6 +25,7 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
   const [overlayScale, setOverlayScale] = useState(100);
   const [overlayX, setOverlayX] = useState(0);
   const [overlayY, setOverlayY] = useState(0);
+  const [overlayAnimation, setOverlayAnimation] = useState<OverlayAnimationType>('none');
   const [updateKey, setUpdateKey] = useState(0);
 
   return (
@@ -51,6 +53,11 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
           setOverlayY(y);
           setUpdateKey(prev => prev + 1);
         }}
+        overlayAnimation={overlayAnimation}
+        onOverlayAnimationChange={(animation) => {
+          setOverlayAnimation(animation);
+          setUpdateKey(prev => prev + 1);
+        }}
       />
 
       <EffectsGrid
@@ -63,6 +70,7 @@ export const ImageEmojiSection: React.FC<ImageEmojiSectionProps> = ({
         overlayScale={overlayScale}
         overlayX={overlayX}
         overlayY={overlayY}
+        overlayAnimation={overlayAnimation}
       />
     </SectionContainer>
   );
