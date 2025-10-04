@@ -50,17 +50,23 @@ const colors = [
 
 const initConfetti = () => {
   if (confetti.length === 0) {
-    confetti = Array.from({ length: 150 }, () => ({
-      x: Math.random() * WIDTH,
-      y: Math.random() * HEIGHT * -2,
-      width: Math.random() * 10 + 6,
-      height: Math.random() * 8 + 4,
-      rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.4,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      speedY: Math.random() * 4 + 3,
-      speedX: (Math.random() - 0.5) * 2,
-    }));
+    confetti = Array.from({ length: 150 }, (_, idx) => {
+      const progress = idx / 150;
+      const totalDistance = HEIGHT + 40;
+      const currentPosition = progress * totalDistance;
+
+      return {
+        x: Math.random() * WIDTH,
+        y: -20 + currentPosition,
+        width: Math.random() * 10 + 6,
+        height: Math.random() * 8 + 4,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        speedY: Math.random() * 4 + 3,
+        speedX: (Math.random() - 0.5) * 2,
+      };
+    });
   }
 };
 
