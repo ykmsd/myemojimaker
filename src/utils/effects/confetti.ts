@@ -75,6 +75,10 @@ export const createConfettiEffect = (
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
+  ctx.translate(WIDTH / 2, HEIGHT / 2);
+  ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
+  ctx.translate(-WIDTH / 2, -HEIGHT / 2);
+
   confetti.forEach((piece) => {
     piece.y += piece.speedY;
     piece.x += piece.speedX;
@@ -86,13 +90,7 @@ export const createConfettiEffect = (
       piece.speedY = Math.random() * 4 + 3;
       piece.speedX = (Math.random() - 0.5) * 2;
     }
-  });
 
-  ctx.translate(WIDTH / 2, HEIGHT / 2);
-  ctx.drawImage(img, -dims.width / 2, -dims.height / 2, dims.width, dims.height);
-  ctx.translate(-WIDTH / 2, -HEIGHT / 2);
-
-  confetti.forEach((piece) => {
     ctx.save();
     ctx.translate(piece.x, piece.y);
     ctx.rotate(piece.rotation);
