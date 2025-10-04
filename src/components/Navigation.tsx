@@ -4,8 +4,8 @@ import { NavigationProps, Section } from '../types';
 export const Navigation: React.FC<NavigationProps> = ({ activeSection, onSectionChange }) => {
   const sections: { id: Section; label: string }[] = [
     { id: 'image', label: 'Image Emoji' },
-    { id: 'text', label: 'Text Emoji' },
     { id: 'manga', label: 'Manga Emoji' },
+    { id: 'text', label: 'Text Emoji' },
     { id: 'combine', label: 'Combine Emoji' },
   ];
 
