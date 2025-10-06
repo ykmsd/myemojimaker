@@ -5,7 +5,7 @@ import { getCachedSvg } from './svgCache';
 import { OverlayAnimationType } from '../types/effects';
 import GIF from 'gif.js';
 
-const FRAME_COUNT = 15;
+const FRAME_COUNT = 10;
 
 interface AnimationParams {
   frameIndex: number;
