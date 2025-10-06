@@ -1,11 +1,13 @@
 import { createCanvas, loadImage } from './canvas';
-import { WIDTH, HEIGHT } from '../constants';
+import { WIDTH as FULL_WIDTH, HEIGHT as FULL_HEIGHT } from '../constants';
 import { overlayMap } from '../constants/overlays';
 import { getCachedSvg } from './svgCache';
 import { OverlayAnimationType } from '../types/effects';
 import GIF from 'gif.js';
 
 const FRAME_COUNT = 10;
+const WIDTH = 96;  // Smaller canvas for manga animations
+const HEIGHT = 96;
 
 interface AnimationParams {
   frameIndex: number;
