@@ -47,7 +47,9 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
   useEffect(() => {
     const checkCustomGif = () => {
       const frames = getCustomGifFrames();
-      setHasCustomGif(Boolean(frames));
+      const hasFrames = Boolean(frames);
+      console.log('EffectsGrid: checking custom GIF frames:', hasFrames, frames?.length);
+      setHasCustomGif(hasFrames);
     };
 
     checkCustomGif();

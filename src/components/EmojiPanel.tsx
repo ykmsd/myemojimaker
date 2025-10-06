@@ -28,17 +28,20 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
 
   useEffect(() => {
     if (!img) return;
-    
+
+    console.log('EmojiPanel rendering:', { name, transformation, img: img.substring(0, 50) });
+
     setGif(BLANK_GIF);
     setLoading(true);
-    
+
     (async () => {
       const framesArray = [...Array(frameCount)].fill(null);
       const imagePromises = framesArray.map(async (_, i) => {
         return await transform(img, transformation, i);
       });
-      
+
       const images = await Promise.all(imagePromises);
+      console.log('Transformed images for', name, ':', images.length);
       
       try {
         const loadedImages = await Promise.all(
