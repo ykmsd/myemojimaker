@@ -57,9 +57,13 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
     return () => unsubscribe();
   }, []);
 
-  const animatedEffects = Object.values(AnimatedEffectType).filter(effect => 
-    effect !== AnimatedEffectType.CUSTOM_GIF || hasCustomGif
-  );
+  const animatedEffects = Object.values(AnimatedEffectType).filter(effect => {
+    const shouldInclude = effect !== AnimatedEffectType.CUSTOM_GIF || hasCustomGif;
+    if (effect === AnimatedEffectType.CUSTOM_GIF) {
+      console.log('CUSTOM_GIF filter check:', { effect, hasCustomGif, shouldInclude });
+    }
+    return shouldInclude;
+  });
 
   const effectSections = showStatic ? [
     {
@@ -87,7 +91,21 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-items-center">
             {effects.map((type) => {
               const isVisible = isFilterVisible(type);
-              if (!isVisible) return null;
+
+              if (type === AnimatedEffectType.CUSTOM_GIF) {
+                console.log('CUSTOM_GIF visibility check:', { type, isVisible });
+              }
+
+              if (!isVisible) {
+                if (type === AnimatedEffectType.CUSTOM_GIF) {
+                  console.log('CUSTOM_GIF is HIDDEN by filter');
+                }
+                return null;
+              }
+
+              if (type === AnimatedEffectType.CUSTOM_GIF) {
+                console.log('CUSTOM_GIF will be rendered!');
+              }
 
               return (
                 <div key={type} className="relative">
