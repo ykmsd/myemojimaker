@@ -58,14 +58,14 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
 
         const gif = new GIF({
           workers: 4,
-          quality: 15,
+          quality: 25,
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
           transparent: 0x000000,
           background: null,
           workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
-          dither: false,
+          dither: true,
           debug: false
         });
 
