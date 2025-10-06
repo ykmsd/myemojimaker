@@ -102,12 +102,13 @@ export async function generateAnimatedOverlayGif(
 
     const gif = new GIF({
       workers: 2,
-      quality: 10,
+      quality: 25,
       width: WIDTH,
       height: HEIGHT,
       workerScript: '/gif.worker.js',
       transparent: 0x000000,
       background: null,
+      dither: true,
     });
 
     const ratio = Math.min(WIDTH / image.width, HEIGHT / image.height);
