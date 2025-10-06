@@ -58,7 +58,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
 
         const gif = new GIF({
           workers: 4,
-          quality: 5,
+          quality: 15,
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
