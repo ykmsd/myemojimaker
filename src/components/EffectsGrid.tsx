@@ -3,7 +3,7 @@ import { AnimatedEffectType, StaticEffectType, OverlayAnimationType } from '../t
 import { useFilterVisibility } from '../hooks/useFilterVisibility';
 import { FilterToggle } from './FilterToggle';
 import { ShowAllFiltersButton } from './ShowAllFiltersButton';
-import { getCustomGifFrames } from '../utils/gif/customFilter';
+import { getCustomGifFrames, onCustomGifChange } from '../utils/gif/state';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
 import { GifUploadCard } from './GifUploadCard';
 
@@ -51,8 +51,8 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
     };
 
     checkCustomGif();
-    const checkInterval = setInterval(checkCustomGif, 500);
-    return () => clearInterval(checkInterval);
+    const unsubscribe = onCustomGifChange(checkCustomGif);
+    return () => unsubscribe();
   }, []);
 
   const animatedEffects = Object.values(AnimatedEffectType).filter(effect => 

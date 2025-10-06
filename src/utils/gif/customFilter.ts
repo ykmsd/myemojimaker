@@ -44,5 +44,5 @@ export async function setCustomGifFilter(
   }
 }
 
-export { getCustomGifFrames };
+export { getCustomGifFrames, onCustomGifChange } from './state';
 export { clearState as clearCustomGifFilter } from './state';

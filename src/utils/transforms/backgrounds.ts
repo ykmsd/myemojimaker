@@ -94,13 +94,16 @@ export const backgroundTransforms = {
     i: number
   ) => {
     const frames = getCustomGifFrames();
-    if (!frames) return;
+
+    if (!frames || frames.length === 0) {
+      console.warn('No custom GIF frames available');
+      return;
+    }
 
     const frameIndex = i % frames.length;
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    
-    // Draw background frame first
-    ctx.putImageData(frames[frameIndex], 0, 0);
 
+    // Draw the composed frame (already contains both GIF background and image)
+    ctx.putImageData(frames[frameIndex], 0, 0);
   }
 };
