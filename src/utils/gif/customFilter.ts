@@ -9,10 +9,14 @@ export async function setCustomGifFilter(
   try {
     // Clear existing frames first to trigger state updates
     setCustomGifFrames(null);
-    
+
     // Process GIF frames
     const frames = await processGifData(gifData);
-    
+
+    if (!frames || frames.length === 0) {
+      throw new Error('No frames could be processed from the GIF');
+    }
+
     // Update current image if provided
     if (imageData) {
       const img = new Image();
@@ -23,17 +27,20 @@ export async function setCustomGifFilter(
       });
       setCurrentImage(img);
     }
-    
-    // Small delay to ensure state updates are processed
-    await new Promise(resolve => setTimeout(resolve, 50));
-    
+
     // Compose frames with current image
     const composedFrames = composeFramesWithImage(frames);
+
+    if (!composedFrames || composedFrames.length === 0) {
+      throw new Error('Failed to compose frames with image');
+    }
+
     setCustomGifFrames(composedFrames);
-    
+
   } catch (error) {
     console.error('Error processing custom GIF:', error);
     setCustomGifFrames(null);
+    throw error;
   }
 }
 

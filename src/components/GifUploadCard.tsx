@@ -23,10 +23,17 @@ export const GifUploadCard: React.FC<GifUploadCardProps> = ({ currentImage }) =>
     reader.onload = async (e) => {
       const result = e.target?.result;
       if (typeof result === 'string') {
-        await regenerateCustomGif(result, currentImage);
-        toast.success('GIF background uploaded successfully!', {
-          description: `${file.name} is ready to be used as a background.`
-        });
+        try {
+          await regenerateCustomGif(result, currentImage);
+          toast.success('GIF background uploaded successfully!', {
+            description: `${file.name} is ready to be used as a background.`
+          });
+        } catch (error) {
+          console.error('Error uploading GIF:', error);
+          toast.error('Failed to process GIF', {
+            description: error instanceof Error ? error.message : 'Please try a different GIF file.'
+          });
+        }
       }
     };
     reader.readAsDataURL(file);
