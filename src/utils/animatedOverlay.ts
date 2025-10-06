@@ -5,7 +5,7 @@ import { getCachedSvg } from './svgCache';
 import { OverlayAnimationType } from '../types/effects';
 import GIF from 'gif.js';
 
-const FRAME_COUNT = 30;
+const FRAME_COUNT = 15;
 
 interface AnimationParams {
   frameIndex: number;
@@ -102,13 +102,12 @@ export async function generateAnimatedOverlayGif(
 
     const gif = new GIF({
       workers: 2,
-      quality: 25,
+      quality: 10,
       width: WIDTH,
       height: HEIGHT,
       workerScript: '/gif.worker.js',
       transparent: 0x000000,
       background: null,
-      dither: true,
     });
 
     const ratio = Math.min(WIDTH / image.width, HEIGHT / image.height);
