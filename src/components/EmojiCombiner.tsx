@@ -349,7 +349,7 @@ export const EmojiCombiner: React.FC = () => {
         height: HEIGHT,
         transparent: 0x000000,
         background: null,
-        workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
+        workerScript: '/gif.worker.js',
         dither: false,
         debug: false,
       });

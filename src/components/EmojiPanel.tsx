@@ -72,7 +72,6 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
 
         if (aborted) return;
 
-        const workerScript = import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js';
         const gifEncoder = new GIF({
           workers: 2,
           quality: 5,
@@ -81,7 +80,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
           height: HEIGHT,
           transparent: 0x000000,
           background: null,
-          workerScript,
+          workerScript: '/gif.worker.js',
           dither: false,
           debug: false
         });
@@ -116,7 +115,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
         });
 
         gifEncoder.render();
-      } catch (error) {
+      } catch {
         if (!aborted) setLoading(false);
       } finally {
         if (releaseSlot) releaseSlot();
