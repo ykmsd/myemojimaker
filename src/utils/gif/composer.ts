@@ -6,11 +6,8 @@ export function composeFramesWithImage(frames: ImageData[]): ImageData[] {
   const currentImage = getCurrentImage();
 
   if (!currentImage) {
-    console.warn('No current image found for composition, returning frames as-is');
     return frames;
   }
-
-  console.log('Composing', frames.length, 'frames with image');
 
   const { canvas, ctx } = createCanvas(WIDTH, HEIGHT);
 
