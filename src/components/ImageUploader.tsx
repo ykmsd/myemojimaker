@@ -13,10 +13,15 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const handleImageUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const processFile = useCallback(async (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      toast.error('Invalid file type', {
+        description: 'Please upload an image file (PNG, JPG, or GIF).'
+      });
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -33,6 +38,35 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
     };
     reader.readAsDataURL(file);
   }, [onImageSelect]);
+
+  const handleImageUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    await processFile(file);
+  }, [processFile]);
+
+  const handleDrop = useCallback(async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      await processFile(file);
+    }
+  }, [processFile]);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  }, []);
 
   const handleEmojiSelect = async (emojiData: EmojiClickData) => {
     setShowEmojiPicker(false);
@@ -110,7 +144,16 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelect }) =
 
   return (
     <div className="w-full max-w-sm mx-auto space-y-4">
-      <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-purple-300 dark:border-purple-700 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group">
+      <label
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        className={`flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer transition-all group
+          ${isDragging
+            ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 scale-[1.02]'
+            : 'border-purple-300 dark:border-purple-700 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
+          }`}
+      >
         <div className="flex flex-col items-center justify-center pt-5 pb-6">
           <ImagePlus className="w-10 h-10 mb-3 text-purple-400 dark:text-purple-500 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors" />
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors">
