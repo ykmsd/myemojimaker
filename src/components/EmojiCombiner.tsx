@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SectionContainer } from './SectionContainer';
 import { WIDTH, HEIGHT, ANIMATION_SPEEDS } from '../constants';
-import { Move, Smile, Plus, Trash2, Loader2 } from 'lucide-react';
+import { Move, Smile, Plus, Trash2, Loader2, ImagePlus } from 'lucide-react';
 import EmojiPicker from 'emoji-picker-react';
 import GIF from 'gif.js';
 import {
@@ -61,6 +61,8 @@ interface EmojiItem {
   scale: number;
   zIndex: number;
   animation: CombinerAnimation;
+  imageDataUrl?: string;
+  imageEl?: HTMLImageElement;
 }
 
 const MAX_EMOJIS = 6;
@@ -140,6 +142,8 @@ function applyAnimationTransform(
   }
 }
 
+const IMG_DRAW_SIZE = 64;
+
 function renderFrame(
   ctx: CanvasRenderingContext2D,
   emojis: EmojiItem[],
@@ -149,15 +153,20 @@ function renderFrame(
 
   const sorted = [...emojis].sort((a, b) => a.zIndex - b.zIndex);
 
-  sorted.forEach(({ emoji, x, y, scale, animation }) => {
+  sorted.forEach(({ emoji, x, y, scale, animation, imageEl }) => {
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(scale, scale);
     applyAnimationTransform(ctx, animation, frame, scale);
-    ctx.font = '64px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(emoji, 0, 0);
+
+    if (imageEl) {
+      ctx.drawImage(imageEl, -IMG_DRAW_SIZE / 2, -IMG_DRAW_SIZE / 2, IMG_DRAW_SIZE, IMG_DRAW_SIZE);
+    } else {
+      ctx.font = '64px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, 0, 0);
+    }
     ctx.restore();
   });
 }
@@ -171,6 +180,8 @@ export const EmojiCombiner: React.FC = () => {
   const dragStartPos = useRef({ x: 0, y: 0 });
   const animFrameRef = useRef<number>(0);
   const frameCounterRef = useRef(0);
+
+  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const hasAnimation = emojis.some(e => e.animation !== 'none');
 
@@ -202,6 +213,23 @@ export const EmojiCombiner: React.FC = () => {
       ...item,
       zIndex: i === index ? maxZ + 1 : item.zIndex,
     })));
+  };
+
+  const handleImageUpload = (index: number, file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      const img = new Image();
+      img.onload = () => {
+        updateEmoji(index, { imageDataUrl: dataUrl, imageEl: img });
+      };
+      img.src = dataUrl;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearImage = (index: number) => {
+    updateEmoji(index, { imageDataUrl: undefined, imageEl: undefined });
   };
 
   // Animated preview loop
@@ -411,18 +439,50 @@ export const EmojiCombiner: React.FC = () => {
                 )}
               </div>
               <div className="relative">
-                <button
-                  onClick={() => setOpenPickerIndex(openPickerIndex === index ? null : index)}
-                  className="w-full flex items-center justify-between px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
-                >
-                  <span className="text-2xl">{item.emoji}</span>
-                  <Smile className="w-5 h-5 text-gray-500" />
-                </button>
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => setOpenPickerIndex(openPickerIndex === index ? null : index)}
+                    className="flex-1 flex items-center justify-between px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
+                    {item.imageDataUrl ? (
+                      <img src={item.imageDataUrl} alt="Uploaded" className="w-7 h-7 object-contain" />
+                    ) : (
+                      <span className="text-2xl">{item.emoji}</span>
+                    )}
+                    <Smile className="w-5 h-5 text-gray-500" />
+                  </button>
+                  <button
+                    onClick={() => fileInputRefs.current[index]?.click()}
+                    className="px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+                    title="Upload image"
+                  >
+                    <ImagePlus className="w-5 h-5 text-gray-500" />
+                  </button>
+                  <input
+                    ref={el => { fileInputRefs.current[index] = el; }}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageUpload(index, file);
+                      e.target.value = '';
+                    }}
+                  />
+                </div>
+                {item.imageDataUrl && (
+                  <button
+                    onClick={() => clearImage(index)}
+                    className="mt-1 w-full text-xs text-red-500 hover:text-red-700 transition-colors"
+                  >
+                    Remove image
+                  </button>
+                )}
                 {openPickerIndex === index && (
                   <div className="absolute z-10 mt-1">
                     <EmojiPicker
                       onEmojiClick={(emojiData) => {
-                        updateEmoji(index, { emoji: emojiData.emoji });
+                        updateEmoji(index, { emoji: emojiData.emoji, imageDataUrl: undefined, imageEl: undefined });
                         setOpenPickerIndex(null);
                       }}
                       width={300}
