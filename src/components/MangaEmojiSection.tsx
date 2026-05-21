@@ -25,7 +25,7 @@ export const MangaEmojiSection: React.FC<MangaEmojiSectionProps> = ({
   const [overlayScale, setOverlayScale] = useState(100);
   const [overlayX, setOverlayX] = useState(0);
   const [overlayY, setOverlayY] = useState(0);
-  const [overlayAnimation, setOverlayAnimation] = useState<OverlayAnimationType>('none');
+  const [overlayAnimation, setOverlayAnimation] = useState<OverlayAnimationType>('slide-right');
   const [overlayCount, setOverlayCount] = useState(1);
   const [updateKey, setUpdateKey] = useState(0);
 
