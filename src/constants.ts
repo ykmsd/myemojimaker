@@ -10,9 +10,9 @@ export const SPIRAL_SPEED_MULTIPLIER = {
 };
 
 export const ANIMATION_SPEEDS = {
-  slow: 0.2,
-  normal: 0.15,
-  fast: 0.1
+  slow: 0.15,    // 3x slower
+  normal: 0.1,   // 2x slower
+  fast: 0.075    // 1.5x slower
 };
 
 export const DEFAULT_SPEED = 'normal';

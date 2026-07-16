@@ -3,28 +3,43 @@ import { WIDTH, HEIGHT, FRAME_COUNT } from '../constants';
 import { transforms } from './transforms';
 
 export const transform = async (
-  image: HTMLImageElement,
+  image: string,
   transformation: keyof typeof TransformationType,
   i: number
-): Promise<HTMLCanvasElement> => {
-  const canvas = document.createElement('canvas');
-  canvas.width = WIDTH;
-  canvas.height = HEIGHT;
+): Promise<string> => {
+  return new Promise(async (resolve) => {
+    const img = document.createElement('img');
+    const canvas = document.createElement('canvas');
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
 
-  const ctx = canvas.getContext('2d', {
-    willReadFrequently: true,
-    alpha: true,
-    desynchronized: true,
-  }) as CanvasRenderingContext2D;
+    img.onload = async () => {
+      const ctx = canvas.getContext('2d', {
+        willReadFrequently: true,
+        alpha: true,
+        desynchronized: true,
+      }) as CanvasRenderingContext2D;
 
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
+      // ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+      // ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  ctx.save();
-  const transformationFn = transforms[transformation];
-  await transformationFn(ctx, image, i);
-  ctx.restore();
+      // Enable better image smoothing
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
 
-  return canvas;
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      ctx.save();
+      const transformationFn = transforms[transformation];
+      await transformationFn(ctx, img, i);
+      ctx.restore();
+
+      // Use higher quality PNG encoding
+      resolve(canvas.toDataURL('image/png', 0.95));
+
+      if (img.parentNode) img.parentNode.removeChild(img);
+      canvas.remove();
+    };
+
+    img.src = image;
+  });
 };

@@ -47,7 +47,9 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
   useEffect(() => {
     const checkCustomGif = () => {
       const frames = getCustomGifFrames();
-      setHasCustomGif(Boolean(frames));
+      const hasFrames = Boolean(frames);
+      console.log('EffectsGrid: checking custom GIF frames:', hasFrames, frames?.length);
+      setHasCustomGif(hasFrames);
     };
 
     checkCustomGif();
@@ -56,7 +58,11 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
   }, []);
 
   const animatedEffects = Object.values(AnimatedEffectType).filter(effect => {
-    return effect !== AnimatedEffectType.CUSTOM_GIF || hasCustomGif;
+    const shouldInclude = effect !== AnimatedEffectType.CUSTOM_GIF || hasCustomGif;
+    if (effect === AnimatedEffectType.CUSTOM_GIF) {
+      console.log('CUSTOM_GIF filter check:', { effect, hasCustomGif, shouldInclude });
+    }
+    return shouldInclude;
   });
 
   const effectSections = showStatic ? [
@@ -86,8 +92,19 @@ export const EffectsGrid: React.FC<EffectsGridProps> = ({
             {effects.map((type) => {
               const isVisible = isFilterVisible(type);
 
+              if (type === AnimatedEffectType.CUSTOM_GIF) {
+                console.log('CUSTOM_GIF visibility check:', { type, isVisible });
+              }
+
               if (!isVisible) {
+                if (type === AnimatedEffectType.CUSTOM_GIF) {
+                  console.log('CUSTOM_GIF is HIDDEN by filter');
+                }
                 return null;
+              }
+
+              if (type === AnimatedEffectType.CUSTOM_GIF) {
+                console.log('CUSTOM_GIF will be rendered!');
               }
 
               return (

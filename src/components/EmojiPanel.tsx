@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useA11y } from '../hooks/useA11y';
 import { LoadingSpinner } from './a11y/LoadingSpinner';
 import GIF from 'gif.js';
@@ -6,7 +6,6 @@ import { AnimatedEffectType } from '../types/effects';
 import { transform } from '../utils/transform';
 import { BLANK_GIF, WIDTH, HEIGHT, FRAME_COUNT } from '../constants';
 import { downloadUri } from '../utils/download';
-import { gifGenerationLimiter } from '../utils/concurrency';
 
 interface EmojiPanelProps {
   img: string;
@@ -26,115 +25,92 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
   const [gif, setGif] = useState(BLANK_GIF);
   const [loading, setLoading] = useState(false);
   const { handleKeyPress } = useA11y();
-  const gifRef = useRef<GIF | null>(null);
 
   useEffect(() => {
     if (!img) return;
 
-    // Abort previous GIF generation if still running
-    if (gifRef.current) {
-      try { gifRef.current.abort(); } catch (_) {}
-      gifRef.current = null;
-    }
+    console.log('EmojiPanel rendering:', { name, transformation, img: img.substring(0, 50) });
 
     setGif(BLANK_GIF);
     setLoading(true);
 
-    let aborted = false;
-    let timeoutId: ReturnType<typeof setTimeout>;
-    let releaseSlot: (() => void) | null = null;
-
     (async () => {
-      // Wait for a concurrency slot before starting generation
-      releaseSlot = await gifGenerationLimiter.acquire();
-      if (aborted) {
-        releaseSlot();
-        return;
-      }
+      const framesArray = [...Array(frameCount)].fill(null);
+      const imagePromises = framesArray.map(async (_, i) => {
+        return await transform(img, transformation, i);
+      });
 
+      const images = await Promise.all(imagePromises);
+      console.log('Transformed images for', name, ':', images.length);
+      
       try {
-        // Load the source image once
-        const sourceImg = await new Promise<HTMLImageElement>((resolve, reject) => {
-          const el = new Image();
-          el.onload = () => resolve(el);
-          el.onerror = reject;
-          el.src = img;
-        });
+        const loadedImages = await Promise.all(
+          images.map(
+            (imageData) => 
+              new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = imageData;
+              })
+          )
+        );
 
-        if (aborted) return;
-
-        // Generate all frame canvases — reusing the single loaded image
-        const canvases: HTMLCanvasElement[] = [];
-        for (let i = 0; i < frameCount; i++) {
-          if (aborted) return;
-          canvases.push(await transform(sourceImg, transformation, i));
-        }
-
-        if (aborted) return;
-
-        const gifEncoder = new GIF({
-          workers: 2,
+        const gif = new GIF({
+          workers: 4,
           quality: 5,
           repeat: 0,
           width: WIDTH,
           height: HEIGHT,
           transparent: 0x000000,
           background: null,
-          workerScript: '/gif.worker.js',
+          workerScript: import.meta.env.PROD ? '/gif.worker.js' : '/public/gif.worker.js',
           dither: false,
           debug: false
         });
-        gifRef.current = gifEncoder;
 
-        // Pass canvases directly to gif.addFrame — no intermediate Image decode
-        canvases.forEach(canvas => {
-          gifEncoder.addFrame(canvas, {
-            delay: interval * 1000,
-            transparent: true,
-            disposal: 2
+        loadedImages.forEach(img => {
+          const canvas = document.createElement('canvas');
+          canvas.width = WIDTH;
+          canvas.height = HEIGHT;
+          const ctx = canvas.getContext('2d', { 
+            willReadFrequently: true,
+            alpha: true,
+            desynchronized: true,
+            powerPreference: 'high-performance'
           });
+          if (ctx) {
+            ctx.globalCompositeOperation = 'copy';
+            ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            ctx.save();
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
+            ctx.restore();
+            gif.addFrame(canvas, { 
+              delay: interval * 1000, 
+              transparent: true,
+              disposal: 2
+            });
+          }
         });
-
-        // Timeout to prevent infinite loading if worker fails silently
-        timeoutId = setTimeout(() => {
-          try { gifEncoder.abort(); } catch (_) {}
-          if (!aborted) setLoading(false);
-        }, 30000);
-
-        gifEncoder.on('finished', blob => {
-          clearTimeout(timeoutId);
-          if (aborted) return;
+        
+        gif.on('finished', blob => {
           const url = URL.createObjectURL(blob);
           setGif(url);
           setLoading(false);
         });
-
-        gifEncoder.on('error', () => {
-          clearTimeout(timeoutId);
-          if (!aborted) setLoading(false);
+        
+        gif.on('error', error => {
+          console.error('GIF generation error:', error);
+          setLoading(false);
         });
-
-        gifEncoder.render();
-      } catch {
-        if (!aborted) setLoading(false);
-      } finally {
-        if (releaseSlot) releaseSlot();
-        releaseSlot = null;
+        
+        gif.render();
+      } catch (error) {
+        console.error('Error creating GIF:', error);
+        setLoading(false);
       }
     })();
-
-    return () => {
-      aborted = true;
-      clearTimeout(timeoutId);
-      if (releaseSlot) {
-        releaseSlot();
-        releaseSlot = null;
-      }
-      if (gifRef.current) {
-        try { gifRef.current.abort(); } catch (_) {}
-        gifRef.current = null;
-      }
-    };
   }, [img, transformation, interval, frameCount]);
 
   const isClickable = gif !== BLANK_GIF;
@@ -146,7 +122,7 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
   };
 
   return (
-    <div
+    <div 
       onClick={handleClick}
       onKeyPress={handleKeyPress(handleClick)}
       role="button"
@@ -171,4 +147,4 @@ const EmojiPanel: React.FC<EmojiPanelProps> = ({
   );
 };
 
-export default React.memo(EmojiPanel);
+export default EmojiPanel;

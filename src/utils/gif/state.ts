@@ -9,6 +9,7 @@ export function getCustomGifFrames(): ImageData[] | null {
 
 export function setCustomGifFrames(frames: ImageData[] | null): void {
   customGifFrames = frames;
+  console.log('Custom GIF frames set:', frames ? `${frames.length} frames` : 'null');
   notifyListeners();
 }
 

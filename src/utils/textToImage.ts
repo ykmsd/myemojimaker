@@ -41,6 +41,7 @@ export const textToImage = (
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
   
+  // Much larger font size - start at 90px instead of 64px
   ctx.font = `bold 90px "${fontFamily}"`;
   
   // Measure text and calculate scale
